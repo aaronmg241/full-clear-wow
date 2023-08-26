@@ -38,21 +38,21 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://localhost:5173",
     "http://192.168.2.18:5173",
-    "full-clear-frontend-production.up.railway.app"
+    "https://full-clear-frontend-production.up.railway.app"
 ]
 
 CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:5173",
     "http://localhost:5173",
     "http://192.168.2.18:5173",
-    "full-clear-frontend-production.up.railway.app"
+    "https://full-clear-frontend-production.up.railway.app"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://localhost:5173",
     "http://192.168.2.18:5173",
-    "full-clear-frontend-production.up.railway.app"
+    "https://full-clear-frontend-production.up.railway.app"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
