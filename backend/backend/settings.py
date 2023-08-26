@@ -34,24 +34,19 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:5173",
-    "http://localhost:5173",
-    "http://192.168.2.18:5173",
-    "https://full-clear-frontend-production.up.railway.app"
-]
+if environment == "production":
+    CORS_ALLOWED_ORIGINS = [
+        "https://full-clear-frontend-production.up.railway.app"
+    ]
+else:
+    CORS_ALLOWED_ORIGINS = [
+        "http://127.0.0.1:5173",
+        "http://localhost:5173",
+        "http://192.168.2.18:5173"
+    ]
 
-CORS_ORIGIN_WHITELIST = [
-    "http://127.0.0.1:5173",
-    "http://localhost:5173",
-    "http://192.168.2.18:5173",
-    "https://full-clear-frontend-production.up.railway.app"
-]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:5173",
-    "http://localhost:5173",
-    "http://192.168.2.18:5173",
     "https://full-clear-frontend-production.up.railway.app"
 ]
 
