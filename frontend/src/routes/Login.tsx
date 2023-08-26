@@ -6,7 +6,7 @@ import { Button, Flex, Input, Text } from '@chakra-ui/react'
 import AirIcon from '@mui/icons-material/Air'
 import Cookies from 'js-cookie'
 
-function App() {
+function Login() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
@@ -48,9 +48,9 @@ function App() {
 					width='100%'
 					onClick={async () => {
 						axios
-							.post('dj-rest-auth/login/', { email, password }, { withCredentials: true })
+							.post('dj-rest-auth/login/', { email, password })
 							.then((response) => {
-								console.log(response)
+								Cookies.set('accessKey', response.data.key, { expires: 30 })
 							})
 							.catch((error) => {
 								console.log(error)
@@ -75,37 +75,9 @@ function App() {
 						console.log('Login Failed')
 					}}
 				/>
-				<Button
-					onClick={() => {
-						axios
-							.get('/guilds/my-guilds')
-							.then((response) => {
-								console.log(response)
-							})
-							.catch((error) => {
-								console.log(error)
-							})
-					}}
-				>
-					Test
-				</Button>
-				<Button
-					onClick={() => {
-						axios
-							.post('/dj-rest-auth/logout/', {})
-							.then((response) => {
-								console.log(response)
-							})
-							.catch((error) => {
-								console.log(error)
-							})
-					}}
-				>
-					Logout
-				</Button>
 			</Flex>
 		</Flex>
 	)
 }
 
-export default App
+export default Login

@@ -34,14 +34,25 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-if environment == "production":
-    CORS_ALLOWED_ORIGINS = [
-        "https://wordle-with-friends.up.railway.app"
-    ]
-else:
-    CORS_ALLOWED_ORIGINS = [
-        os.getenv("LOCAL_HOST")
-    ]
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
+    "http://192.168.2.18:5173"
+]
+
+CORS_ORIGIN_WHITELIST = [
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
+    "http://192.168.2.18:5173"
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
+    "http://192.168.2.18:5173"
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -52,12 +63,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'guilds', 
+
+    'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'guilds'
+    'dj_rest_auth.registration',
+
+    'corsheaders',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -69,11 +88,34 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         },
-        'OAUTH_PKCE_ENABLED': True,
     }
 }
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ]
+}
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_SECURE': True,
+    'JWT_AUTH_HTTPONLY': True,
+    'JWT_AUTH_COOKIE': 'access_token',
+    'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
+    'JWT_AUTH_SAMESITE': 'None'
+}
+
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+AUTH_USER_MODEL = "guilds.User" 
+
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -99,11 +141,6 @@ TEMPLATES = [
             ],
         },
     },
-]
-
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
