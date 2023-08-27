@@ -78,6 +78,11 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
+
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -96,6 +101,7 @@ REST_FRAMEWORK = {
     ]
 }
 
+USE_JWT = True
 REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_SECURE': True,
@@ -211,6 +217,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SITE_ID = 2
+if environment == "production":
+    SITE_ID = 2
+else:
+    SITE_ID = 4
+
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'

@@ -4,7 +4,6 @@ import axios from 'axios'
 import { GoogleLogin } from '@react-oauth/google'
 import { Button, Flex, Input, Text } from '@chakra-ui/react'
 import AirIcon from '@mui/icons-material/Air'
-import Cookies from 'js-cookie'
 
 function App() {
 	const [email, setEmail] = useState('')
@@ -62,10 +61,11 @@ function App() {
 				<GoogleLogin
 					onSuccess={(credentialResponse) => {
 						console.log(credentialResponse.credential)
+						console.log(credentialResponse)
 						axios
 							.post('dj-rest-auth/google/', { access_token: credentialResponse.credential })
 							.then((response) => {
-								Cookies.set('accessKey', response.data.key, { expires: 30 })
+								console.log(response)
 							})
 							.catch((error) => {
 								console.log(error)
