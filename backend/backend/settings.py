@@ -47,7 +47,8 @@ else:
 
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://full-clear-frontend-production.up.railway.app"
+    "https://full-clear-frontend-production.up.railway.app",
+    "https://full-clear-backend-production.up.railway.app"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
