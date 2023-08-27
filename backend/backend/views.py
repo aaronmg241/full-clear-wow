@@ -5,7 +5,7 @@ from dj_rest_auth.registration.views import SocialLoginView
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
-    callback_url = 'http://127.0.0.1:8000/accounts/google/login/callback'
+    callback_url = 'https://full-clear.up.railway.app/api/accounts/google/login/callback'
     client_class = OAuth2Client
 
 
