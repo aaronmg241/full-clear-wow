@@ -78,7 +78,7 @@ function App() {
 				<Button
 					onClick={() => {
 						axios
-							.get('/guilds/my-guilds')
+							.get('/guilds/my-guilds/')
 							.then((response) => {
 								console.log(response)
 							})
