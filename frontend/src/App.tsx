@@ -63,7 +63,7 @@ function App() {
 					onSuccess={(credentialResponse) => {
 						console.log(credentialResponse.credential)
 						axios
-							.post('/dj-rest-auth/google/', { access_token: credentialResponse.credential })
+							.post('dj-rest-auth/google/', { access_token: credentialResponse.credential })
 							.then((response) => {
 								Cookies.set('accessKey', response.data.key, { expires: 30 })
 							})
