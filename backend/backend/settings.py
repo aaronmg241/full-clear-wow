@@ -165,6 +165,8 @@ if environment == "production":
         'PORT': os.environ["PGPORT"],
     }
 
+    SESSION_COOKIE_DOMAIN = ".full-clear-frontend-production.up.railway.app"
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
