@@ -12,7 +12,7 @@ environment = os.getenv("DJANGO_ENVIRONMENT", "production")
 callback_url = ""
 
 if environment == "production":
-    callback_url = 'https://full-clear.up.railway.app/accounts/google/login/callback'
+    callback_url = 'https://full-clear-backend-production.up.railway.app/accounts/google/login/callback'
 else:
     callback_url = 'http://127.0.0.1:8000/accounts/google/login/callback'
 
