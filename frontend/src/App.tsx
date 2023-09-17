@@ -45,27 +45,10 @@ function App() {
 					type='password'
 				/>
 				<LoginButton email={email} password={password} />
-				{/* <GoogleLogin
+				<GoogleLogin
 					onSuccess={(credentialResponse) => {
-						console.log(credentialResponse.credential)
-						console.log(credentialResponse)
 						axios
 							.post('dj-rest-auth/google/', { access_token: credentialResponse.credential })
-							.then((response) => {
-								console.log(response)
-							})
-							.catch((error) => {
-								console.log(error)
-							})
-					}}
-					onError={() => {
-						console.log('Login Failed')
-					}}
-				/> */}
-				<GoogleLogin
-					onSuccess={() => {
-						axios
-							.post('dj-rest-auth/google/')
 							.then((response) => {
 								console.log(response)
 							})
