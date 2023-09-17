@@ -48,7 +48,7 @@ function App() {
 				<GoogleLogin
 					onSuccess={(credentialResponse) => {
 						axios
-							.post('dj-rest-auth/google/', { access_token: credentialResponse.credential })
+							.post('dj-rest-auth/google/', { access_token: credentialResponse.credential }, { withCredentials: true })
 							.then((response) => {
 								console.log(response)
 							})
