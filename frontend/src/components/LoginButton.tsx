@@ -5,9 +5,10 @@ import { Button } from '@chakra-ui/react'
 interface LoginButtonProps {
 	email: string
 	password: string
+	setLoggedIn: Function
 }
 
-const LoginButton: React.FC<LoginButtonProps> = ({ email, password }) => {
+const LoginButton: React.FC<LoginButtonProps> = ({ email, password, setLoggedIn }) => {
 	return (
 		<Button
 			width='100%'
@@ -15,7 +16,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ email, password }) => {
 				axios
 					.post('dj-rest-auth/login/', { email, password }, { withCredentials: true })
 					.then((response) => {
-						console.log(response)
+						setLoggedIn(true)
 					})
 					.catch((error) => {
 						console.log(error)

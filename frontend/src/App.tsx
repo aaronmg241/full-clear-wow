@@ -1,17 +1,28 @@
 import './App.css'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { LoginContext } from './components/LoginContext'
 import axios from 'axios'
 import { GoogleLogin } from '@react-oauth/google'
 import { Button, Flex, Input, Text } from '@chakra-ui/react'
 import AirIcon from '@mui/icons-material/Air'
 import LoginButton from './components/LoginButton'
+import Home from './routes/Home'
 
 function App() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const { loggedIn, loadingAccount, setLoggedIn } = useContext(LoginContext)
+
+	if (loadingAccount) {
+		return <div />
+	}
+
+	if (loggedIn) {
+		return <Home setLoggedIn={setLoggedIn} />
+	}
 
 	return (
-		<Flex minHeight='100vh' width='100%' justifyContent='center' alignItems='center' outline='2px solid red'>
+		<Flex minHeight='100vh' width='100%' justifyContent='center' alignItems='center'>
 			<Flex
 				background='#211F2D'
 				width='450px'
@@ -44,13 +55,13 @@ function App() {
 					value={password}
 					type='password'
 				/>
-				<LoginButton email={email} password={password} />
+				<LoginButton email={email} password={password} setLoggedIn={setLoggedIn} />
 				<GoogleLogin
 					onSuccess={(credentialResponse) => {
 						axios
 							.post('dj-rest-auth/google/', { access_token: credentialResponse.credential }, { withCredentials: true })
 							.then((response) => {
-								console.log(response)
+								setLoggedIn(true)
 							})
 							.catch((error) => {
 								console.log(error)
@@ -60,34 +71,6 @@ function App() {
 						console.log('Login Failed')
 					}}
 				/>
-				<Button
-					onClick={() => {
-						axios
-							.get('/guilds/my-guilds/', { withCredentials: true })
-							.then((response) => {
-								console.log(response)
-							})
-							.catch((error) => {
-								console.log(error)
-							})
-					}}
-				>
-					Test
-				</Button>
-				<Button
-					onClick={() => {
-						axios
-							.post('/dj-rest-auth/logout/', {}, { withCredentials: true })
-							.then((response) => {
-								console.log(response)
-							})
-							.catch((error) => {
-								console.log(error)
-							})
-					}}
-				>
-					Logout
-				</Button>
 			</Flex>
 		</Flex>
 	)
