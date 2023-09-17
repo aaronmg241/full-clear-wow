@@ -47,7 +47,8 @@ else:
 
 CSRF_TRUSTED_ORIGINS = [
     "https://full-clear-frontend-production.up.railway.app",
-    "https://full-clear-backend-production.up.railway.app"
+    "https://full-clear-backend-production.up.railway.app",
+    "http://localhost:5173"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -100,14 +101,13 @@ REST_FRAMEWORK = {
     ]
 }
 
-USE_JWT = True
 REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_SECURE': True,
     'JWT_AUTH_HTTPONLY': True,
     'JWT_AUTH_COOKIE': 'access_token',
     'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
-    'JWT_AUTH_SAMESITE': 'None'
+    'JWT_AUTH_SAMESITE': 'None',
 }
 
 
