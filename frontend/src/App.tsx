@@ -47,10 +47,10 @@ function App() {
 				<LoginButton email={email} password={password} />
 				<GoogleLogin
 					onSuccess={(credentialResponse) => {
-						console.log(credentialResponse.credential)
-						console.log(credentialResponse)
+						// console.log(credentialResponse.credential)
+						// console.log(credentialResponse)
 						axios
-							.post('dj-rest-auth/google/', { access_token: credentialResponse.credential })
+							.post('dj-rest-auth/google/' /*, { access_token: credentialResponse.credential }*/)
 							.then((response) => {
 								console.log(response)
 							})
