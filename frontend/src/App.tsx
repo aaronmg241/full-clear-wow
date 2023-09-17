@@ -4,6 +4,7 @@ import axios from 'axios'
 import { GoogleLogin } from '@react-oauth/google'
 import { Button, Flex, Input, Text } from '@chakra-ui/react'
 import AirIcon from '@mui/icons-material/Air'
+import LoginButton from './components/LoginButton'
 
 function App() {
 	const [email, setEmail] = useState('')
@@ -43,21 +44,7 @@ function App() {
 					value={password}
 					type='password'
 				/>
-				<Button
-					width='100%'
-					onClick={async () => {
-						axios
-							.post('dj-rest-auth/login/', { email, password }, { withCredentials: true })
-							.then((response) => {
-								console.log(response)
-							})
-							.catch((error) => {
-								console.error(error)
-							})
-					}}
-				>
-					Login
-				</Button>
+				<LoginButton email={email} password={password} />
 				<GoogleLogin
 					onSuccess={(credentialResponse) => {
 						console.log(credentialResponse.credential)
