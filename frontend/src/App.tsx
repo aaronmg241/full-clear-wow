@@ -77,7 +77,7 @@ function App() {
 				<Button
 					onClick={() => {
 						axios
-							.post('/dj-rest-auth/logout/', {})
+							.post('/dj-rest-auth/logout/', {}, { withCredentials: true })
 							.then((response) => {
 								console.log(response)
 							})
