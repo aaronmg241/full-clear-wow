@@ -15,7 +15,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ email, password, setLoggedIn 
 			onClick={async () => {
 				axios
 					.post('dj-rest-auth/login/', { email, password }, { withCredentials: true })
-					.then((response) => {
+					.then(() => {
 						setLoggedIn(true)
 					})
 					.catch((error) => {

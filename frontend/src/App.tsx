@@ -3,7 +3,7 @@ import { useContext, useState } from 'react'
 import { LoginContext } from './components/LoginContext'
 import axios from 'axios'
 import { GoogleLogin } from '@react-oauth/google'
-import { Button, Flex, Input, Text } from '@chakra-ui/react'
+import { Flex, Input, Text } from '@chakra-ui/react'
 import AirIcon from '@mui/icons-material/Air'
 import LoginButton from './components/LoginButton'
 import Home from './routes/Home'
@@ -60,7 +60,7 @@ function App() {
 					onSuccess={(credentialResponse) => {
 						axios
 							.post('dj-rest-auth/google/', { access_token: credentialResponse.credential }, { withCredentials: true })
-							.then((response) => {
+							.then(() => {
 								setLoggedIn(true)
 							})
 							.catch((error) => {
