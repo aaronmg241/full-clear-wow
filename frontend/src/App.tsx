@@ -65,7 +65,7 @@ function App() {
 				<Button
 					onClick={() => {
 						axios
-							.get('/guilds/my-guilds/')
+							.get('/guilds/my-guilds/', { withCredentials: true })
 							.then((response) => {
 								console.log(response)
 							})
