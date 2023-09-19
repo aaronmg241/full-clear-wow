@@ -3,23 +3,37 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-import { ChakraProvider } from '@chakra-ui/react'
-import axios from 'axios'
+import { MantineProvider } from '@mantine/core'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Notifications } from '@mantine/notifications'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import theme from './theme/theme.ts'
 
 import LoginContextProvider from './components/LoginContext.tsx'
+import axios from 'axios'
+import GlobalStyles from './theme/GlobalStyles.tsx'
+
+import '@fontsource-variable/inter'
 
 axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL
+
+const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-			<ChakraProvider theme={theme}>
-				<LoginContextProvider>
-					<App />
-				</LoginContextProvider>
-			</ChakraProvider>
+			<QueryClientProvider client={queryClient}>
+				<MantineProvider
+					withGlobalStyles
+					withNormalizeCSS
+					theme={{ colorScheme: 'dark', fontFamily: 'Inter Variable, sans-serif' }}
+				>
+					<GlobalStyles />
+					<Notifications />
+					<LoginContextProvider>
+						<App />
+					</LoginContextProvider>
+				</MantineProvider>
+			</QueryClientProvider>
 		</GoogleOAuthProvider>
 	</React.StrictMode>
 )

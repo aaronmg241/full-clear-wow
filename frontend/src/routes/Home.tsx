@@ -1,44 +1,21 @@
-import { Button } from '@chakra-ui/react'
-import useAxiosWithInterceptor from '../hooks/useAxios'
+import { Flex } from '@mantine/core'
+import { Outlet } from 'react-router-dom'
 
-type Props = {
-	setLoggedIn: Function
-}
+import HeaderNav from '../components/Navigation/HeaderNav'
+import SideNav from '../components/Navigation/SideNav'
 
-export default function Home({ setLoggedIn }: Props) {
-	const axios = useAxiosWithInterceptor()
+export default function Home() {
+	// const [opened, setOpened] = useState(false)
 
 	return (
-		<>
-			<div>Hello World</div>
-			<Button
-				onClick={() => {
-					axios
-						.get('/guilds/my-guilds/')
-						.then((response) => {
-							console.log(response)
-						})
-						.catch((error) => {
-							console.log(error)
-						})
-				}}
-			>
-				Test API
-			</Button>
-			<Button
-				onClick={() => {
-					axios
-						.post('/dj-rest-auth/logout/')
-						.then(() => {
-							setLoggedIn(false)
-						})
-						.catch((error) => {
-							console.log(error)
-						})
-				}}
-			>
-				Logout
-			</Button>
-		</>
+		<Flex w='100%' align='center' h='100%' direction='column'>
+			<HeaderNav />
+			<Flex w='min(88em, 100vw)' h='100%' p='1rem 2rem'>
+				<SideNav />
+				<Flex style={{ flexGrow: 1 }} p='0.5rem 1rem 1rem 2rem'>
+					<Outlet />
+				</Flex>
+			</Flex>
+		</Flex>
 	)
 }

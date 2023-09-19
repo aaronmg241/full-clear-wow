@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
 	path('my-guilds/', view=views.UserGuildsView.as_view()),
+	path('user/', view=views.UserView.as_view()),
 ]

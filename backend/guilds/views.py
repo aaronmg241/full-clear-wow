@@ -28,3 +28,15 @@ class UserGuildsView(APIView):
             return Response(serializer.data)
         except User.DoesNotExist:
             return Response({'detail': 'User not found.'}, status=404)
+    
+class UserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            user = request.user  # Retrieve the user object from the authenticated request
+
+            # Serialize the user and return the response
+            return Response(user.display_name)
+        except User.DoesNotExist:
+            return Response({'detail': 'User not found.'}, status=404)

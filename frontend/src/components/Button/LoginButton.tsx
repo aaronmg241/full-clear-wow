@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios'
-import { Button } from '@chakra-ui/react'
+import { Button } from '@mantine/core'
 
 interface LoginButtonProps {
 	email: string
@@ -11,7 +11,7 @@ interface LoginButtonProps {
 const LoginButton: React.FC<LoginButtonProps> = ({ email, password, setLoggedIn }) => {
 	return (
 		<Button
-			width='100%'
+			w='100%'
 			onClick={async () => {
 				axios
 					.post('dj-rest-auth/login/', { email, password }, { withCredentials: true })
