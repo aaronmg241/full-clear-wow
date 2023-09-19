@@ -1,5 +1,3 @@
-import { Text } from '@mantine/core'
-
 type Props = {}
 
 export default function Roster({}: Props) {
