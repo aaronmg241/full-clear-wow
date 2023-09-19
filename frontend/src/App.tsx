@@ -1,6 +1,6 @@
 import './App.css'
 import { useContext } from 'react'
-import { LoginContext } from './components/LoginContext'
+import { LoginContext } from './components/Account/LoginContext'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import Home from './routes/Home'
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
 		element: <Home />,
 		children: [
 			{
-				path: 'roster',
+				path: '',
 				element: <Roster />,
 			},
 			{

@@ -27,6 +27,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     display_name = models.CharField(max_length=30, blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'

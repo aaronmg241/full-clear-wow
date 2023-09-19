@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Notifications } from '@mantine/notifications'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
-import LoginContextProvider from './components/LoginContext.tsx'
+import LoginContextProvider from './components/Account/LoginContext.tsx'
 import axios from 'axios'
 import GlobalStyles from './theme/GlobalStyles.tsx'
 
@@ -28,7 +28,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 					theme={{ colorScheme: 'dark', fontFamily: 'Inter Variable, sans-serif' }}
 				>
 					<GlobalStyles />
-					<Notifications />
+					<Notifications position='bottom-center' />
 					<LoginContextProvider>
 						<App />
 					</LoginContextProvider>

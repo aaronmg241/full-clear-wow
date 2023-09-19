@@ -8,7 +8,7 @@ type Props = {}
 export default function SideNav({}: Props) {
 	return (
 		<Flex h='100%' direction='column' gap={0} align='start'>
-			<SideNavButton icon={<IconUsers />} path='/roster' label='Rosters' />
+			<SideNavButton icon={<IconUsers />} path='/' label='Rosters' />
 			<SideNavButton icon={<IconActivity />} path='/cooldowns' label='Cooldowns' />
 		</Flex>
 	)

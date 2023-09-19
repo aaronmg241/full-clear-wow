@@ -3,7 +3,7 @@ import { Flex, Button, Menu, rem } from '@mantine/core'
 import { IconPower, IconChevronDown, IconEdit } from '@tabler/icons-react'
 
 import useAxiosWithInterceptor from '../../hooks/useAxios'
-import { LoginContext } from '../LoginContext'
+import { LoginContext } from '../Account/LoginContext'
 
 type Props = {}
 

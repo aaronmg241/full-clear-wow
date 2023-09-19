@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 import { useContext } from 'react'
-import { LoginContext } from '../components/LoginContext'
+import { LoginContext } from '../components/Account/LoginContext'
 
 const BASE_API_URL = import.meta.env.VITE_SERVER_URL
 
