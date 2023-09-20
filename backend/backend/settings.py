@@ -109,6 +109,7 @@ REST_AUTH = {
     'JWT_AUTH_COOKIE': 'access_token',
     'JWT_AUTH_REFRESH_COOKIE': 'refresh_token',
     'JWT_AUTH_SAMESITE': 'Lax',
+    'PASSWORD_RESET_SERIALIZER': 'guilds.serializers.CustomPasswordResetSerializer'
 }
 
 SIMPLE_JWT = {
@@ -131,7 +132,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'fullclear.services@gmail.com'
 
-
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -149,7 +149,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
