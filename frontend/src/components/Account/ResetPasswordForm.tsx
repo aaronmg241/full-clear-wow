@@ -6,12 +6,10 @@ import { ButtonLink } from '../Button/ButtonLink'
 import { IconCheck, IconExclamationCircle } from '@tabler/icons-react'
 
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
-type Props = {
-	setStage: Function
-}
-
-export default function ResetPasswordForm({ setStage }: Props) {
+export default function ResetPasswordForm() {
+	const navigate = useNavigate()
 	const form = useForm({
 		initialValues: {
 			email: '',
@@ -26,7 +24,7 @@ export default function ResetPasswordForm({ setStage }: Props) {
 
 	return (
 		<>
-			<ButtonLink onClick={() => setStage('login')} style={{ marginBottom: 20, display: 'block', marginLeft: 'auto' }}>
+			<ButtonLink onClick={() => navigate('/')} style={{ marginBottom: 20, display: 'block', marginLeft: 'auto' }}>
 				Back
 			</ButtonLink>
 			<form

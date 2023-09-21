@@ -7,7 +7,10 @@ import Home from './routes/Home'
 import Login from './routes/Login'
 import Roster from './routes/Roster'
 import Cooldowns from './routes/Cooldowns'
-import ResetPassword from './routes/ResetPassword'
+import ResetPassword from './components/Account/ResetPasswordConfirmForm'
+import LoginForm from './components/Account/LoginForm'
+import RegisterForm from './components/Account/RegisterForm'
+import ResetPasswordForm from './components/Account/ResetPasswordForm'
 
 const authRouter = createBrowserRouter([
 	{
@@ -25,7 +28,7 @@ const authRouter = createBrowserRouter([
 		],
 	},
 	{
-		path: '/reset-password',
+		path: '/reset-password/:uid/:token',
 		element: <ResetPassword loggedIn />,
 	},
 ])
@@ -34,10 +37,24 @@ const unauthRouter = createBrowserRouter([
 	{
 		path: '/',
 		element: <Login />,
-	},
-	{
-		path: '/reset-password/:uid/:token',
-		element: <ResetPassword />,
+		children: [
+			{
+				path: '',
+				element: <LoginForm />,
+			},
+			{
+				path: '/register',
+				element: <RegisterForm />,
+			},
+			{
+				path: '/reset-password',
+				element: <ResetPasswordForm />,
+			},
+			{
+				path: '/reset-password/:uid/:token',
+				element: <ResetPassword />,
+			},
+		],
 	},
 ])
 

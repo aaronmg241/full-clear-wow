@@ -3,11 +3,7 @@ import { notifications } from '@mantine/notifications'
 import { useForm } from '@mantine/form'
 import { ButtonLink } from '../Button/ButtonLink'
 import axios from 'axios'
-
-type Props = {
-	setStage: Function
-}
-
+import { useNavigate } from 'react-router-dom'
 interface RegisterErrorData {
 	email?: string[]
 	non_field_errors?: string[]
@@ -35,7 +31,8 @@ function parseRegisterErrors(data: RegisterErrorData): string {
 	return 'There was an error registering the user.'
 }
 
-export default function RegisterForm({ setStage }: Props) {
+export default function RegisterForm() {
+	const navigate = useNavigate()
 	const form = useForm({
 		initialValues: {
 			email: '',
@@ -61,7 +58,7 @@ export default function RegisterForm({ setStage }: Props) {
 	return (
 		<>
 			<ButtonLink
-				onClick={() => setStage('login')}
+				onClick={() => navigate('/')}
 				style={{ marginLeft: 'auto', marginRight: 0, display: 'block', paddingBottom: '1rem' }}
 			>
 				Back
@@ -79,7 +76,7 @@ export default function RegisterForm({ setStage }: Props) {
 					axios
 						.post('/dj-rest-auth/registration/', { email, password1, password2 })
 						.then(() => {
-							setStage('login')
+							navigate('/')
 							notifications.update({
 								id: 'registering-user',
 								title: 'Success',
@@ -88,7 +85,6 @@ export default function RegisterForm({ setStage }: Props) {
 							})
 						})
 						.catch((error) => {
-							console.log(error)
 							const message = parseRegisterErrors(error.response.data)
 							notifications.update({
 								id: 'registering-user',

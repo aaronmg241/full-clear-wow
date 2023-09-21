@@ -1,7 +1,6 @@
 import { Button, PasswordInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import AccountFormContainer from '../components/Containers/AccountFormContainer'
-import { ButtonLink } from '../components/Button/ButtonLink'
+import { ButtonLink } from '../Button/ButtonLink'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import axios from 'axios'
@@ -39,7 +38,7 @@ function parseResetPasswordErrors(data: ResetPasswordErrorData): string {
 	return 'There was an error resetting your password.'
 }
 
-export default function ResetPassword({ loggedIn }: Props) {
+export default function ResetPasswordConfirmForm({ loggedIn }: Props) {
 	const { uid, token } = useParams<{ uid: string; token: string }>()
 	const navigate = useNavigate()
 	const form = useForm({
@@ -85,7 +84,7 @@ export default function ResetPassword({ loggedIn }: Props) {
 	}
 
 	return (
-		<AccountFormContainer>
+		<>
 			<ButtonLink
 				onClick={() => navigate('/')}
 				style={{ marginLeft: 'auto', marginRight: 0, display: 'block', paddingBottom: '1rem' }}
@@ -132,6 +131,6 @@ export default function ResetPassword({ loggedIn }: Props) {
 					Change Password
 				</Button>
 			</form>
-		</AccountFormContainer>
+		</>
 	)
 }

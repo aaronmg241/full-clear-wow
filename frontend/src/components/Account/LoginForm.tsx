@@ -7,13 +7,11 @@ import axios from 'axios'
 import { LoginContext } from './LoginContext'
 import { ButtonLink } from '../Button/ButtonLink'
 import { notifications } from '@mantine/notifications'
+import { useNavigate } from 'react-router-dom'
 
-type Props = {
-	setStage: Function
-}
-
-export default function LoginForm({ setStage }: Props) {
+export default function LoginForm() {
 	const { setLoggedIn } = useContext(LoginContext)
+	const navigate = useNavigate()
 
 	const form = useForm({
 		initialValues: {
@@ -63,7 +61,7 @@ export default function LoginForm({ setStage }: Props) {
 				<ButtonLink
 					style={{ marginTop: '10px', marginLeft: 'auto', display: 'block' }}
 					onClick={() => {
-						setStage('resetpassword')
+						navigate('reset-password')
 					}}
 				>
 					Forgot password?
@@ -76,7 +74,7 @@ export default function LoginForm({ setStage }: Props) {
 				Don&apos;t have an account?{' '}
 				<ButtonLink
 					onClick={() => {
-						setStage('register')
+						navigate('register')
 					}}
 				>
 					Register
