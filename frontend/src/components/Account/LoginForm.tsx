@@ -6,6 +6,7 @@ import { GoogleLogin } from '@react-oauth/google'
 import axios from 'axios'
 import { LoginContext } from './LoginContext'
 import { ButtonLink } from '../Button/ButtonLink'
+import { notifications } from '@mantine/notifications'
 
 type Props = {
 	setStage: Function
@@ -36,9 +37,21 @@ export default function LoginForm({ setStage }: Props) {
 			.post('dj-rest-auth/login/', { email, password }, { withCredentials: true })
 			.then(() => {
 				setLoggedIn(true)
+				notifications.clean()
+				notifications.show({
+					title: 'Success',
+					message: 'Successfully logged in!',
+					autoClose: 3000,
+				})
 			})
 			.catch((error) => {
 				console.log(error)
+				notifications.show({
+					title: 'Error',
+					color: 'red',
+					message: 'Invalid email/password combination.',
+					autoClose: 5000,
+				})
 			})
 	}
 
@@ -76,9 +89,20 @@ export default function LoginForm({ setStage }: Props) {
 						.post('dj-rest-auth/google/', { access_token: credentialResponse.credential }, { withCredentials: true })
 						.then(() => {
 							setLoggedIn(true)
+							notifications.show({
+								title: 'Success',
+								message: 'Successfully logged in!',
+								autoClose: 3000,
+							})
 						})
 						.catch((error) => {
 							console.log(error)
+							notifications.show({
+								title: 'Error',
+								color: 'red',
+								message: 'Unable to login with provided credentials.',
+								autoClose: 5000,
+							})
 						})
 				}}
 				onError={() => {

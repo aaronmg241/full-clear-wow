@@ -7,8 +7,9 @@ import Home from './routes/Home'
 import Login from './routes/Login'
 import Roster from './routes/Roster'
 import Cooldowns from './routes/Cooldowns'
+import ResetPassword from './routes/ResetPassword'
 
-const router = createBrowserRouter([
+const authRouter = createBrowserRouter([
 	{
 		path: '/',
 		element: <Home />,
@@ -23,6 +24,21 @@ const router = createBrowserRouter([
 			},
 		],
 	},
+	{
+		path: '/reset-password',
+		element: <ResetPassword loggedIn />,
+	},
+])
+
+const unauthRouter = createBrowserRouter([
+	{
+		path: '/',
+		element: <Login />,
+	},
+	{
+		path: '/reset-password/:uid/:token',
+		element: <ResetPassword />,
+	},
 ])
 
 function App() {
@@ -33,10 +49,10 @@ function App() {
 	}
 
 	if (!loggedIn) {
-		return <Login />
+		return <RouterProvider router={unauthRouter} />
 	}
 
-	return <RouterProvider router={router} />
+	return <RouterProvider router={authRouter} />
 }
 
 export default App
