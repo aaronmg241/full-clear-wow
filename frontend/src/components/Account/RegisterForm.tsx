@@ -70,11 +70,18 @@ export default function RegisterForm({ setStage }: Props) {
 				onSubmit={form.onSubmit((values) => {
 					const { email, password1, password2 } = values
 
+					notifications.show({
+						id: 'registering-user',
+						message: 'Registering user...',
+						autoClose: false,
+					})
+
 					axios
 						.post('/dj-rest-auth/registration/', { email, password1, password2 })
 						.then(() => {
 							setStage('login')
-							notifications.show({
+							notifications.update({
+								id: 'registering-user',
 								title: 'Success',
 								message: 'Successfully registered!',
 								autoClose: 10000,
@@ -83,7 +90,8 @@ export default function RegisterForm({ setStage }: Props) {
 						.catch((error) => {
 							console.log(error)
 							const message = parseRegisterErrors(error.response.data)
-							notifications.show({
+							notifications.update({
+								id: 'registering-user',
 								title: 'Error',
 								color: 'red',
 								message,
