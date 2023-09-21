@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { Flex, Button, Menu, rem } from '@mantine/core'
 import { IconPower, IconChevronDown, IconEdit } from '@tabler/icons-react'
 import { useMediaQuery, useDisclosure } from '@mantine/hooks'
