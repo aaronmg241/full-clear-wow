@@ -1,27 +1,23 @@
 import { useContext, useEffect, useState } from 'react'
 import { Flex, Button, Menu, rem } from '@mantine/core'
 import { IconPower, IconChevronDown, IconEdit } from '@tabler/icons-react'
-import { useMediaQuery } from '@mantine/hooks'
+import { useMediaQuery, useDisclosure } from '@mantine/hooks'
 
-import useAxiosWithInterceptor from '../../hooks/useAxios'
+import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
 import { LoginContext } from '../Account/LoginContext'
 import MobileNav from './MobileNav'
+import ChangeDisplayName from '../Modals/ChangeDisplayName'
 
 type Props = {}
 
 export default function HeaderNav({}: Props) {
-	const { setLoggedIn } = useContext(LoginContext)
+	const { setLoggedIn, userDisplayName, setUserDisplayName } = useContext(LoginContext)
+	const [opened, { open, close }] = useDisclosure(false)
 	const isSmallScreen = useMediaQuery('(max-width: 768px)')
-	const [data, setData] = useState('')
+
 	const axios = useAxiosWithInterceptor()
 
 	// const { isLoading, error, data } = useQuery({ queryKey: ['user'], queryFn: getUser })
-
-	useEffect(() => {
-		axios.get('/guilds/user/').then((response) => {
-			setData(response.data)
-		})
-	}, [])
 
 	return (
 		<Flex w='min(100%, 88em)' h='50px' p='1rem 2rem 0 2rem' justify='flex-end' align='center' gap='4px'>
@@ -39,12 +35,12 @@ export default function HeaderNav({}: Props) {
 							},
 						})}
 					>
-						{data}
+						{userDisplayName}
 					</Button>
 				</Menu.Target>
 
 				<Menu.Dropdown>
-					<Menu.Item style={{}} icon={<IconEdit size={rem(20)} />}>
+					<Menu.Item onClick={open} icon={<IconEdit size={rem(20)} />}>
 						Change Display Name
 					</Menu.Item>
 					<Menu.Divider />
@@ -66,6 +62,7 @@ export default function HeaderNav({}: Props) {
 					</Menu.Item>
 				</Menu.Dropdown>
 			</Menu>
+			<ChangeDisplayName opened={opened} close={close} userDisplayName={userDisplayName} setUserDisplayName={setUserDisplayName} />
 			{isSmallScreen && <MobileNav />}
 		</Flex>
 	)

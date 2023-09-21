@@ -22,6 +22,8 @@ const useAxiosWithInterceptor = (): AxiosInstance => {
 				} catch {
 					setLoggedIn(false)
 				}
+			} else {
+				return Promise.reject(error)
 			}
 		}
 	)

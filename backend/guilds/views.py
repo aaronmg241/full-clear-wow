@@ -40,3 +40,16 @@ class UserView(APIView):
             return Response(user.display_name)
         except User.DoesNotExist:
             return Response({'detail': 'User not found.'}, status=404)
+    
+    def post(self, request):
+        try:
+            user = request.user  # Retrieve the user object from the authenticated request
+
+            # Update the user's display name
+            user.display_name = request.data['display_name']
+            user.save()
+
+            # Serialize the user and return the response
+            return Response(user.display_name)
+        except User.DoesNotExist:
+            return Response({'detail': 'User not found.'}, status=404)
