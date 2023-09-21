@@ -7,8 +7,16 @@ interface LoginContextType {
 	loggedIn: boolean
 	loadingAccount: boolean
 	setLoggedIn: Function
+	loadData: Function
+	logout: Function
 	userDisplayName: string
 	setUserDisplayName: Function
+	guilds: Guild[]
+}
+
+interface Guild {
+	id: string
+	name: string
 }
 
 // Create an LoginContext
@@ -16,14 +24,18 @@ export const LoginContext = createContext<LoginContextType>({
 	loggedIn: false,
 	loadingAccount: true,
 	setLoggedIn: () => {},
+	loadData: () => {},
+	logout: () => {},
 	userDisplayName: '',
 	setUserDisplayName: () => {},
+	guilds: [],
 })
 
 export default function LoginContextProvider({ children }: { children: React.ReactNode }) {
 	const [loggedIn, setLoggedIn] = useState(false)
 	const [loadingAccount, setLoadingAccount] = useState(true)
 	const [userDisplayName, setUserDisplayName] = useState<string>('')
+	const [guilds, setGuilds] = useState<Guild[]>([])
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -31,27 +43,11 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 
 			if (result.status === 200) {
 				setLoggedIn(true)
-				setLoadingAccount(false)
+				loadData()
 			} else {
 				setLoggedIn(false)
 				setLoadingAccount(false)
-				return
 			}
-
-			axios
-				.get('/guilds/user/', { withCredentials: true })
-				.then((response) => {
-					setUserDisplayName(response.data)
-				})
-				.catch((error) => {
-					console.log(error)
-					notifications.show({
-						title: 'Error',
-						message: 'There was an error getting your user info.',
-						color: 'red',
-						autoClose: 5000,
-					})
-				})
 		}
 
 		checkAuth().catch((error) => {
@@ -61,8 +57,57 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 		// You can also check for token validity, perform API requests, etc.
 	}, [])
 
+	function logout() {
+		axios.post('/dj-rest-auth/logout/', {}, { withCredentials: true }).catch((error) => {
+			console.log(error)
+		})
+
+		setLoggedIn(false)
+		setUserDisplayName('')
+		setGuilds([])
+	}
+
+	function loadData() {
+		notifications.show({
+			id: 'loading-account',
+			title: 'Loading',
+			message: 'Loading your account info...',
+			autoClose: false,
+		})
+
+		axios
+			.get('/guilds/user/', { withCredentials: true })
+			.then((response) => {
+				setUserDisplayName(response.data.display_name)
+				setGuilds(response.data.guilds)
+				notifications.hide('loading-account')
+			})
+			.catch((error) => {
+				console.log(error)
+				notifications.update({
+					id: 'loading-account',
+					title: 'Error',
+					message: 'There was an error getting your user info.',
+					color: 'red',
+					autoClose: 3000,
+				})
+			})
+			.finally(() => {
+				setLoadingAccount(false)
+			})
+	}
+
 	// Provide the loggedIn and loadingAccount states to the components
-	const contextValue: LoginContextType = { loggedIn, loadingAccount, setLoggedIn, userDisplayName, setUserDisplayName }
+	const contextValue: LoginContextType = {
+		loggedIn,
+		loadingAccount,
+		setLoggedIn,
+		loadData,
+		logout,
+		userDisplayName,
+		setUserDisplayName,
+		guilds,
+	}
 
 	return <LoginContext.Provider value={contextValue}>{children}</LoginContext.Provider>
 }

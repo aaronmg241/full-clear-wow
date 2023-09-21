@@ -1,12 +1,25 @@
+import { useContext } from 'react'
 import { Flex } from '@mantine/core'
 import { Outlet } from 'react-router-dom'
 
 import HeaderNav from '../components/Navigation/HeaderNav'
 import SideNav from '../components/Navigation/SideNav'
 import { useMediaQuery } from '@mantine/hooks'
+import { LoginContext } from '../components/Account/LoginContext'
 
 export default function Home() {
 	const isSmallScreen = useMediaQuery('(max-width: 768px)')
+	const { guilds } = useContext(LoginContext)
+
+	// console.log(guilds)
+
+	// if (guilds.length === 0) {
+	// 	return (
+	// 		<Flex w='100%' align='center' h='100%' direction='column'>
+	// 			hi
+	// 		</Flex>
+	// 	)
+	// }
 
 	if (isSmallScreen) {
 		return (

@@ -10,7 +10,7 @@ import { notifications } from '@mantine/notifications'
 import { useNavigate } from 'react-router-dom'
 
 export default function LoginForm() {
-	const { setLoggedIn } = useContext(LoginContext)
+	const { setLoggedIn, loadData } = useContext(LoginContext)
 	const navigate = useNavigate()
 
 	const form = useForm({
@@ -36,11 +36,7 @@ export default function LoginForm() {
 			.then(() => {
 				setLoggedIn(true)
 				notifications.clean()
-				notifications.show({
-					title: 'Success',
-					message: 'Successfully logged in!',
-					autoClose: 3000,
-				})
+				loadData()
 			})
 			.catch((error) => {
 				console.log(error)
