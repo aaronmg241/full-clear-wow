@@ -1,5 +1,4 @@
 import { Paper, createStyles, Flex, Text } from '@mantine/core'
-import { useMediaQuery } from '@mantine/hooks'
 import { IconWind } from '@tabler/icons-react'
 
 const useStyles = createStyles((theme) => ({
