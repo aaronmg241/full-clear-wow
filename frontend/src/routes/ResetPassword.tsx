@@ -59,6 +59,31 @@ export default function ResetPassword({ loggedIn }: Props) {
 		},
 	})
 
+	if (loggedIn) {
+		axios
+			.post(`/dj-rest-auth/logout/`, {}, { withCredentials: true })
+			.then(() => {
+				notifications.show({
+					title: 'Success',
+					message: 'Reset password successfully. Redirecting to login page...',
+					autoClose: 5000,
+				})
+				setTimeout(() => {
+					navigate('/')
+				}, 1500)
+			})
+			.catch((error) => {
+				console.log(error)
+				const message = parseResetPasswordErrors(error.response.data)
+				notifications.show({
+					title: 'Error',
+					color: 'red',
+					message,
+					autoClose: 6000,
+				})
+			})
+	}
+
 	return (
 		<AccountFormContainer>
 			<ButtonLink
