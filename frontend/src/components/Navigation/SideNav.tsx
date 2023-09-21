@@ -3,13 +3,15 @@ import { IconUsers, IconActivity } from '@tabler/icons-react'
 
 import SideNavButton from '../Button/SideNavButton'
 
-type Props = {}
+type Props = {
+	onLinkClicked?: Function
+}
 
-export default function SideNav({}: Props) {
+export default function SideNav({ onLinkClicked }: Props) {
 	return (
 		<Flex h='100%' direction='column' gap={0} align='start'>
-			<SideNavButton icon={<IconUsers />} path='/' label='Rosters' />
-			<SideNavButton icon={<IconActivity />} path='/cooldowns' label='Cooldowns' />
+			<SideNavButton icon={<IconUsers />} path='/' label='Rosters' onLinkClicked={onLinkClicked} />
+			<SideNavButton icon={<IconActivity />} path='/cooldowns' label='Cooldowns' onLinkClicked={onLinkClicked} />
 		</Flex>
 	)
 }

@@ -5,9 +5,10 @@ type Props = {
 	label: String
 	path: string
 	icon: React.ReactNode
+	onLinkClicked?: Function
 }
 
-export default function SideNavButton({ label, path, icon }: Props) {
+export default function SideNavButton({ label, path, icon, onLinkClicked }: Props) {
 	const navigate = useNavigate()
 	const location = useLocation()
 
@@ -18,6 +19,7 @@ export default function SideNavButton({ label, path, icon }: Props) {
 			style={{ display: 'flex', justifyContent: 'start', textDecoration: 'none' }}
 			onClick={() => {
 				navigate(path)
+				if (onLinkClicked) onLinkClicked()
 			}}
 			leftIcon={icon}
 			styles={(theme) => ({

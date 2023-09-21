@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from unique_names_generator import get_random_name
-from unique_names_generator.data import ADJECTIVES, STAR_WARS
+from unique_names_generator.data import ADJECTIVES, ANIMALS
 
 # Create your models here.
 class CustomUserManager(BaseUserManager):
@@ -26,7 +26,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
-    display_name = models.CharField(max_length=30, blank=True, null=True, default=get_random_name(combo=[ADJECTIVES, STAR_WARS], separator=''))
+    display_name = models.CharField(max_length=30, blank=True, null=True, default=get_random_name(combo=[ADJECTIVES, ANIMALS], separator=''))
     date_joined = models.DateTimeField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

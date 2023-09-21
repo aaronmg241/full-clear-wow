@@ -1,14 +1,17 @@
 import { useContext, useEffect, useState } from 'react'
 import { Flex, Button, Menu, rem } from '@mantine/core'
 import { IconPower, IconChevronDown, IconEdit } from '@tabler/icons-react'
+import { useMediaQuery } from '@mantine/hooks'
 
 import useAxiosWithInterceptor from '../../hooks/useAxios'
 import { LoginContext } from '../Account/LoginContext'
+import MobileNav from './MobileNav'
 
 type Props = {}
 
 export default function HeaderNav({}: Props) {
 	const { setLoggedIn } = useContext(LoginContext)
+	const isSmallScreen = useMediaQuery('(max-width: 768px)')
 	const [data, setData] = useState('')
 	const axios = useAxiosWithInterceptor()
 
@@ -63,6 +66,7 @@ export default function HeaderNav({}: Props) {
 					</Menu.Item>
 				</Menu.Dropdown>
 			</Menu>
+			{isSmallScreen && <MobileNav />}
 		</Flex>
 	)
 }
