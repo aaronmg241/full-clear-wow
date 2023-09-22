@@ -1,8 +1,7 @@
-import { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Flex, SimpleGrid, Paper, Text } from '@mantine/core'
 import { shallow } from 'zustand/shallow'
 
-import { LoginContext } from '../components/Account/LoginContext'
 import { useGuildStore } from '../hooks/useGuildStore'
 import CreateCharacterForm from '../components/Forms/CreateCharacterForm'
 import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
@@ -11,9 +10,8 @@ import CharacterDisplay from '../components/CharacterDisplay'
 type Props = {}
 
 export default function Roster({}: Props) {
-	const { currGuild } = useContext(LoginContext)
-	const { guildRoster, setGuildRoster } = useGuildStore(
-		(state) => ({ guildRoster: state.guildRoster, setGuildRoster: state.setGuildRoster }),
+	const { guildRoster, setGuildRoster, currGuild } = useGuildStore(
+		(state) => ({ guildRoster: state.guildRoster, setGuildRoster: state.setGuildRoster, currGuild: state.currGuild }),
 		shallow
 	)
 	const jwtAxios = useAxiosWithInterceptor()

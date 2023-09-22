@@ -1,11 +1,10 @@
-import { forwardRef, useState, useContext } from 'react'
+import { forwardRef, useState } from 'react'
 import { Modal, TextInput, Flex, Select, Button, Text } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useDisclosure } from '@mantine/hooks'
 
 import { classes } from '../../types/Classes'
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
-import { LoginContext } from '../Account/LoginContext'
 import { notifications } from '@mantine/notifications'
 import { useGuildStore } from '../../hooks/useGuildStore'
 
@@ -18,7 +17,7 @@ const classData = Object.keys(classes).map((key) => {
 export default function CreateCharacterForm({}: Props) {
 	const [opened, { open, close }] = useDisclosure(false)
 	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
-	const { currGuild } = useContext(LoginContext)
+	const currGuild = useGuildStore((state) => state.currGuild)
 	const jwtAxios = useAxiosWithInterceptor()
 
 	const form = useForm({

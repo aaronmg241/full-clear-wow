@@ -7,6 +7,7 @@ import PageFormContainer from '../components/Containers/PageFormContainer'
 import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
 import { ButtonLink } from '../components/Button/ButtonLink'
 import { LoginContext } from '../components/Account/LoginContext'
+import { useGuildStore } from '../hooks/useGuildStore'
 
 type Props = {}
 
@@ -19,6 +20,8 @@ export default function GuildInvite({}: Props) {
 	const [error, setError] = useState('' as string)
 	const [response, setResponse] = useState('' as string)
 	const jwtAxios = useAxiosWithInterceptor()
+	const currGuild = useGuildStore((state) => state.currGuild)
+	const setCurrGuild = useGuildStore((state) => state.setCurrGuild)
 
 	useEffect(() => {
 		async function loadData() {
@@ -30,6 +33,10 @@ export default function GuildInvite({}: Props) {
 
 				setResponse('You have been added to the guild!')
 				setGuilds((guilds: Guild[]) => [...guilds, response.data])
+
+				if (!currGuild) {
+					setCurrGuild(response.data)
+				}
 			} catch (error: any) {
 				const message = error.response.data.detail ? error.response.data.detail : 'There was an error adding you to the guild.'
 				setError(message)

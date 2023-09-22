@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react'
 import axios from 'axios'
 import { notifications } from '@mantine/notifications'
+import { useGuildStore } from '../../hooks/useGuildStore'
 
 // Define the types for the context
 interface LoginContextType {
@@ -13,7 +14,6 @@ interface LoginContextType {
 	setUserDisplayName: Function
 	guilds: Guild[]
 	setGuilds: Function
-	currGuild: Guild | null
 }
 
 // Create an LoginContext
@@ -27,7 +27,6 @@ export const LoginContext = createContext<LoginContextType>({
 	setUserDisplayName: () => {},
 	guilds: [],
 	setGuilds: () => {},
-	currGuild: null,
 })
 
 export default function LoginContextProvider({ children }: { children: React.ReactNode }) {
@@ -35,7 +34,7 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 	const [loadingAccount, setLoadingAccount] = useState(true)
 	const [userDisplayName, setUserDisplayName] = useState<string>('')
 	const [guilds, setGuilds] = useState<Guild[]>([])
-	const [currGuild, setCurrGuild] = useState<Guild | null>(null)
+	const setCurrGuild = useGuildStore((state) => state.setCurrGuild)
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -113,7 +112,6 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 		setUserDisplayName,
 		guilds,
 		setGuilds,
-		currGuild,
 	}
 
 	return <LoginContext.Provider value={contextValue}>{children}</LoginContext.Provider>
