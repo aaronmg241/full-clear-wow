@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { LoginContext } from '../components/Account/LoginContext'
 import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
 import CharacterDisplay from '../components/CharacterDisplay'
