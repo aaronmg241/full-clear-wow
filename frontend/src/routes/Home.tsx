@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Flex, Title } from '@mantine/core'
+import { Flex } from '@mantine/core'
 import { Outlet } from 'react-router-dom'
 
 import HeaderNav from '../components/Navigation/HeaderNav'

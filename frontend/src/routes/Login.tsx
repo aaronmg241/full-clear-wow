@@ -1,7 +1,7 @@
 import '../App.css'
 
 import { motion } from 'framer-motion'
-import AccountFormContainer from '../components/Containers/AccountFormContainer'
+import AccountFormContainer from '../components/Containers/PageFormContainer'
 import { Outlet } from 'react-router-dom'
 
 function Login() {

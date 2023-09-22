@@ -15,11 +15,6 @@ interface LoginContextType {
 	setGuilds: Function
 }
 
-interface Guild {
-	id: string
-	name: string
-}
-
 // Create an LoginContext
 export const LoginContext = createContext<LoginContextType>({
 	loggedIn: false,

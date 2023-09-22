@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
 from .models import *
 from .serializers import GuildSerializer
+from datetime import datetime, timedelta
 
 class GuildView(APIView):
     permission_classes = [IsAuthenticated]
@@ -62,8 +62,9 @@ class GuildCodeView(APIView):
 
     def post(self, request):
         try:
+            user = request.user
             guild = Guild.objects.get(id=request.data['guild_id'])
-            guild_code = GuildCode.objects.create(guild=guild)
+            guild_code = GuildCode.objects.create(guild=guild, created_by=user)
             return Response(guild_code.code)
         except Guild.DoesNotExist:
             return Response({'detail': 'Guild not found.'}, status=404)
@@ -76,9 +77,19 @@ class GuildInviteView(APIView):
             user = request.user  
             guild_code = GuildCode.objects.get(code=request.data['code'])
 
+            if guild_code.created_at.replace(tzinfo=None) < datetime.utcnow() - timedelta(days=1):
+                return Response({'detail': 'This link has expired.'}, status=400)
+
             guild = guild_code.guild
 
+            current_connection = UserGuildConnection.objects.filter(user=user, guild=guild)
+
+            if current_connection.exists():
+                return Response({'detail': 'You are already in this guild.'}, status=400)
+            
+
             UserGuildConnection.objects.create(user=user, guild=guild)
+            return Response(GuildSerializer(guild).data, status=200)
 
         except GuildCode.DoesNotExist:
             return Response({'detail': 'Access code note found.'}, status=404)

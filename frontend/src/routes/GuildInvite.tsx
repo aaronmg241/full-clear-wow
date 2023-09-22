@@ -1,7 +1,83 @@
-import { Flex } from '@mantine/core'
+import { useState, useEffect, useContext } from 'react'
+import { Flex, Loader, Text } from '@mantine/core'
+import { useNavigate, useParams } from 'react-router-dom'
+import { IconExclamationCircle, IconCircleCheck } from '@tabler/icons-react'
+
+import PageFormContainer from '../components/Containers/PageFormContainer'
+import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
+import { ButtonLink } from '../components/Button/ButtonLink'
+import { LoginContext } from '../components/Account/LoginContext'
 
 type Props = {}
 
+let requestBeingSent = false
+
 export default function GuildInvite({}: Props) {
-	return <Flex w='100%' h='100%' justify='center' align='center'></Flex>
+	const { setGuilds } = useContext(LoginContext)
+	const { code } = useParams()
+	const navigate = useNavigate()
+	const [error, setError] = useState('' as string)
+	const [response, setResponse] = useState('' as string)
+	const jwtAxios = useAxiosWithInterceptor()
+
+	useEffect(() => {
+		async function loadData() {
+			if (requestBeingSent) return
+
+			requestBeingSent = true
+			try {
+				const response = await jwtAxios.post('guilds/invite/', { code })
+
+				setResponse('You have been added to the guild!')
+				setGuilds((guilds: Guild[]) => [...guilds, response.data])
+			} catch (error: any) {
+				const message = error.response.data.detail ? error.response.data.detail : 'There was an error adding you to the guild.'
+				setError(message)
+			}
+			requestBeingSent = false
+		}
+
+		loadData()
+	}, [])
+
+	return (
+		<PageFormContainer>
+			{response.length > 0 && (
+				<>
+					<Text align='center'>{response}</Text>
+					<Flex justify='center' mt='2rem'>
+						<IconCircleCheck size={60} color='var(--success-green)' />
+					</Flex>
+					<ButtonLink
+						onClick={() => navigate('/')}
+						style={{ margin: '2rem auto 0 auto', display: 'block', paddingBottom: '1rem' }}
+					>
+						Go to home page
+					</ButtonLink>
+				</>
+			)}
+			{error.length > 0 && response.length == 0 && (
+				<>
+					<Text align='center'>{error}</Text>
+					<Flex justify='center' mt='2rem'>
+						<IconExclamationCircle size={60} color='var(--danger-red)' />
+					</Flex>
+					<ButtonLink
+						onClick={() => navigate('/')}
+						style={{ margin: '2rem auto 0 auto', display: 'block', paddingBottom: '1rem' }}
+					>
+						Go to home page
+					</ButtonLink>
+				</>
+			)}
+			{response.length === 0 && error.length === 0 && (
+				<>
+					<Text align='center'>We're loading your invite...</Text>
+					<Flex justify='center' mt='2rem'>
+						<Loader />
+					</Flex>
+				</>
+			)}
+		</PageFormContainer>
+	)
 }

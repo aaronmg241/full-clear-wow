@@ -44,7 +44,7 @@ const unauthRouter = createBrowserRouter([
 		element: <Login />,
 		children: [
 			{
-				path: '',
+				path: '*',
 				element: <LoginForm />,
 			},
 			{
@@ -60,10 +60,6 @@ const unauthRouter = createBrowserRouter([
 				element: <ResetPassword />,
 			},
 		],
-	},
-	{
-		path: '*',
-		element: <Login />,
 	},
 ])
 

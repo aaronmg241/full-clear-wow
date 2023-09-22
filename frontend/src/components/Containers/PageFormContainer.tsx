@@ -30,7 +30,7 @@ const useStyles = createStyles((theme) => ({
 	},
 }))
 
-export default function AccountFormContainer({ children }: { children: React.ReactNode }) {
+export default function PageFormContainer({ children }: { children: React.ReactNode }) {
 	const { classes } = useStyles()
 
 	return (

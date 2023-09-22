@@ -48,10 +48,10 @@ export default function HeaderNav({}: Props) {
 									.post('/guilds/share/', { guild_id: guilds[0].id })
 									.then((response) => {
 										const code = response.data
-										navigator.clipboard.writeText('127.0.0.1:5173/guilds/invite/' + code + '/')
+										navigator.clipboard.writeText(`${window.location.host}/guilds/invite/${code}/`)
 										notifications.show({
 											title: 'Success',
-											message: 'Invite link copied to clipboard.',
+											message: 'Invite link copied to clipboard. It will expire after 24 hours.',
 											color: 'green',
 											autoClose: 4000,
 										})

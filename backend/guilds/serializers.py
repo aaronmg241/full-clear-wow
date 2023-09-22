@@ -3,8 +3,6 @@ from rest_framework import serializers
 from .models import User, Guild, UserGuildConnection
 from dj_rest_auth.serializers import PasswordResetSerializer
 
-from django.contrib.auth.forms import PasswordResetForm
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
