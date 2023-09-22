@@ -6,5 +6,6 @@ urlpatterns = [
 	path('user/', view=views.UserView.as_view()),
 	path('share/', view=views.GuildCodeView.as_view()),
 	path('invite/', view=views.GuildInviteView.as_view()),
-	path('roster/', view=views.GuildRosterView.as_view())
+	path('roster/', view=views.GuildRosterView.as_view()),
+	path('<int:guild_id>/characters/', view=views.CreateCharacterView.as_view())
 ]

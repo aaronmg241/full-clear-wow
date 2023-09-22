@@ -15,6 +15,10 @@ export default function GlobalStyles() {
 					padding: '0.5rem',
 					border: 'none',
 				},
+
+				'.mantine-Select-item[data-selected]:hover, .mantine-Select-item[data-selected]': {
+					background: theme.colors.gray[8],
+				},
 			})}
 		/>
 	)

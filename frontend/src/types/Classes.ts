@@ -1,7 +1,8 @@
 export const classes: { [key: string]: Class } = {
 	death_knight: {
 		color: '#c41e3a',
-		defaultSpec: 'Unholy',
+		defaultSpec: 'unholy',
+		readableName: 'Death Knight',
 		importantAbilities: [
 			{
 				name: 'anti-magic-zone',
@@ -10,23 +11,27 @@ export const classes: { [key: string]: Class } = {
 			},
 		],
 		specs: {
-			Blood: {
+			blood: {
+				readableName: 'Blood',
 				role: 'tank',
 				importantAbilities: [],
 			},
-			Frost: {
-				role: 'melee dps',
+			frost: {
+				readableName: 'Frost',
+				role: 'melee',
 				importantAbilities: [],
 			},
-			Unholy: {
-				role: 'melee dps',
+			unholy: {
+				readableName: 'Unholy',
+				role: 'melee',
 				importantAbilities: [],
 			},
 		},
 	},
 	demon_hunter: {
 		color: '#a330c9',
-		defaultSpec: 'Havoc',
+		readableName: 'Demon Hunter',
+		defaultSpec: 'havoc',
 		importantAbilities: [
 			{
 				name: 'darkness',
@@ -35,11 +40,13 @@ export const classes: { [key: string]: Class } = {
 			},
 		],
 		specs: {
-			Havoc: {
-				role: 'melee dps',
+			havoc: {
+				readableName: 'Havoc',
+				role: 'melee',
 				importantAbilities: [],
 			},
-			Vengeance: {
+			vengeance: {
+				readableName: 'Vengeance',
 				role: 'tank',
 				importantAbilities: [],
 			},
@@ -48,21 +55,26 @@ export const classes: { [key: string]: Class } = {
 	druid: {
 		color: '#ff7c0a',
 		importantAbilities: [],
-		defaultSpec: 'Balance',
+		readableName: 'Druid',
+		defaultSpec: 'balance',
 		specs: {
-			Balance: {
-				role: 'ranged dps',
+			balance: {
+				readableName: 'Balance',
+				role: 'ranged',
 				importantAbilities: [],
 			},
-			Feral: {
-				role: 'melee dps',
+			feral: {
+				readableName: 'Feral',
+				role: 'melee',
 				importantAbilities: [],
 			},
-			Guardian: {
+			guardian: {
+				readableName: 'Guardian',
 				role: 'tank',
 				importantAbilities: [],
 			},
-			Restoration: {
+			restoration: {
+				readableName: 'Restoration',
 				role: 'healer',
 				importantAbilities: [
 					{
@@ -91,10 +103,12 @@ export const classes: { [key: string]: Class } = {
 	},
 	evoker: {
 		color: '#33937f',
-		defaultSpec: 'Preservation',
+		defaultSpec: 'preservation',
+		readableName: 'Evoker',
 		importantAbilities: [],
 		specs: {
-			Preservation: {
+			preservation: {
+				readableName: 'Preservation',
 				role: 'healer',
 				importantAbilities: [
 					{
@@ -129,8 +143,9 @@ export const classes: { [key: string]: Class } = {
 					},
 				],
 			},
-			Devastation: {
-				role: 'ranged dps',
+			devastation: {
+				readableName: 'Devastation',
+				role: 'ranged',
 				importantAbilities: [],
 			},
 		},
@@ -138,51 +153,62 @@ export const classes: { [key: string]: Class } = {
 	hunter: {
 		color: '#aad372',
 		importantAbilities: [],
-		defaultSpec: 'BeastMastery',
+		readableName: 'Hunter',
+		defaultSpec: 'beast_mastery',
 		specs: {
-			BeastMastery: {
-				role: 'ranged dps',
+			beast_mastery: {
+				readableName: 'Beast Mastery',
+				role: 'ranged',
 				importantAbilities: [],
 			},
-			Marksmanship: {
-				role: 'ranged dps',
+			marksmanship: {
+				readableName: 'Marksmanship',
+				role: 'ranged',
 				importantAbilities: [],
 			},
-			Survival: {
-				role: 'melee dps',
+			survival: {
+				readableName: 'Survival',
+				role: 'melee',
 				importantAbilities: [],
 			},
 		},
 	},
 	mage: {
 		color: '#3fc7eb',
+		readableName: 'Mage',
 		importantAbilities: [],
-		defaultSpec: 'Fire',
+		defaultSpec: 'fire',
 		specs: {
-			Arcane: {
-				role: 'ranged dps',
+			arcane: {
+				readableName: 'Arcane',
+				role: 'ranged',
 				importantAbilities: [],
 			},
-			Fire: {
-				role: 'ranged dps',
+			fire: {
+				readableName: 'Fire',
+				role: 'ranged',
 				importantAbilities: [],
 			},
-			Frost: {
-				role: 'ranged dps',
+			frost: {
+				readableName: 'Frost',
+				role: 'ranged',
 				importantAbilities: [],
 			},
 		},
 	},
 	monk: {
 		color: '#00ff98',
+		readableName: 'Monk',
 		importantAbilities: [],
-		defaultSpec: 'Windwalker',
+		defaultSpec: 'windwalker',
 		specs: {
-			Brewmaster: {
+			brewmaster: {
+				readableName: 'Brewmaster',
 				role: 'tank',
 				importantAbilities: [],
 			},
-			Mistweaver: {
+			mistweaver: {
+				readableName: 'Mistweaver',
 				role: 'healer',
 				importantAbilities: [
 					{
@@ -202,18 +228,21 @@ export const classes: { [key: string]: Class } = {
 					},
 				],
 			},
-			Windwalker: {
-				role: 'melee dps',
+			windwalker: {
+				readableName: 'Windwalker',
+				role: 'melee',
 				importantAbilities: [],
 			},
 		},
 	},
 	paladin: {
 		color: '#f48cba',
+		readableName: 'Paladin',
 		importantAbilities: [],
-		defaultSpec: 'Retribution',
+		defaultSpec: 'retribution',
 		specs: {
-			Holy: {
+			holy: {
+				readableName: 'holy',
 				role: 'healer',
 				importantAbilities: [
 					{
@@ -243,22 +272,26 @@ export const classes: { [key: string]: Class } = {
 					},
 				],
 			},
-			Protection: {
+			protection: {
+				readableName: 'protection',
 				role: 'tank',
 				importantAbilities: [],
 			},
-			Retribution: {
-				role: 'melee dps',
+			retribution: {
+				readableName: 'retribution',
+				role: 'melee',
 				importantAbilities: [],
 			},
 		},
 	},
 	priest: {
 		color: '#ffffff',
+		readableName: 'Priest',
 		importantAbilities: [],
-		defaultSpec: 'Holy',
+		defaultSpec: 'holy',
 		specs: {
-			Discipline: {
+			discipline: {
+				readableName: 'Discipline',
 				role: 'healer',
 				importantAbilities: [
 					{
@@ -283,8 +316,9 @@ export const classes: { [key: string]: Class } = {
 					},
 				],
 			},
-			Holy: {
+			holy: {
 				role: 'healer',
+				readableName: 'Holy',
 				importantAbilities: [
 					{
 						name: 'holy-word-salvation',
@@ -303,37 +337,44 @@ export const classes: { [key: string]: Class } = {
 					},
 				],
 			},
-			Shadow: {
-				role: 'ranged dps',
+			shadow: {
+				readableName: 'Shadow',
+				role: 'ranged',
 				importantAbilities: [],
 			},
 		},
 	},
 	rogue: {
 		color: '#fff468',
+		readableName: 'Rogue',
 		importantAbilities: [],
-		defaultSpec: 'Subtlety',
+		defaultSpec: 'subtlety',
 		specs: {
-			Assassination: {
-				role: 'melee dps',
+			assassination: {
+				readableName: 'assassination',
+				role: 'melee',
 				importantAbilities: [],
 			},
-			Outlaw: {
-				role: 'melee dps',
+			outlaw: {
+				readableName: 'outlaw',
+				role: 'melee',
 				importantAbilities: [],
 			},
-			Subtlety: {
-				role: 'melee dps',
+			subtlety: {
+				readableName: 'subtlety',
+				role: 'melee',
 				importantAbilities: [],
 			},
 		},
 	},
 	shaman: {
 		color: '#0070dd',
+		readableName: 'Shaman',
 		importantAbilities: [],
-		defaultSpec: 'Enhancement',
+		defaultSpec: 'enhancement',
 		specs: {
-			Restoration: {
+			restoration: {
+				readableName: 'restoration',
 				role: 'healer',
 				importantAbilities: [
 					{
@@ -353,38 +394,45 @@ export const classes: { [key: string]: Class } = {
 					},
 				],
 			},
-			Enhancement: {
-				role: 'melee dps',
+			enhancement: {
+				readableName: 'enhancement',
+				role: 'melee',
 				importantAbilities: [],
 			},
-			Elemental: {
-				role: 'ranged dps',
+			elemental: {
+				readableName: 'elemental',
+				role: 'ranged',
 				importantAbilities: [],
 			},
 		},
 	},
 	warlock: {
 		color: '#8788ee',
+		readableName: 'Warlock',
 		importantAbilities: [],
-		defaultSpec: 'Demonology',
+		defaultSpec: 'demonology',
 		specs: {
-			Affliction: {
-				role: 'ranged dps',
+			affliction: {
+				readableName: 'Affliction',
+				role: 'ranged',
 				importantAbilities: [],
 			},
-			Demonology: {
-				role: 'ranged dps',
+			demonology: {
+				readableName: 'Demonology',
+				role: 'ranged',
 				importantAbilities: [],
 			},
-			Destruction: {
-				role: 'ranged dps',
+			destruction: {
+				readableName: 'Destruction',
+				role: 'ranged',
 				importantAbilities: [],
 			},
 		},
 	},
 	warrior: {
 		color: '#c69b6d',
-		defaultSpec: 'Arms',
+		readableName: 'Warrior',
+		defaultSpec: 'arms',
 		importantAbilities: [
 			{
 				name: 'rallying-cry',
@@ -393,15 +441,18 @@ export const classes: { [key: string]: Class } = {
 			},
 		],
 		specs: {
-			Arms: {
-				role: 'melee dps',
+			arms: {
+				readableName: 'Arms',
+				role: 'melee',
 				importantAbilities: [],
 			},
-			Fury: {
-				role: 'melee dps',
+			fury: {
+				readableName: 'Fury',
+				role: 'melee',
 				importantAbilities: [],
 			},
-			Protection: {
+			protection: {
+				readableName: 'Protection',
 				role: 'tank',
 				importantAbilities: [],
 			},

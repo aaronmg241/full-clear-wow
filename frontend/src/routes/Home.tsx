@@ -28,7 +28,7 @@ export default function Home() {
 			<HeaderNav />
 			<Flex w='min(88em, 100vw)' h='100%' p='1rem 2rem'>
 				<SideNav />
-				<Flex style={{ flexGrow: 1 }} p='0.5rem 1rem 1rem 2rem'>
+				<Flex style={{ flexGrow: 1 }} p='1rem 1rem 1rem 2rem'>
 					{guilds.length === 0 ? <NewGuildForm /> : <Outlet />}
 				</Flex>
 			</Flex>

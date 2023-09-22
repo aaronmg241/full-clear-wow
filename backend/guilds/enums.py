@@ -2,9 +2,10 @@ from django.db import models
 from django.utils.translation import gettext as _
 
 class CharacterRole(models.TextChoices):
-	TANK = 'tank', _('Tank')
-	HEALER = 'healer', _('Healer')
-	DAMAGE = 'damage', _('Damage')
+    TANK = 'tank', _('Tank')
+    HEALER = 'healer', _('Healer')
+    DAMAGE = 'melee', _('Melee DPS')
+    RANGED = 'ranged', _('Ranged DPS')
 
 class CharacterClass(models.TextChoices):
     WARLOCK = 'warlock', _('Warlock')
@@ -23,61 +24,57 @@ class CharacterClass(models.TextChoices):
 
 class CharacterSpec(models.TextChoices):
     # Warlock Specializations
-    AFFLICTION = 'affliction', _('Affliction Warlock')
-    DEMONOLOGY = 'demonology', _('Demonology Warlock')
-    DESTRUCTION = 'destruction', _('Destruction Warlock')
+    AFFLICTION = 'affliction', _('Affliction')
+    DEMONOLOGY = 'demonology', _('Demonology')
+    DESTRUCTION = 'destruction', _('Destruction')
 
     # Mage Specializations
-    ARCANE = 'arcane', _('Arcane Mage')
-    FIRE = 'fire', _('Fire Mage')
-    FROST = 'frost', _('Frost Mage')
+    ARCANE = 'arcane', _('Arcane')
+    FIRE = 'fire', _('Fire')
+    FROST = 'frost', _('Frost')
 
     # Rogue Specializations
-    ASSASSINATION = 'assassination', _('Assassination Rogue')
-    OUTLAW = 'outlaw', _('Outlaw Rogue')
-    SUBTLETY = 'subtlety', _('Subtlety Rogue')
+    ASSASSINATION = 'assassination', _('Assassination')
+    OUTLAW = 'outlaw', _('Outlaw')
+    SUBTLETY = 'subtlety', _('Subtlety')
 
     # Warrior Specializations
-    ARMS = 'arms', _('Arms Warrior')
-    FURY = 'fury', _('Fury Warrior')
-    PROTECTION = 'protection', _('Protection Warrior')
+    ARMS = 'arms', _('Arms')
+    FURY = 'fury', _('Fury')
+    PROTECTION = 'protection', _('Protection')
 
     # Priest Specializations
-    DISCIPLINE = 'discipline', _('Discipline Priest')
-    HOLY = 'holy', _('Holy Priest')
-    SHADOW = 'shadow', _('Shadow Priest')
+    DISCIPLINE = 'discipline', _('Discipline')
+    HOLY = 'holy', _('Holy')
+    SHADOW = 'shadow', _('Shadow')
 
     # Druid Specializations
-    BALANCE = 'balance', _('Balance Druid')
-    FERAL = 'feral', _('Feral Druid')
-    GUARDIAN = 'guardian', _('Guardian Druid')
-    RESTORATION = 'restoration', _('Restoration Druid')
+    BALANCE = 'balance', _('Balance')
+    FERAL = 'feral', _('Feral')
+    GUARDIAN = 'guardian', _('Guardian')
+    RESTORATION = 'restoration', _('Restoration')
 
     # Hunter Specializations
-    BEAST_MASTERY = 'beast_mastery', _('Beast Mastery Hunter')
-    MARKSMANSHIP = 'marksmanship', _('Marksmanship Hunter')
-    SURVIVAL = 'survival', _('Survival Hunter')
+    BEAST_MASTERY = 'beast_mastery', _('Beast Mastery')
+    MARKSMANSHIP = 'marksmanship', _('Marksmanship')
+    SURVIVAL = 'survival', _('Survival')
 
     # Shaman Specializations
-    ELEMENTAL = 'elemental', _('Elemental Shaman')
-    ENHANCEMENT = 'enhancement', _('Enhancement Shaman')
-    RESTORATION_SHAMAN = 'restoration_shaman', _('Restoration Shaman')
+    ELEMENTAL = 'elemental', _('Elemental')
+    ENHANCEMENT = 'enhancement', _('Enhancement')
 
     # Paladin Specializations
-    HOLY_PALADIN = 'holy_paladin', _('Holy Paladin')
-    PROTECTION_PALADIN = 'protection_paladin', _('Protection Paladin')
-    RETRIBUTION = 'retribution', _('Retribution Paladin')
+    RETRIBUTION = 'retribution', _('Retribution')
 
     # Death Knight Specializations
-    BLOOD = 'blood', _('Blood Death Knight')
-    FROST_DEATH_KNIGHT = 'frost_death_knight', _('Frost Death Knight')
-    UNHOLY = 'unholy', _('Unholy Death Knight')
+    BLOOD = 'blood', _('Blood')
+    UNHOLY = 'unholy', _('Unholy')
 
     # Monk Specializations
-    BREWMASTER = 'brewmaster', _('Brewmaster Monk')
-    MISTWEAVER = 'mistweaver', _('Mistweaver Monk')
-    WINDWALKER = 'windwalker', _('Windwalker Monk')
+    BREWMASTER = 'brewmaster', _('Brewmaster')
+    MISTWEAVER = 'mistweaver', _('Mistweaver')
+    WINDWALKER = 'windwalker', _('Windwalker')
 
     # Demon Hunter Specializations
-    HAVOC = 'havoc', _('Havoc Demon Hunter')
-    VENGEANCE = 'vengeance', _('Vengeance Demon Hunter')
+    HAVOC = 'havoc', _('Havoc')
+    VENGEANCE = 'vengeance', _('Vengeance')

@@ -104,3 +104,14 @@ class GuildRosterView(APIView):
             return Response([ { 'id': character.id, 'name': character.name, 'characterClass': character.character_class, 'spec': character.spec, 'role': character.role } for character in guild_characters ])
         except Guild.DoesNotExist:
             return Response({'detail': 'Guild not found.'}, status=404)
+        
+class CreateCharacterView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, guild_id):
+        try:
+            guild = Guild.objects.get(id=guild_id)
+            guild_character = GuildCharacter.objects.create(guild=guild, name=request.data['name'], character_class=request.data['character_class'], spec=request.data['spec'], role=request.data['role'])
+            return Response({ 'id': guild_character.id, 'name': guild_character.name, 'characterClass': guild_character.character_class, 'spec': guild_character.spec, 'role': guild_character.role })
+        except Guild.DoesNotExist:
+            return Response({'detail': 'Guild not found.'}, status=404)

@@ -13,11 +13,18 @@ type Character = {
 
 type Class = {
 	readonly color: string
+	readonly readableName: string
 	readonly defaultSpec: string
 	readonly importantAbilities: Ability[]
 	readonly specs: {
 		[key: string]: Spec
 	}
+}
+
+type Spec = {
+	readonly readableName: string
+	readonly role: string
+	readonly importantAbilities: Ability[]
 }
 
 type Ability = {
