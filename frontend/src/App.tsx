@@ -44,7 +44,7 @@ const unauthRouter = createBrowserRouter([
 		element: <Login />,
 		children: [
 			{
-				path: '*',
+				path: '',
 				element: <LoginForm />,
 			},
 			{
@@ -58,6 +58,10 @@ const unauthRouter = createBrowserRouter([
 			{
 				path: '/reset-password/:uid/:token',
 				element: <ResetPassword />,
+			},
+			{
+				path: '*',
+				element: <LoginForm />,
 			},
 		],
 	},
