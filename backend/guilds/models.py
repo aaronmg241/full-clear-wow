@@ -4,6 +4,9 @@ from unique_names_generator import get_random_name
 from unique_names_generator.data import ADJECTIVES, ANIMALS
 import uuid
 
+from .enums import *
+
+
 # Create your models here.
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -68,3 +71,13 @@ class GuildCode(models.Model):
         if not self.code:
             self.code = str(self.code_uuid)[:8]
         super().save(*args, **kwargs)
+    
+class GuildCharacter(models.Model):
+    guild = models.ForeignKey(Guild, on_delete=models.CASCADE)
+    character_class = models.CharField(choices=CharacterClass.choices, max_length=20)
+    spec = models.CharField(choices=CharacterSpec.choices, max_length=60)
+    role = models.CharField(choices=CharacterRole.choices, max_length=60)
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return f"{self.name} - {self.character_class}"

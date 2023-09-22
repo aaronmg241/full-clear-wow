@@ -40,7 +40,6 @@ export default function HeaderNav({}: Props) {
 						</Button>
 					</Menu.Target>
 					<Menu.Dropdown miw={200}>
-						<Menu.Label style={{ maxWidth: 200, textOverflow: 'ellipsis', overflow: 'hidden' }}>{guilds[0].name}</Menu.Label>
 						<Menu.Item
 							icon={<IconShare size={rem(20)} />}
 							onClick={() => {

@@ -93,3 +93,14 @@ class GuildInviteView(APIView):
 
         except GuildCode.DoesNotExist:
             return Response({'detail': 'Access code note found.'}, status=404)
+
+class GuildRosterView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            guild = Guild.objects.get(id=request.GET['guild_id'])
+            guild_characters = GuildCharacter.objects.filter(guild=guild)
+            return Response([ { 'id': character.id, 'name': character.name, 'characterClass': character.character_class, 'spec': character.spec, 'role': character.role } for character in guild_characters ])
+        except Guild.DoesNotExist:
+            return Response({'detail': 'Guild not found.'}, status=404)
