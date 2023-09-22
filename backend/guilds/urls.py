@@ -2,6 +2,8 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-	path('my-guilds/', view=views.UserGuildsView.as_view()),
+	path('', view=views.GuildView.as_view()),
 	path('user/', view=views.UserView.as_view()),
+	path('share/', view=views.GuildCodeView.as_view()),
+	path('invite/', view=views.GuildInviteView.as_view())
 ]

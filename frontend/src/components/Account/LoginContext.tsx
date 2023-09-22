@@ -12,6 +12,7 @@ interface LoginContextType {
 	userDisplayName: string
 	setUserDisplayName: Function
 	guilds: Guild[]
+	setGuilds: Function
 }
 
 interface Guild {
@@ -29,6 +30,7 @@ export const LoginContext = createContext<LoginContextType>({
 	userDisplayName: '',
 	setUserDisplayName: () => {},
 	guilds: [],
+	setGuilds: () => {},
 })
 
 export default function LoginContextProvider({ children }: { children: React.ReactNode }) {
@@ -39,12 +41,11 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 
 	useEffect(() => {
 		const checkAuth = async () => {
-			const result = await axios.post('/dj-rest-auth/token/refresh/', {}, { withCredentials: true })
-
-			if (result.status === 200) {
+			try {
+				await axios.post('/dj-rest-auth/token/refresh/', {}, { withCredentials: true })
 				setLoggedIn(true)
 				loadData()
-			} else {
+			} catch {
 				setLoggedIn(false)
 				setLoadingAccount(false)
 			}
@@ -68,6 +69,7 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 	}
 
 	function loadData() {
+		setLoadingAccount(true)
 		notifications.show({
 			id: 'loading-account',
 			title: 'Loading',
@@ -107,6 +109,7 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 		userDisplayName,
 		setUserDisplayName,
 		guilds,
+		setGuilds,
 	}
 
 	return <LoginContext.Provider value={contextValue}>{children}</LoginContext.Provider>

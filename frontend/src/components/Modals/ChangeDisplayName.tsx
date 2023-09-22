@@ -33,7 +33,7 @@ export default function ChangeDisplayName({ opened, close, userDisplayName, setU
 
 	return (
 		<>
-			<Modal opened={opened} onClose={close}>
+			<Modal opened={opened} onClose={close} withCloseButton={false}>
 				<form
 					onSubmit={form.onSubmit((values) => {
 						const { newDisplayName } = values

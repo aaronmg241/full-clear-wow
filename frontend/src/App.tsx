@@ -11,6 +11,7 @@ import ResetPassword from './components/Account/ResetPasswordConfirmForm'
 import LoginForm from './components/Account/LoginForm'
 import RegisterForm from './components/Account/RegisterForm'
 import ResetPasswordForm from './components/Account/ResetPasswordForm'
+import GuildInvite from './routes/GuildInvite'
 
 const authRouter = createBrowserRouter([
 	{
@@ -30,6 +31,10 @@ const authRouter = createBrowserRouter([
 	{
 		path: '/reset-password/:uid/:token',
 		element: <ResetPassword loggedIn />,
+	},
+	{
+		path: '/guilds/invite/:code',
+		element: <GuildInvite />,
 	},
 ])
 
@@ -55,6 +60,10 @@ const unauthRouter = createBrowserRouter([
 				element: <ResetPassword />,
 			},
 		],
+	},
+	{
+		path: '*',
+		element: <Login />,
 	},
 ])
 
