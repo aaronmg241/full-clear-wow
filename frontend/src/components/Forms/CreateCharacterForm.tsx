@@ -17,7 +17,7 @@ const classData = Object.keys(classes).map((key) => {
 
 export default function CreateCharacterForm({}: Props) {
 	const [opened, { open, close }] = useDisclosure(false)
-	const { addCharacterToRoster } = useGuildStore()
+	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
 	const { currGuild } = useContext(LoginContext)
 	const jwtAxios = useAxiosWithInterceptor()
 

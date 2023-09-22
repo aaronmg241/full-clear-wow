@@ -1,16 +1,21 @@
 import { useContext, useEffect } from 'react'
+import { Flex, SimpleGrid, Paper, Text } from '@mantine/core'
+import { shallow } from 'zustand/shallow'
+
 import { LoginContext } from '../components/Account/LoginContext'
+import { useGuildStore } from '../hooks/useGuildStore'
+import CreateCharacterForm from '../components/Forms/CreateCharacterForm'
 import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
 import CharacterDisplay from '../components/CharacterDisplay'
-import { Flex, SimpleGrid, Paper, Text } from '@mantine/core'
-import CreateCharacterForm from '../components/Forms/CreateCharacterForm'
-import { useGuildStore } from '../hooks/useGuildStore'
 
 type Props = {}
 
 export default function Roster({}: Props) {
 	const { currGuild } = useContext(LoginContext)
-	const { guildRoster, setGuildRoster } = useGuildStore()
+	const { guildRoster, setGuildRoster } = useGuildStore(
+		(state) => ({ guildRoster: state.guildRoster, setGuildRoster: state.setGuildRoster }),
+		shallow
+	)
 	const jwtAxios = useAxiosWithInterceptor()
 
 	useEffect(() => {
@@ -46,7 +51,7 @@ export default function Roster({}: Props) {
 				</Text>
 				<CreateCharacterForm />
 			</Flex>
-			<Paper bg='dark.8' h='fit-content' p='1rem' maw='900px'>
+			<Paper bg='dark.8' h='fit-content' p='1rem'>
 				<SimpleGrid
 					cols={4}
 					breakpoints={[

@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { createWithEqualityFn } from 'zustand/traditional'
 
 interface Store {
 	guildRoster: Character[]
@@ -7,10 +7,13 @@ interface Store {
 	removeCharacterFromRoster: (character: Character) => void
 }
 
-export const useGuildStore = create<Store>()((set) => ({
-	guildRoster: [],
-	setGuildRoster: (roster: Character[]) => set({ guildRoster: roster }),
-	addCharacterToRoster: (character: Character) => set((state) => ({ guildRoster: [...state.guildRoster, character] })),
-	removeCharacterFromRoster: (character: Character) =>
-		set((state) => ({ guildRoster: state.guildRoster.filter((c) => c.id !== character.id) })),
-}))
+export const useGuildStore = createWithEqualityFn<Store>()(
+	(set) => ({
+		guildRoster: [],
+		setGuildRoster: (roster: Character[]) => set({ guildRoster: roster }),
+		addCharacterToRoster: (character: Character) => set((state) => ({ guildRoster: [...state.guildRoster, character] })),
+		removeCharacterFromRoster: (character: Character) =>
+			set((state) => ({ guildRoster: state.guildRoster.filter((c) => c.id !== character.id) })),
+	}),
+	Object.is
+)
