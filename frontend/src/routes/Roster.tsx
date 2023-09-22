@@ -34,6 +34,7 @@ export default function Roster({}: Props) {
 	}
 
 	guildRoster.map((character) => {
+		console.log(character)
 		sortedCharacters[character.role].push(character)
 	})
 
@@ -56,11 +57,9 @@ export default function Roster({}: Props) {
 				>
 					<div>
 						<Text>Tanks</Text>
-						{/* <Flex direction={isSmallScreen ? 'row' : 'column'} gap={10}> */}
 						{sortedCharacters.tank.map((character) => {
 							return <CharacterDisplay key={character.id} character={character} />
 						})}
-						{/* </Flex> */}
 					</div>
 					<div>
 						<Text>Healers</Text>

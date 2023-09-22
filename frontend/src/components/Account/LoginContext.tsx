@@ -35,7 +35,7 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 	const [loadingAccount, setLoadingAccount] = useState(true)
 	const [userDisplayName, setUserDisplayName] = useState<string>('')
 	const [guilds, setGuilds] = useState<Guild[]>([])
-	const [currGuild, setCurrGuild] = useState<Guild | null>(guilds.length > 0 ? guilds[0] : null)
+	const [currGuild, setCurrGuild] = useState<Guild | null>(null)
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -79,8 +79,12 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 			.get('/guilds/user/', { withCredentials: true })
 			.then((response) => {
 				setUserDisplayName(response.data.display_name)
-				setGuilds(response.data.guilds)
-				setCurrGuild(response.data.guilds[0])
+				if (response.data.guilds) {
+					setGuilds(response.data.guilds)
+					if (response.data.guilds.length > 0) {
+						setCurrGuild(response.data.guilds[0])
+					}
+				}
 				notifications.hide('loading-account')
 			})
 			.catch((error) => {
