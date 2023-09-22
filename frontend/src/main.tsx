@@ -25,7 +25,17 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 				<MantineProvider
 					withGlobalStyles
 					withNormalizeCSS
-					theme={{ colorScheme: 'dark', fontFamily: 'Inter Variable, sans-serif' }}
+					theme={{
+						colorScheme: 'dark',
+						fontFamily: 'Inter Variable, sans-serif',
+						components: {
+							Button: {
+								defaultProps: {
+									color: 'indigo.9',
+								},
+							},
+						},
+					}}
 				>
 					<GlobalStyles />
 					<Notifications position='bottom-center' />

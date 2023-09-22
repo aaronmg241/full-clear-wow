@@ -77,7 +77,7 @@ export default function CreateCharacterForm({}: Props) {
 
 	return (
 		<>
-			<Button variant='outline' onClick={open}>
+			<Button variant='outline' onClick={open} color='indigo.4'>
 				Add Character
 			</Button>
 			<Modal opened={opened} onClose={close} withCloseButton={false} style={{ overflow: 'auto' }}>
