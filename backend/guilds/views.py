@@ -1,7 +1,9 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import *
+from .mixins import GuildAuthenticationMixin
 from .serializers import GuildSerializer
 from datetime import datetime, timedelta
 
@@ -16,7 +18,7 @@ class GuildView(APIView):
             guild = Guild.objects.create(name=request.data['name'], created_by=user)
 
             # Create a new UserGuildConnection for the user and the guild
-            UserGuildConnection.objects.create(user=user, guild=guild)
+            UserGuildConnection.objects.create(user=user, guild=guild, role='guild_master')
 
             # Serialize the guild and return the response
             serializer = GuildSerializer(guild)
@@ -57,61 +59,58 @@ class UserView(APIView):
         except User.DoesNotExist:
             return Response({'detail': 'User not found.'}, status=404)
         
-class GuildCodeView(APIView):
+class GuildCodeView(GuildAuthenticationMixin, APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        try:
-            user = request.user
-            guild = Guild.objects.get(id=request.data['guild_id'])
-            guild_code = GuildCode.objects.create(guild=guild, created_by=user)
-            return Response(guild_code.code)
-        except Guild.DoesNotExist:
-            return Response({'detail': 'Guild not found.'}, status=404)
+        user = request.user
+
+        if self.get_user_role(user=request.user, guild=request.data['guild_id']) is None: 
+            return Response({'detail': 'You are not in this guild.'}, status=403)
+
+        guild = get_object_or_404(Guild, id=request.data['guild_id'])
+        guild_code = GuildCode.objects.create(guild=guild, created_by=user)
+        return Response(guild_code.code)
+
         
 class GuildInviteView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        try:
-            user = request.user  
-            guild_code = GuildCode.objects.get(code=request.data['code'])
+        user = request.user 
 
-            if guild_code.created_at.replace(tzinfo=None) < datetime.utcnow() - timedelta(days=1):
-                return Response({'detail': 'This link has expired.'}, status=400)
+        guild_code = get_object_or_404(GuildCode, code=request.data['code'])
 
-            guild = guild_code.guild
+        if guild_code.created_at.replace(tzinfo=None) < datetime.utcnow() - timedelta(days=1):
+            return Response({'detail': 'This link has expired.'}, status=400)
 
-            current_connection = UserGuildConnection.objects.filter(user=user, guild=guild)
+        guild = guild_code.guild
 
-            if current_connection.exists():
-                return Response({'detail': 'You are already in this guild.'}, status=400)
-            
+        current_connection = UserGuildConnection.objects.filter(user=user, guild=guild)
 
-            UserGuildConnection.objects.create(user=user, guild=guild)
-            return Response(GuildSerializer(guild).data, status=200)
+        if current_connection.exists():
+            return Response({'detail': 'You are already in this guild.'}, status=400)
+        
 
-        except GuildCode.DoesNotExist:
-            return Response({'detail': 'Access code note found.'}, status=404)
+        UserGuildConnection.objects.create(user=user, guild=guild, role='officer')
+        return Response(GuildSerializer(guild).data, status=200)
 
 class GuildRosterView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        try:
-            guild = Guild.objects.get(id=request.GET['guild_id'])
-            guild_characters = GuildCharacter.objects.filter(guild=guild)
-            return Response([ { 'id': character.id, 'name': character.name, 'characterClass': character.character_class, 'spec': character.spec, 'role': character.role } for character in guild_characters ])
-        except Guild.DoesNotExist:
-            return Response({'detail': 'Guild not found.'}, status=404)
-        
-class CreateCharacterView(APIView):
+        guild = get_object_or_404(Guild, id=request.GET['guild_id'])
+        guild_characters = GuildCharacter.objects.filter(guild=guild)
+        return Response([ { 'id': character.id, 'name': character.name, 'characterClass': character.character_class, 'spec': character.spec, 'role': character.role } for character in guild_characters ])
+    
+class CreateCharacterView(GuildAuthenticationMixin, APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, guild_id):
-        try:
-            guild = Guild.objects.get(id=guild_id)
+        if self.get_user_role(user=request.user, guild=guild_id) is not None:
+            guild = get_object_or_404(Guild, id=guild_id)
             guild_character = GuildCharacter.objects.create(guild=guild, name=request.data['name'], character_class=request.data['character_class'], spec=request.data['spec'], role=request.data['role'])
             return Response({ 'id': guild_character.id, 'name': guild_character.name, 'characterClass': guild_character.character_class, 'spec': guild_character.spec, 'role': guild_character.role })
-        except Guild.DoesNotExist:
-            return Response({'detail': 'Guild not found.'}, status=404)
+        else:
+            return Response({'detail': 'You are not in this guild.'}, status=403)
+        

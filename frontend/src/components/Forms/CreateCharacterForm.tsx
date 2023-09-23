@@ -1,5 +1,5 @@
 import { forwardRef, useState } from 'react'
-import { Modal, TextInput, Flex, Select, Button, Text } from '@mantine/core'
+import { Modal, TextInput, Flex, Select, Button, Text, rem } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useDisclosure } from '@mantine/hooks'
 
@@ -7,6 +7,7 @@ import { classes } from '../../types/Classes'
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
 import { notifications } from '@mantine/notifications'
 import { useGuildStore } from '../../hooks/useGuildStore'
+import { IconPlus } from '@tabler/icons-react'
 
 type Props = {}
 
@@ -76,7 +77,7 @@ export default function CreateCharacterForm({}: Props) {
 
 	return (
 		<>
-			<Button variant='outline' onClick={open} color='indigo.4'>
+			<Button variant='outline' onClick={open} color='indigo.4' leftIcon={<IconPlus size={rem(20)} />}>
 				Add Character
 			</Button>
 			<Modal opened={opened} onClose={close} style={{ overflow: 'auto' }}>

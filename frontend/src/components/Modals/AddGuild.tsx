@@ -22,7 +22,7 @@ export default function AddGuild({ opened, close }: Props) {
 		validate: {
 			newGuildName: (value) => {
 				if (value.length === 0) return 'Display name is required.'
-				if (value.length < 5) return 'Name must be at least 5 characters long.'
+				if (value.length < 2) return 'Name must be at least 2 characters long.'
 				if (value.length > 20) return 'Display name must be less than 20 characters long.'
 			},
 		},

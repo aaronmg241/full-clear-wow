@@ -30,6 +30,15 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 						fontFamily: 'Inter Variable, sans-serif',
 						components: {
 							Button: {
+								variants: {
+									outline: (theme) => ({
+										root: {
+											':hover': {
+												background: theme.colors.dark[5],
+											},
+										},
+									}),
+								},
 								defaultProps: {
 									color: 'indigo.9',
 								},

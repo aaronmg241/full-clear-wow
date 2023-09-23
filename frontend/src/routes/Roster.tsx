@@ -37,7 +37,6 @@ export default function Roster({}: Props) {
 	}
 
 	guildRoster.map((character) => {
-		console.log(character)
 		sortedCharacters[character.role].push(character)
 	})
 

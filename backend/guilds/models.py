@@ -30,7 +30,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
-    display_name = models.CharField(max_length=30, blank=True, null=True, default=get_random_name(combo=[ADJECTIVES, ANIMALS], separator=''))
+    display_name = models.CharField(max_length=30, blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -38,7 +38,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     def __str__(self):
-	    return self.email
+        return self.email
+
+    def save(self, *args, **kwargs):
+        if not self.display_name:
+            self.display_name = get_random_name(combo=[ADJECTIVES, ANIMALS], separator="")
+        super().save(*args, **kwargs)
 	
 class Guild(models.Model):
     id = models.AutoField(primary_key=True)
@@ -56,6 +61,9 @@ class UserGuildConnection(models.Model):
 
     def __str__(self):
         return self.user.email + "-" + self.guild.name + "-" + self.role
+    
+    class Meta:
+        unique_together = ('user', 'guild')
 
 class GuildCode(models.Model):
     guild = models.ForeignKey(Guild, on_delete=models.CASCADE)

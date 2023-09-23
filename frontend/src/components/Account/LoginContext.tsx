@@ -31,6 +31,7 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 	const [userDisplayName, setUserDisplayName] = useState<string>('')
 	const setCurrGuild = useGuildStore((state) => state.setCurrGuild)
 	const setGuilds = useGuildStore((state) => state.setGuilds)
+	const clearStore = useGuildStore((state) => state.clearStore)
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -56,6 +57,7 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 			console.log(error)
 		})
 
+		clearStore()
 		setLoggedIn(false)
 		setUserDisplayName('')
 		setGuilds([])
