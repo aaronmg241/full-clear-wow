@@ -12,8 +12,6 @@ interface LoginContextType {
 	logout: Function
 	userDisplayName: string
 	setUserDisplayName: Function
-	guilds: Guild[]
-	setGuilds: Function
 }
 
 // Create an LoginContext
@@ -25,16 +23,14 @@ export const LoginContext = createContext<LoginContextType>({
 	logout: () => {},
 	userDisplayName: '',
 	setUserDisplayName: () => {},
-	guilds: [],
-	setGuilds: () => {},
 })
 
 export default function LoginContextProvider({ children }: { children: React.ReactNode }) {
 	const [loggedIn, setLoggedIn] = useState(false)
 	const [loadingAccount, setLoadingAccount] = useState(true)
 	const [userDisplayName, setUserDisplayName] = useState<string>('')
-	const [guilds, setGuilds] = useState<Guild[]>([])
 	const setCurrGuild = useGuildStore((state) => state.setCurrGuild)
+	const setGuilds = useGuildStore((state) => state.setGuilds)
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -110,8 +106,6 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 		logout,
 		userDisplayName,
 		setUserDisplayName,
-		guilds,
-		setGuilds,
 	}
 
 	return <LoginContext.Provider value={contextValue}>{children}</LoginContext.Provider>

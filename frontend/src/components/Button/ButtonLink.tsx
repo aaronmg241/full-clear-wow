@@ -7,7 +7,7 @@ interface ButtonProps {
 
 const useStyles = createStyles((theme) => ({
 	registerLink: {
-		color: theme.colors.blue[6],
+		color: theme.colors.indigo[5],
 		fontWeight: 700,
 
 		':hover': {

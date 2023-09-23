@@ -79,7 +79,7 @@ export default function CreateCharacterForm({}: Props) {
 			<Button variant='outline' onClick={open} color='indigo.4'>
 				Add Character
 			</Button>
-			<Modal opened={opened} onClose={close} withCloseButton={false} style={{ overflow: 'auto' }}>
+			<Modal opened={opened} onClose={close} style={{ overflow: 'auto' }}>
 				<form onSubmit={form.onSubmit(handleSubmit)}>
 					<TextInput label='Name' {...form.getInputProps('name')}></TextInput>
 					<Flex gap='1rem' mt='1rem'>

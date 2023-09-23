@@ -1,6 +1,8 @@
 import { createWithEqualityFn } from 'zustand/traditional'
 
 interface Store {
+	guilds: Guild[]
+	setGuilds: (guilds: Guild[]) => void
 	currGuild: Guild | null
 	setCurrGuild: (guild: Guild | null) => void
 	guildRoster: Character[]
@@ -11,6 +13,8 @@ interface Store {
 
 export const useGuildStore = createWithEqualityFn<Store>()(
 	(set) => ({
+		guilds: [],
+		setGuilds: (guilds: Guild[]) => set({ guilds: guilds }),
 		currGuild: null,
 		setCurrGuild: (guild: Guild | null) => set({ currGuild: guild }),
 		guildRoster: [],

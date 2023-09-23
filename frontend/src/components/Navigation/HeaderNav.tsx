@@ -8,19 +8,25 @@ import MobileNav from './MobileNav'
 import ChangeDisplayName from '../Modals/ChangeDisplayName'
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
 import { notifications } from '@mantine/notifications'
+import AddGuild from '../Modals/AddGuild'
+import { useGuildStore } from '../../hooks/useGuildStore'
 
 type Props = {}
 
 export default function HeaderNav({}: Props) {
 	const jwtAxios = useAxiosWithInterceptor()
-	const { logout, userDisplayName, setUserDisplayName, guilds } = useContext(LoginContext)
-	const [opened, { open, close }] = useDisclosure(false)
+	const { logout, userDisplayName, setUserDisplayName } = useContext(LoginContext)
+	const [changeNameModalOpened, { open: openChangeNameModal, close: closeChangeNameModal }] = useDisclosure(false)
+	const [newGuildModalOpened, { open: openNewGuildModal, close: closeNewGuildModal }] = useDisclosure(false)
 	const isSmallScreen = useMediaQuery('(max-width: 768px)')
+	const guilds = useGuildStore((state) => state.guilds)
+	const currGuild = useGuildStore((state) => state.currGuild)
+	const setCurrGuild = useGuildStore((state) => state.setCurrGuild)
 
 	return (
 		<Flex w='min(100%, 88em)' h='50px' p='1rem 2rem 0 2rem' justify='flex-end' align='center' gap='4px'>
 			{/* Guild Menu */}
-			{guilds.length > 0 && (
+			{guilds.length > 0 && currGuild && (
 				<Menu shadow='md' position='bottom-end' transitionProps={{ transition: 'rotate-right', duration: 150 }}>
 					<Menu.Target>
 						<Button
@@ -36,7 +42,7 @@ export default function HeaderNav({}: Props) {
 								},
 							})}
 						>
-							{guilds[0].name}
+							{currGuild.name}
 						</Button>
 					</Menu.Target>
 					<Menu.Dropdown miw={200}>
@@ -72,7 +78,18 @@ export default function HeaderNav({}: Props) {
 						</Menu.Item>
 						<Menu.Item icon={<IconSettings size={rem(20)} />}>Guild Settings</Menu.Item>
 						<Menu.Label mt='1rem'>Your Other Guilds</Menu.Label>
-						<Menu.Item icon={<IconPlus size={rem(20)} />}>Add Guild</Menu.Item>
+						{guilds
+							.filter((guild) => guild.id !== currGuild.id)
+							.map((guild) => {
+								return (
+									<Menu.Item key={guild.id} onClick={() => setCurrGuild(guild)}>
+										{guild.name}
+									</Menu.Item>
+								)
+							})}
+						<Menu.Item icon={<IconPlus size={rem(20)} />} mt='1rem' onClick={openNewGuildModal}>
+							Add Guild
+						</Menu.Item>
 					</Menu.Dropdown>
 				</Menu>
 			)}
@@ -97,7 +114,7 @@ export default function HeaderNav({}: Props) {
 				</Menu.Target>
 				<Menu.Dropdown>
 					<Menu.Label>Account</Menu.Label>
-					<Menu.Item onClick={open} icon={<IconEdit size={rem(20)} />}>
+					<Menu.Item onClick={openChangeNameModal} icon={<IconEdit size={rem(20)} />}>
 						Change Display Name
 					</Menu.Item>
 					<Menu.Item
@@ -112,7 +129,13 @@ export default function HeaderNav({}: Props) {
 			{isSmallScreen && <MobileNav />}
 
 			{/* Modals */}
-			<ChangeDisplayName opened={opened} close={close} userDisplayName={userDisplayName} setUserDisplayName={setUserDisplayName} />
+			<ChangeDisplayName
+				opened={changeNameModalOpened}
+				close={closeChangeNameModal}
+				userDisplayName={userDisplayName}
+				setUserDisplayName={setUserDisplayName}
+			/>
+			<AddGuild opened={newGuildModalOpened} close={closeNewGuildModal} />
 		</Flex>
 	)
 }

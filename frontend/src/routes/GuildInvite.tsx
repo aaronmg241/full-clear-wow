@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import { Flex, Loader, Text } from '@mantine/core'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IconExclamationCircle, IconCircleCheck } from '@tabler/icons-react'
@@ -6,7 +6,6 @@ import { IconExclamationCircle, IconCircleCheck } from '@tabler/icons-react'
 import PageFormContainer from '../components/Containers/PageFormContainer'
 import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
 import { ButtonLink } from '../components/Button/ButtonLink'
-import { LoginContext } from '../components/Account/LoginContext'
 import { useGuildStore } from '../hooks/useGuildStore'
 
 type Props = {}
@@ -14,7 +13,6 @@ type Props = {}
 let requestBeingSent = false
 
 export default function GuildInvite({}: Props) {
-	const { setGuilds } = useContext(LoginContext)
 	const { code } = useParams()
 	const navigate = useNavigate()
 	const [error, setError] = useState('' as string)
@@ -22,6 +20,8 @@ export default function GuildInvite({}: Props) {
 	const jwtAxios = useAxiosWithInterceptor()
 	const currGuild = useGuildStore((state) => state.currGuild)
 	const setCurrGuild = useGuildStore((state) => state.setCurrGuild)
+	const setGuilds = useGuildStore((state) => state.setGuilds)
+	const guilds = useGuildStore((state) => state.guilds)
 
 	useEffect(() => {
 		async function loadData() {
@@ -32,7 +32,7 @@ export default function GuildInvite({}: Props) {
 				const response = await jwtAxios.post('guilds/invite/', { code })
 
 				setResponse('You have been added to the guild!')
-				setGuilds((guilds: Guild[]) => [...guilds, response.data])
+				setGuilds([...guilds, response.data])
 
 				if (!currGuild) {
 					setCurrGuild(response.data)
