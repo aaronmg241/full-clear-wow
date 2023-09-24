@@ -51,7 +51,6 @@ export default function Roster({}: Props) {
 
 	useEffect(() => {
 		if (!currGuild) return
-
 		jwtAxios
 			.get('guilds/roster/', { params: { guild_id: currGuild.id } })
 			.then((response) => {
@@ -61,6 +60,13 @@ export default function Roster({}: Props) {
 				console.log(error)
 			})
 	}, [currGuild])
+
+	// useEffect(() => {
+	// 	if (!lastMessage) return
+	// 	console.log(lastMessage)
+	// 	console.log(JSON.parse(lastMessage?.data))
+	// 	addCharacterToRoster(JSON.parse(lastMessage?.data))
+	// }, [lastMessage])
 
 	const groupedCharacters: { [key: string]: Character[] } = {
 		tank: [],

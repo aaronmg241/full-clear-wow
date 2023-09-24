@@ -19,6 +19,7 @@ from django.urls import path, include
 from .views import GoogleLogin
 from dj_rest_auth.registration.views import VerifyEmailView
 from dj_rest_auth.views import PasswordResetConfirmView, PasswordResetView
+from guilds.consumers import GuildRosterConsumer
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,5 +32,9 @@ urlpatterns = [
             name='password_reset_confirm'),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('guilds/', include('guilds.urls')),
+]
+
+websocket_urlpatterns = [
+	path('ws/guilds/<int:guild_id>/roster/', GuildRosterConsumer.as_asgi()),
 ]
 

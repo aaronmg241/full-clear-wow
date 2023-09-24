@@ -8,7 +8,7 @@ interface Store {
 	guildRoster: Character[]
 	setGuildRoster: (roster: Character[]) => void
 	addCharacterToRoster: (character: Character) => void
-	removeCharacterFromRoster: (character: Character) => void
+	removeCharacterFromRoster: (id: string) => void
 
 	clearStore: () => void
 }
@@ -27,8 +27,7 @@ export const useGuildStore = createWithEqualityFn<Store>()(
 		setGuildRoster: (roster: Character[]) => set({ guildRoster: roster }),
 		addCharacterToRoster: (character: Character) =>
 			set((state) => ({ guildRoster: [...state.guildRoster.filter((c) => c.id !== character.id), character] })),
-		removeCharacterFromRoster: (character: Character) =>
-			set((state) => ({ guildRoster: state.guildRoster.filter((c) => c.id !== character.id) })),
+		removeCharacterFromRoster: (id: string) => set((state) => ({ guildRoster: state.guildRoster.filter((c) => c.id !== id) })),
 		clearStore: () => set(initialState),
 	}),
 	Object.is

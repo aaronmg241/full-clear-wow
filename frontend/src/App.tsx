@@ -12,6 +12,7 @@ import LoginForm from './components/Account/LoginForm'
 import RegisterForm from './components/Account/RegisterForm'
 import ResetPasswordForm from './components/Account/ResetPasswordForm'
 import GuildInvite from './routes/GuildInvite'
+import RosterContextProvider from './components/Contexts/RosterContext'
 
 const authRouter = createBrowserRouter([
 	{
@@ -20,7 +21,11 @@ const authRouter = createBrowserRouter([
 		children: [
 			{
 				path: '',
-				element: <Roster />,
+				element: (
+					<RosterContextProvider>
+						<Roster />
+					</RosterContextProvider>
+				),
 			},
 			{
 				path: 'cooldowns',

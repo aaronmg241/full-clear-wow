@@ -1,41 +1,32 @@
+import { useContext } from 'react'
 import { Menu, Text, UnstyledButton, rem } from '@mantine/core'
 import CharacterDisplay from './CharacterDisplay'
 import { IconX, IconEdit } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 
 import { classes } from '../types/Classes'
-import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
 import { useGuildStore } from '../hooks/useGuildStore'
-import { notifications } from '@mantine/notifications'
 import EditCharacter from './Modals/EditCharacter'
 import { useDisclosure } from '@mantine/hooks'
+import { RosterContext } from './Contexts/RosterContext'
 
 type Props = {
 	character: Character
 }
 
 export default function GuildRosterCharacter({ character }: Props) {
-	const jwtAxios = useAxiosWithInterceptor()
 	const currGuild = useGuildStore((state) => state.currGuild)
-	const removeCharacterFromRoster = useGuildStore((state) => state.removeCharacterFromRoster)
-	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
+	const { sendRosterUpdate } = useContext(RosterContext)
 
 	const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure()
 
 	const handleRemove = () => {
 		if (!currGuild) return
 
-		jwtAxios.delete(`guilds/${currGuild.id}/characters/${character.id}/`).catch((error) => {
-			console.log(error)
-			addCharacterToRoster(character)
-			notifications.show({
-				title: 'Error',
-				message: 'There was an error deleting the user.',
-				color: 'red',
-				autoClose: 5000,
-			})
+		sendRosterUpdate({
+			...character,
+			shouldDelete: true,
 		})
-		removeCharacterFromRoster(character)
 	}
 
 	return (

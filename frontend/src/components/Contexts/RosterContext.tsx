@@ -1,0 +1,54 @@
+import React, { createContext } from 'react'
+import { useGuildStore } from '../../hooks/useGuildStore'
+
+import useWebSocket from 'react-use-websocket'
+
+type RosterUpdate = {
+	name: string
+	characterClass: string
+	spec: string
+	role: string
+	id?: string
+	shouldDelete?: boolean
+}
+
+// Define the types for the context
+interface RosterContextType {
+	sendRosterUpdate: (rosterUpdate: RosterUpdate) => void
+}
+
+// Create an RosterContext
+export const RosterContext = createContext<RosterContextType>({
+	sendRosterUpdate: () => {},
+})
+
+export default function RosterContextProvider({ children }: { children: React.ReactNode }) {
+	const currGuild = useGuildStore((state) => state.currGuild)
+	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
+	const removeCharacterFromRoster = useGuildStore((state) => state.removeCharacterFromRoster)
+
+	const socketUrl = currGuild ? `ws://localhost:8000/ws/guilds/${currGuild.id}/roster/` : ''
+
+	const { sendJsonMessage } = useWebSocket(socketUrl, {
+		onOpen: () => console.log('opened'),
+		onClose: () => console.log('closed'),
+		onError: (e) => console.log('websocket error', e),
+		onMessage: (e) => {
+			const data = JSON.parse(e.data)
+
+			if (data.shouldDelete) {
+				removeCharacterFromRoster(data.id)
+				return
+			}
+
+			addCharacterToRoster(data)
+		},
+	})
+
+	// Provide the loggedIn and loadingAccount states to the components
+	const contextValue: RosterContextType = {
+		sendRosterUpdate: sendJsonMessage,
+	}
+
+	return <RosterContext.Provider value={contextValue}>{children}</RosterContext.Provider>
+}
