@@ -4,11 +4,11 @@ import { useGuildStore } from '../../hooks/useGuildStore'
 import useWebSocket from 'react-use-websocket'
 
 type RosterUpdate = {
-	name: string
-	characterClass: string
-	spec: string
-	role: string
-	id?: string
+	name?: string
+	characterClass?: string
+	spec?: string
+	role?: string
+	id: string
 	shouldDelete?: boolean
 }
 

@@ -10,28 +10,12 @@ class GuildRosterConsumer(JsonWebsocketConsumer):
 		self.room_name = f"guild_roster_{self.guild_id}"
 		# Called on connection.
 		# To accept the connection call:
-		self.accept()
 		async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)
+		self.accept()
 
 	def receive_json(self, content):
 
-		# Called with either text_data or bytes_data for each frame
-		if 'id' not in content:
-			character = GuildCharacter.objects.create(name=content['name'], character_class=content['characterClass'], spec=content['spec'], role=content['role'], guild_id=self.guild_id)
-			async_to_sync(self.channel_layer.group_send)(
-				self.room_name,
-				{
-					'type': 'roster_change',
-					'characterClass': content['characterClass'],
-					'name': content['name'],
-					'spec': content['spec'],
-					'role': content['role'],
-					'id': character.id,
-				}
-			)
-		elif 'shouldDelete' in content:
-			character = GuildCharacter.objects.get(id=content['id'])
-			character.delete()
+		if 'shouldDelete' in content:
 			async_to_sync(self.channel_layer.group_send)(
 				self.room_name,
 				{
@@ -40,13 +24,7 @@ class GuildRosterConsumer(JsonWebsocketConsumer):
 					'shouldDelete': True
 				}
 			)
-		else:
-			character = GuildCharacter.objects.get(id=content['id'])
-			character.name = content['name']
-			character.character_class = content['characterClass']
-			character.spec = content['spec']
-			character.role = content['role']
-			character.save()
+		else: 
 			async_to_sync(self.channel_layer.group_send)(
 				self.room_name,
 				{

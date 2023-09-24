@@ -5,7 +5,9 @@ import { IconX, IconEdit } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 
 import { classes } from '../types/Classes'
+import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
 import { useGuildStore } from '../hooks/useGuildStore'
+import { notifications } from '@mantine/notifications'
 import EditCharacter from './Modals/EditCharacter'
 import { useDisclosure } from '@mantine/hooks'
 import { RosterContext } from './Contexts/RosterContext'
@@ -15,7 +17,10 @@ type Props = {
 }
 
 export default function GuildRosterCharacter({ character }: Props) {
+	const jwtAxios = useAxiosWithInterceptor()
 	const currGuild = useGuildStore((state) => state.currGuild)
+	const removeCharacterFromRoster = useGuildStore((state) => state.removeCharacterFromRoster)
+	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
 	const { sendRosterUpdate } = useContext(RosterContext)
 
 	const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure()
@@ -23,10 +28,28 @@ export default function GuildRosterCharacter({ character }: Props) {
 	const handleRemove = () => {
 		if (!currGuild) return
 
-		sendRosterUpdate({
-			...character,
-			shouldDelete: true,
-		})
+		// Optimistaclly update state
+		removeCharacterFromRoster(character.id)
+
+		jwtAxios
+			.delete(`guilds/${currGuild.id}/characters/${character.id}/`)
+			.then(() => {
+				sendRosterUpdate({
+					id: character.id,
+					shouldDelete: true,
+				})
+			})
+			.catch((error) => {
+				console.log(error)
+				// Revert optimistic update
+				addCharacterToRoster(character)
+				notifications.show({
+					title: 'Error',
+					message: 'There was an error deleting the user.',
+					color: 'red',
+					autoClose: 5000,
+				})
+			})
 	}
 
 	return (

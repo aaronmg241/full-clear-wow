@@ -1,11 +1,13 @@
 import { useContext } from 'react'
 import { Modal, TextInput, Button } from '@mantine/core'
 import { useForm } from '@mantine/form'
+import { notifications } from '@mantine/notifications'
 
 import { classes } from '../../types/Classes'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import ClassSpecForm from '../Forms/ClassSpecForm'
 import { RosterContext } from '../Contexts/RosterContext'
+import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
 
 type Props = {
 	character: Character
@@ -15,7 +17,9 @@ type Props = {
 
 export default function EditCharacter({ character, opened, close }: Props) {
 	const currGuild = useGuildStore((state) => state.currGuild)
+	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
 	const { sendRosterUpdate } = useContext(RosterContext)
+	const jwtAxios = useAxiosWithInterceptor()
 
 	const form = useForm({
 		initialValues: {
@@ -47,13 +51,28 @@ export default function EditCharacter({ character, opened, close }: Props) {
 
 		const role = classes[characterClass].specs[spec].role
 
-		sendRosterUpdate({
-			name,
-			characterClass,
-			spec,
-			role,
-			id: character.id,
-		})
+		// Optimistically update state
+		addCharacterToRoster({ id: character.id, name, characterClass, spec, role })
+
+		jwtAxios
+			.put(`/guilds/${currGuild.id}/characters/${character.id}/`, { name, character_class: characterClass, spec, role })
+			.then((response) => {
+				sendRosterUpdate({
+					...response.data,
+					characterClass: response.data.character_class,
+				})
+			})
+			.catch((error) => {
+				console.log(error)
+				// Revert optimistic update if there was an error. Character value will not be updated yet so we can just use what was passed in
+				addCharacterToRoster({ ...character })
+				notifications.show({
+					title: 'Error',
+					message: 'There was an error editing the character.',
+					color: 'red',
+					autoClose: 5000,
+				})
+			})
 	}
 
 	return (

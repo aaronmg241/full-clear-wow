@@ -2,12 +2,14 @@ import { useContext } from 'react'
 import { Modal, TextInput, Button, rem } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useDisclosure } from '@mantine/hooks'
+import { notifications } from '@mantine/notifications'
 
 import { classes } from '../../types/Classes'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import { IconPlus } from '@tabler/icons-react'
 import ClassSpecForm from '../Forms/ClassSpecForm'
 import { RosterContext } from '../Contexts/RosterContext'
+import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
 
 type Props = {}
 
@@ -15,6 +17,8 @@ export default function CreateCharacter({}: Props) {
 	const [opened, { open, close }] = useDisclosure(false)
 	const { sendRosterUpdate } = useContext(RosterContext)
 	const currGuild = useGuildStore((state) => state.currGuild)
+	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
+	const jwtAxios = useAxiosWithInterceptor()
 
 	const form = useForm({
 		initialValues: {
@@ -46,27 +50,28 @@ export default function CreateCharacter({}: Props) {
 
 		const role = classes[characterClass].specs[spec].role
 
-		sendRosterUpdate({
-			name,
-			characterClass,
-			spec,
-			role,
-		})
+		// Here we could optimistically update state similar to the edit and delete functions.
+		// However, we would need to generate a random id for the character so that we could remove it.
+		// We would have to remove the character from the roster if the request fails or if the request succeeds.
+		// I think we can not optimistically update it for now.
 
-		// jwtAxios
-		// 	.post(`/guilds/${currGuild.id}/characters/`, { name, character_class: characterClass, spec, role })
-		// 	.then((response) => {
-		// 		addCharacterToRoster(response.data)
-		// 	})
-		// 	.catch((error) => {
-		// 		console.log(error)
-		// 		notifications.show({
-		// 			title: 'Error',
-		// 			message: 'There was an error adding the character.',
-		// 			color: 'red',
-		// 			autoClose: 5000,
-		// 		})
-		// 	})
+		jwtAxios
+			.post(`/guilds/${currGuild.id}/characters/`, { name, character_class: characterClass, spec, role })
+			.then((response) => {
+				addCharacterToRoster({ ...response.data })
+				sendRosterUpdate({
+					...response.data,
+				})
+			})
+			.catch((error) => {
+				console.log(error)
+				notifications.show({
+					title: 'Error',
+					message: 'There was an error adding the character.',
+					color: 'red',
+					autoClose: 5000,
+				})
+			})
 	}
 
 	return (
