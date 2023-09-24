@@ -82,8 +82,8 @@ class GuildCode(models.Model):
     
 class GuildCharacter(models.Model):
     guild = models.ForeignKey(Guild, on_delete=models.CASCADE)
-    character_class = models.CharField(choices=CharacterClass.choices, max_length=20)
-    spec = models.CharField(choices=CharacterSpec.choices, max_length=20)
+    character_class = models.CharField(choices=CharacterClass.choices, max_length=30)
+    spec = models.CharField(choices=CharacterSpec.choices, max_length=30)
     role = models.CharField(choices=CharacterRole.choices, max_length=16)
     name = models.CharField(max_length=12)
 
