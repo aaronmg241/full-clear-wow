@@ -28,7 +28,7 @@ export default function RosterContextProvider({ children }: { children: React.Re
 	const removeCharacterFromRoster = useGuildStore((state) => state.removeCharacterFromRoster)
 
 	// wss://wordle-with-friends-backend-production.up.railway.app/
-	const socketUrl = currGuild ? `${import.meta.env.VITE_SERVER_URL}/ws/guilds/${currGuild.id}/roster/` : ''
+	const socketUrl = currGuild ? `${import.meta.env.VITE_WEBSOCKET_URL}/ws/guilds/${currGuild.id}/roster/` : ''
 
 	const { sendJsonMessage } = useWebSocket(socketUrl, {
 		onOpen: () => console.log('opened'),
