@@ -14,6 +14,11 @@ class GuildView(APIView):
         try:
             user = request.user  # Retrieve the user object from the authenticated request
 
+            current_guilds = UserGuildConnection.objects.filter(user=user)
+
+            if len(current_guilds) >= 5:
+                return Response({'detail': 'You cannot be apart of more than 5 guilds.'}, status=400)
+
             # Create a new guild with the given name
             guild = Guild.objects.create(name=request.data['name'], created_by=user)
 
@@ -91,6 +96,9 @@ class GuildInviteView(APIView):
         if current_connection.exists():
             return Response({'detail': 'You are already in this guild.'}, status=400)
         
+        current_guilds = UserGuildConnection.objects.filter(user=user)
+        if len(current_guilds) >= 5:
+                return Response({'detail': 'You cannot be apart of more than 5 guilds.'}, status=400)
 
         UserGuildConnection.objects.create(user=user, guild=guild, role='officer')
         return Response(GuildSerializer(guild).data, status=200)
