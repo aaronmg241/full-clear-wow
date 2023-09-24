@@ -1,4 +1,4 @@
-import { Menu, Button, rem } from '@mantine/core'
+import { Menu, Button, rem, Text } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { useDisclosure } from '@mantine/hooks'
 import { IconChevronDown, IconShare, IconPlus, IconSettings } from '@tabler/icons-react'
@@ -36,7 +36,9 @@ export default function GuildMenu({}: Props) {
 							},
 						})}
 					>
-						{currGuild.name}
+						<Text maw='20vw' style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', whiteSpace: 'nowrap' }}>
+							{currGuild.name}
+						</Text>
 					</Button>
 				</Menu.Target>
 				<Menu.Dropdown miw={200}>

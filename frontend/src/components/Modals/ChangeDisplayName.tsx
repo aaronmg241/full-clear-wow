@@ -56,7 +56,7 @@ export default function ChangeDisplayName({ opened, close, userDisplayName, setU
 						})
 					})}
 				>
-					<TextInput label='New Display Name' size='md' {...form.getInputProps('newDisplayName')} />
+					<TextInput label='New Display Name' size='md' {...form.getInputProps('newDisplayName')} data-autofocus />
 					<Button mt='1rem' ml='auto' display='block' type='submit'>
 						Change Display Name
 					</Button>

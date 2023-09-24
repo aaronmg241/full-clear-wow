@@ -1,19 +1,52 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Flex, SimpleGrid, Paper, Text } from '@mantine/core'
 import { shallow } from 'zustand/shallow'
 
 import { useGuildStore } from '../hooks/useGuildStore'
-import CreateCharacterForm from '../components/Forms/CreateCharacterForm'
+import CreateCharacterForm from '../components/Modals/CreateCharacter'
 import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
-import CharacterDisplay from '../components/CharacterDisplay'
+import GuildRosterCharacter from '../components/GuildRosterCharacter'
 
 type Props = {}
+
+const roles = [
+	{ key: 'tank', label: 'Tanks' },
+	{ key: 'healer', label: 'Healers' },
+	{ key: 'melee', label: 'Melee DPS' },
+	{ key: 'ranged', label: 'Ranged DPS' },
+]
+
+function sortRoster(guildRoster: Character[]) {
+	// Define a custom sorting function
+	function customSort(a: Character, b: Character) {
+		// Compare by class
+		const classComparison = a.characterClass.localeCompare(b.characterClass)
+
+		// If classes are the same, compare by spec
+		if (classComparison === 0) {
+			const specComparison = a.spec.localeCompare(b.spec)
+
+			// If specs are the same, compare by name
+			if (specComparison === 0) {
+				return a.name.localeCompare(b.name)
+			}
+
+			return specComparison
+		}
+
+		return classComparison
+	}
+
+	// Sort the guildRoster array using the custom sorting function
+	return guildRoster.sort(customSort)
+}
 
 export default function Roster({}: Props) {
 	const { guildRoster, setGuildRoster, currGuild } = useGuildStore(
 		(state) => ({ guildRoster: state.guildRoster, setGuildRoster: state.setGuildRoster, currGuild: state.currGuild }),
 		shallow
 	)
+	const sortedGuildRoster = useMemo<Character[]>(() => sortRoster(guildRoster), [guildRoster])
 	const jwtAxios = useAxiosWithInterceptor()
 
 	useEffect(() => {
@@ -29,15 +62,15 @@ export default function Roster({}: Props) {
 			})
 	}, [currGuild])
 
-	const sortedCharacters: { [key: string]: Character[] } = {
+	const groupedCharacters: { [key: string]: Character[] } = {
 		tank: [],
 		healer: [],
 		melee: [],
 		ranged: [],
 	}
 
-	guildRoster.map((character) => {
-		sortedCharacters[character.role].push(character)
+	sortedGuildRoster.map((character) => {
+		groupedCharacters[character.role].push(character)
 	})
 
 	return (
@@ -49,38 +82,17 @@ export default function Roster({}: Props) {
 				<CreateCharacterForm />
 			</Flex>
 			<Paper bg='dark.8' h='fit-content' p='1rem'>
-				<SimpleGrid
-					cols={4}
-					breakpoints={[
-						{ maxWidth: 'md', cols: 2 },
-						{ maxWidth: 'xs', cols: 1 },
-					]}
-					w='100%'
-				>
-					<div>
-						<Text>Tanks</Text>
-						{sortedCharacters.tank.map((character) => {
-							return <CharacterDisplay key={character.id} character={character} />
-						})}
-					</div>
-					<div>
-						<Text>Healers</Text>
-						{sortedCharacters.healer.map((character) => {
-							return <CharacterDisplay key={character.id} character={character} />
-						})}
-					</div>
-					<div>
-						<Text>Melee DPS</Text>
-						{sortedCharacters.melee.map((character) => {
-							return <CharacterDisplay key={character.id} character={character} />
-						})}
-					</div>
-					<div>
-						<Text>Ranged DPS</Text>
-						{sortedCharacters.ranged.map((character) => {
-							return <CharacterDisplay key={character.id} character={character} />
-						})}
-					</div>
+				<SimpleGrid cols={4} breakpoints={[{ maxWidth: 'md', cols: 2 }]} w='100%'>
+					{roles.map((role) => {
+						return (
+							<div key={role.label}>
+								<Text>{role.label}</Text>
+								{groupedCharacters[role.key].map((character) => {
+									return <GuildRosterCharacter key={character.id} character={character} />
+								})}
+							</div>
+						)
+					})}
 				</SimpleGrid>
 			</Paper>
 		</Flex>

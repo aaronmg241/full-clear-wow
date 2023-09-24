@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Menu, Button, rem } from '@mantine/core'
+import { Menu, Button, rem, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconChevronDown, IconPower, IconEdit } from '@tabler/icons-react'
 
@@ -28,7 +28,9 @@ export default function AccountMenu({}: Props) {
 							},
 						})}
 					>
-						{userDisplayName}
+						<Text maw='20vw' style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', whiteSpace: 'nowrap' }}>
+							{userDisplayName}
+						</Text>
 					</Button>
 				</Menu.Target>
 				<Menu.Dropdown>

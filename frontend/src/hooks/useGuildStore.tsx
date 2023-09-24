@@ -25,7 +25,8 @@ export const useGuildStore = createWithEqualityFn<Store>()(
 		setGuilds: (guilds: Guild[]) => set({ guilds: guilds }),
 		setCurrGuild: (guild: Guild | null) => set({ currGuild: guild }),
 		setGuildRoster: (roster: Character[]) => set({ guildRoster: roster }),
-		addCharacterToRoster: (character: Character) => set((state) => ({ guildRoster: [...state.guildRoster, character] })),
+		addCharacterToRoster: (character: Character) =>
+			set((state) => ({ guildRoster: [...state.guildRoster.filter((c) => c.id !== character.id), character] })),
 		removeCharacterFromRoster: (character: Character) =>
 			set((state) => ({ guildRoster: state.guildRoster.filter((c) => c.id !== character.id) })),
 		clearStore: () => set(initialState),

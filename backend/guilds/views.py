@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import *
 from .mixins import GuildAuthenticationMixin
-from .serializers import GuildSerializer
+from .serializers import GuildSerializer, GuildCharacterSerializer
 from datetime import datetime, timedelta
 
 class GuildView(APIView):
@@ -113,4 +113,27 @@ class CreateCharacterView(GuildAuthenticationMixin, APIView):
             return Response({ 'id': guild_character.id, 'name': guild_character.name, 'characterClass': guild_character.character_class, 'spec': guild_character.spec, 'role': guild_character.role })
         else:
             return Response({'detail': 'You are not in this guild.'}, status=403)
+        
+class UpdateCharacterView(GuildAuthenticationMixin, APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, guild_id, character_id):
+        if self.get_user_role(user=request.user, guild=guild_id) is None:
+            return Response({'detail': 'You are not in this guild.'}, status=403)
+        guild_character = get_object_or_404(GuildCharacter, id=character_id)
+        guild_character.delete()
+        return Response(status=200)
+    
+    def put(self, request, guild_id, character_id):
+        if self.get_user_role(user=request.user, guild=guild_id) is None:
+            return Response({'detail': 'You are not in this guild.'}, status=403)
+        
+        guild_character = get_object_or_404(GuildCharacter, id=character_id)
+        serializer = GuildCharacterSerializer(guild_character, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()  # This will update the GuildCharacter with the new data
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
         

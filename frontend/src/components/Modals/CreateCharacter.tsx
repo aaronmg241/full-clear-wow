@@ -1,5 +1,4 @@
-import { forwardRef, useState } from 'react'
-import { Modal, TextInput, Flex, Select, Button, Text, rem } from '@mantine/core'
+import { Modal, TextInput, Button, rem } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useDisclosure } from '@mantine/hooks'
 
@@ -8,14 +7,11 @@ import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
 import { notifications } from '@mantine/notifications'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import { IconPlus } from '@tabler/icons-react'
+import ClassSpecForm from '../Forms/ClassSpecForm'
 
 type Props = {}
 
-const classData = Object.keys(classes).map((key) => {
-	return { value: key, label: classes[key].readableName, color: classes[key].color }
-})
-
-export default function CreateCharacterForm({}: Props) {
+export default function CreateCharacter({}: Props) {
 	const [opened, { open, close }] = useDisclosure(false)
 	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
 	const currGuild = useGuildStore((state) => state.currGuild)
@@ -42,13 +38,6 @@ export default function CreateCharacterForm({}: Props) {
 		},
 	})
 
-	const [specOptions, setSpecOptions] = useState(
-		Object.keys(classes['death_knight'].specs).map((key) => ({
-			value: key,
-			label: classes['death_knight'].specs[key].readableName,
-		})) as { value: string; label: string }[]
-	)
-
 	const handleSubmit = () => {
 		const { name, characterClass, spec } = form.values
 
@@ -61,7 +50,6 @@ export default function CreateCharacterForm({}: Props) {
 		jwtAxios
 			.post(`/guilds/${currGuild.id}/characters/`, { name, character_class: characterClass, spec, role })
 			.then((response) => {
-				console.log(response)
 				addCharacterToRoster(response.data)
 			})
 			.catch((error) => {
@@ -77,38 +65,21 @@ export default function CreateCharacterForm({}: Props) {
 
 	return (
 		<>
-			<Button variant='outline' onClick={open} color='indigo.4' leftIcon={<IconPlus size={rem(20)} />}>
+			<Button
+				variant='outline'
+				onClick={() => {
+					form.setFieldValue('name', '')
+					open()
+				}}
+				color='indigo.4'
+				leftIcon={<IconPlus size={rem(20)} />}
+			>
 				Add Character
 			</Button>
 			<Modal opened={opened} onClose={close} style={{ overflow: 'auto' }}>
 				<form onSubmit={form.onSubmit(handleSubmit)}>
-					<TextInput label='Name' {...form.getInputProps('name')}></TextInput>
-					<Flex gap='1rem' mt='1rem'>
-						<Select
-							withinPortal
-							label='Class'
-							searchable
-							data={classData}
-							itemComponent={SelectItem}
-							{...form.getInputProps('characterClass')}
-							onChange={(selectedClass: string) => {
-								const options = Object.keys(classes[selectedClass].specs).map((key) => ({
-									value: key,
-									label: classes[selectedClass].specs[key].readableName,
-								}))
-								setSpecOptions(options)
-								form.setFieldValue('characterClass', selectedClass)
-								form.setFieldValue('spec', options[0].value)
-							}}
-							styles={() => ({
-								input: {
-									// applies styles to selected item
-									color: classes[form.values.characterClass].color,
-								},
-							})}
-						/>
-						<Select label='Spec' searchable withinPortal data={specOptions} {...form.getInputProps('spec')} />
-					</Flex>
+					<TextInput label='Name' {...form.getInputProps('name')} data-autofocus maxLength={12}></TextInput>
+					<ClassSpecForm form={form} />
 					<Button type='submit' mt='1rem' style={{ display: 'block', marginLeft: 'auto' }}>
 						Create
 					</Button>
@@ -117,16 +88,3 @@ export default function CreateCharacterForm({}: Props) {
 		</>
 	)
 }
-
-interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
-	label: string
-	color: string
-}
-
-const SelectItem = forwardRef<HTMLDivElement, ItemProps>(({ label, color, ...others }: ItemProps, ref) => (
-	<div ref={ref} {...others}>
-		<Text size='sm' color={color}>
-			{label}
-		</Text>
-	</div>
-))

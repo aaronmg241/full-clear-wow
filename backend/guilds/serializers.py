@@ -1,6 +1,5 @@
-from django.conf import settings
 from rest_framework import serializers
-from .models import User, Guild, UserGuildConnection
+from .models import *
 from dj_rest_auth.serializers import PasswordResetSerializer
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,6 +20,12 @@ class UserGuildConnectionSerializer(serializers.ModelSerializer):
         model = UserGuildConnection
         fields = ['user', 'guild', 'role']
 
+class GuildCharacterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GuildCharacter
+        fields = ['id', 'character_class', 'spec', 'role', 'name']
+
+# TODO: See if we actually need this serializer
 class CustomPasswordResetSerializer(PasswordResetSerializer):
         
     def get_email_options(self):

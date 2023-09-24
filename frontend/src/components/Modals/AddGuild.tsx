@@ -21,19 +21,24 @@ export default function AddGuild({ opened, close }: Props) {
 		},
 		validate: {
 			newGuildName: (value) => {
-				if (value.length === 0) return 'Display name is required.'
-				if (value.length < 2) return 'Name must be at least 2 characters long.'
-				if (value.length > 20) return 'Display name must be less than 20 characters long.'
+				if (value.length === 0) return 'Guild name is required.'
+				if (value.length < 2) return 'Guild name must be at least 2 characters long.'
+				if (value.length > 24) return 'Guild name can not be longer than 24 characters.'
 			},
 		},
 	})
 
 	return (
 		<>
-			<Modal opened={opened} onClose={close}>
+			<Modal
+				opened={opened}
+				onClose={() => {
+					close()
+					form.setFieldValue('newGuildName', '')
+				}}
+			>
 				<form
 					onSubmit={form.onSubmit(() => {
-						close()
 						jwtAxios
 							.post('guilds/', { name: form.values.newGuildName })
 							.then((response) => {
@@ -54,9 +59,11 @@ export default function AddGuild({ opened, close }: Props) {
 									autoClose: 5000,
 								})
 							})
+						form.setFieldValue('newGuildName', '')
+						close()
 					})}
 				>
-					<TextInput label='Guild Name' size='md' {...form.getInputProps('newGuildName')} />
+					<TextInput label='Guild Name' size='md' {...form.getInputProps('newGuildName')} data-autofocus maxLength={24} />
 					<Button mt='1rem' ml='auto' display='block' type='submit'>
 						Create Guild
 					</Button>

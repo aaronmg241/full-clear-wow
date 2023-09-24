@@ -30,7 +30,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
-    display_name = models.CharField(max_length=30, blank=True, null=True)
+    display_name = models.CharField(max_length=20, blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -47,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 	
 class Guild(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=60, null=False, blank=False)
+    name = models.CharField(max_length=24, null=False, blank=False)
     
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_by')
 
@@ -83,9 +83,9 @@ class GuildCode(models.Model):
 class GuildCharacter(models.Model):
     guild = models.ForeignKey(Guild, on_delete=models.CASCADE)
     character_class = models.CharField(choices=CharacterClass.choices, max_length=20)
-    spec = models.CharField(choices=CharacterSpec.choices, max_length=60)
-    role = models.CharField(choices=CharacterRole.choices, max_length=60)
-    name = models.CharField(max_length=30)
+    spec = models.CharField(choices=CharacterSpec.choices, max_length=20)
+    role = models.CharField(choices=CharacterRole.choices, max_length=16)
+    name = models.CharField(max_length=12)
 
     def __str__(self):
         return f"{self.name} - {self.character_class}"
