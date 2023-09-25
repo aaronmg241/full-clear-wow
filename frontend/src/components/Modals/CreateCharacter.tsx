@@ -10,13 +10,14 @@ import { IconPlus } from '@tabler/icons-react'
 import ClassSpecForm from '../Forms/ClassSpecForm'
 import { RosterContext } from '../Contexts/RosterContext'
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
+import { CurrentGuildContext } from '../Contexts/CurrentGuildContext'
 
 type Props = {}
 
 export default function CreateCharacter({}: Props) {
 	const [opened, { open, close }] = useDisclosure(false)
 	const { sendRosterUpdate } = useContext(RosterContext)
-	const currGuild = useGuildStore((state) => state.currGuild)
+	const { currGuild } = useContext(CurrentGuildContext)
 	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
 	const jwtAxios = useAxiosWithInterceptor()
 
@@ -90,7 +91,7 @@ export default function CreateCharacter({}: Props) {
 			<Modal opened={opened} onClose={close} style={{ overflow: 'auto' }}>
 				<form onSubmit={form.onSubmit(handleSubmit)}>
 					<TextInput label='Name' {...form.getInputProps('name')} data-autofocus maxLength={12}></TextInput>
-					<ClassSpecForm form={form} />
+					<ClassSpecForm form={form} initialClass={form.values.characterClass} />
 					<Button type='submit' mt='1rem' style={{ display: 'block', marginLeft: 'auto' }}>
 						Create
 					</Button>

@@ -8,6 +8,7 @@ import { useGuildStore } from '../../hooks/useGuildStore'
 import ClassSpecForm from '../Forms/ClassSpecForm'
 import { RosterContext } from '../Contexts/RosterContext'
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
+import { CurrentGuildContext } from '../Contexts/CurrentGuildContext'
 
 type Props = {
 	character: Character
@@ -16,9 +17,9 @@ type Props = {
 }
 
 export default function EditCharacter({ character, opened, close }: Props) {
-	const currGuild = useGuildStore((state) => state.currGuild)
 	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
 	const { sendRosterUpdate } = useContext(RosterContext)
+	const { currGuild } = useContext(CurrentGuildContext)
 	const jwtAxios = useAxiosWithInterceptor()
 
 	const form = useForm({

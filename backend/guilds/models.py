@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from unique_names_generator import get_random_name
@@ -6,6 +7,8 @@ import uuid
 
 from .enums import *
 
+def get_smaller_uuid():
+    return str(uuid.uuid4())[:13]
 
 # Create your models here.
 class CustomUserManager(BaseUserManager):
@@ -46,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         super().save(*args, **kwargs)
 	
 class Guild(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.CharField(primary_key=True, default=get_smaller_uuid, editable=False, max_length=13)
     name = models.CharField(max_length=24, null=False, blank=False)
     
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_by')

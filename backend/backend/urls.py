@@ -15,11 +15,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, register_converter
 from .views import GoogleLogin
 from dj_rest_auth.registration.views import VerifyEmailView
 from dj_rest_auth.views import PasswordResetConfirmView, PasswordResetView
 from guilds.consumers import GuildRosterConsumer
+
+class StringConverter:
+    regex = '[^/]+'
+
+    def to_python(self, value):
+        return value
+
+    def to_url(self, value):
+        return str(value)
+
+register_converter(StringConverter, 'string')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,6 +46,6 @@ urlpatterns = [
 ]
 
 websocket_urlpatterns = [
-	path('ws/guilds/<int:guild_id>/roster/', GuildRosterConsumer.as_asgi()),
+	path('ws/guilds/<string:guild_id>/roster/', GuildRosterConsumer.as_asgi()),
 ]
 

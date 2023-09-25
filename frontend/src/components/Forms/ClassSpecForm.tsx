@@ -19,6 +19,7 @@ export default function ClassSpecForm({ form, initialClass }: Props) {
 			label: classes[initialClass ? initialClass : 'death_knight'].specs[key].readableName,
 		})) as { value: string; label: string }[]
 	)
+
 	return (
 		<Flex gap='1rem' mt='1rem'>
 			<Select

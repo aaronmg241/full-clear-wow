@@ -4,6 +4,8 @@ import { useForm } from '@mantine/form'
 
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
 import { useGuildStore } from '../../hooks/useGuildStore'
+import { useContext } from 'react'
+import { CurrentGuildContext } from '../Contexts/CurrentGuildContext'
 
 type Props = {
 	opened: boolean
@@ -14,7 +16,7 @@ export default function AddGuild({ opened, close }: Props) {
 	const jwtAxios = useAxiosWithInterceptor()
 	const setGuilds = useGuildStore((state) => state.setGuilds)
 	const guilds = useGuildStore((state) => state.guilds)
-	const setCurrGuild = useGuildStore((state) => state.setCurrGuild)
+	const { setCurrGuild } = useContext(CurrentGuildContext)
 	const form = useForm({
 		initialValues: {
 			newGuildName: '',
@@ -43,7 +45,7 @@ export default function AddGuild({ opened, close }: Props) {
 							.post('guilds/', { name: form.values.newGuildName })
 							.then((response) => {
 								setGuilds([...guilds, response.data])
-								setCurrGuild(response.data)
+								setCurrGuild(response.data.id)
 								notifications.show({
 									title: 'Success',
 									message: 'Guild created successfully.',

@@ -29,7 +29,6 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 	const [loggedIn, setLoggedIn] = useState(false)
 	const [loadingAccount, setLoadingAccount] = useState(true)
 	const [userDisplayName, setUserDisplayName] = useState<string>('')
-	const setCurrGuild = useGuildStore((state) => state.setCurrGuild)
 	const setGuilds = useGuildStore((state) => state.setGuilds)
 	const clearStore = useGuildStore((state) => state.clearStore)
 
@@ -48,8 +47,6 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 		checkAuth().catch((error) => {
 			console.log(error)
 		})
-
-		// You can also check for token validity, perform API requests, etc.
 	}, [])
 
 	function logout() {
@@ -60,7 +57,6 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 		clearStore()
 		setLoggedIn(false)
 		setUserDisplayName('')
-		setGuilds([])
 	}
 
 	function loadData() {
@@ -78,9 +74,6 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 				setUserDisplayName(response.data.display_name)
 				if (response.data.guilds) {
 					setGuilds(response.data.guilds)
-					if (response.data.guilds.length > 0) {
-						setCurrGuild(response.data.guilds[0])
-					}
 				}
 				notifications.hide('loading-account')
 			})

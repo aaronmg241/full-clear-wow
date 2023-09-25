@@ -11,6 +11,7 @@ import { notifications } from '@mantine/notifications'
 import EditCharacter from './Modals/EditCharacter'
 import { useDisclosure } from '@mantine/hooks'
 import { RosterContext } from './Contexts/RosterContext'
+import { CurrentGuildContext } from './Contexts/CurrentGuildContext'
 
 type Props = {
 	character: Character
@@ -18,10 +19,10 @@ type Props = {
 
 export default function GuildRosterCharacter({ character }: Props) {
 	const jwtAxios = useAxiosWithInterceptor()
-	const currGuild = useGuildStore((state) => state.currGuild)
 	const removeCharacterFromRoster = useGuildStore((state) => state.removeCharacterFromRoster)
 	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
 	const { sendRosterUpdate } = useContext(RosterContext)
+	const { currGuild } = useContext(CurrentGuildContext)
 
 	const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure()
 

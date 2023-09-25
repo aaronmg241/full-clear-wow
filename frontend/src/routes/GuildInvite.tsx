@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Flex, Loader, Text } from '@mantine/core'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IconExclamationCircle, IconCircleCheck } from '@tabler/icons-react'
@@ -17,9 +17,8 @@ export default function GuildInvite({}: Props) {
 	const navigate = useNavigate()
 	const [error, setError] = useState('' as string)
 	const [response, setResponse] = useState('' as string)
+	const newGuildId = useRef('' as string)
 	const jwtAxios = useAxiosWithInterceptor()
-	const currGuild = useGuildStore((state) => state.currGuild)
-	const setCurrGuild = useGuildStore((state) => state.setCurrGuild)
 	const setGuilds = useGuildStore((state) => state.setGuilds)
 	const guilds = useGuildStore((state) => state.guilds)
 
@@ -34,9 +33,7 @@ export default function GuildInvite({}: Props) {
 				setResponse('You have been added to the guild!')
 				setGuilds([...guilds, response.data])
 
-				if (!currGuild) {
-					setCurrGuild(response.data)
-				}
+				newGuildId.current = response.data.id
 			} catch (error: any) {
 				const message = error.response.data.detail ? error.response.data.detail : 'There was an error adding you to the guild.'
 				setError(message)
@@ -56,7 +53,7 @@ export default function GuildInvite({}: Props) {
 						<IconCircleCheck size={60} color='var(--success-green)' />
 					</Flex>
 					<ButtonLink
-						onClick={() => navigate('/')}
+						onClick={() => navigate(`/${newGuildId.current}`)}
 						style={{ margin: '2rem auto 0 auto', display: 'block', paddingBottom: '1rem' }}
 					>
 						Go to home page

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useContext } from 'react'
 import { Flex, SimpleGrid, Paper, Text } from '@mantine/core'
 import { shallow } from 'zustand/shallow'
 
@@ -6,6 +6,7 @@ import { useGuildStore } from '../hooks/useGuildStore'
 import CreateCharacterForm from '../components/Modals/CreateCharacter'
 import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
 import GuildRosterCharacter from '../components/GuildRosterCharacter'
+import { CurrentGuildContext } from '../components/Contexts/CurrentGuildContext'
 
 type Props = {}
 
@@ -42,10 +43,11 @@ function sortRoster(guildRoster: Character[]) {
 }
 
 export default function Roster({}: Props) {
-	const { guildRoster, setGuildRoster, currGuild } = useGuildStore(
-		(state) => ({ guildRoster: state.guildRoster, setGuildRoster: state.setGuildRoster, currGuild: state.currGuild }),
+	const { guildRoster, setGuildRoster } = useGuildStore(
+		(state) => ({ guildRoster: state.guildRoster, setGuildRoster: state.setGuildRoster }),
 		shallow
 	)
+	const { currGuild } = useContext(CurrentGuildContext)
 	const sortedGuildRoster = useMemo<Character[]>(() => sortRoster(guildRoster), [guildRoster])
 	const jwtAxios = useAxiosWithInterceptor()
 

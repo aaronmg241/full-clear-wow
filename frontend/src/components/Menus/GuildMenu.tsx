@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import { Menu, Button, rem, Text } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { useDisclosure } from '@mantine/hooks'
@@ -6,13 +7,13 @@ import { IconChevronDown, IconShare, IconPlus, IconSettings } from '@tabler/icon
 import { useGuildStore } from '../../hooks/useGuildStore'
 import AddGuild from '../Modals/AddGuild'
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
+import { CurrentGuildContext } from '../Contexts/CurrentGuildContext'
 
 type Props = {}
 
 export default function GuildMenu({}: Props) {
 	const guilds = useGuildStore((state) => state.guilds)
-	const currGuild = useGuildStore((state) => state.currGuild)
-	const setCurrGuild = useGuildStore((state) => state.setCurrGuild)
+	const { currGuild, setCurrGuild } = useContext(CurrentGuildContext)
 	const jwtAxios = useAxiosWithInterceptor()
 
 	const [newGuildModalOpened, { open: openNewGuildModal, close: closeNewGuildModal }] = useDisclosure(false)
@@ -42,6 +43,7 @@ export default function GuildMenu({}: Props) {
 					</Button>
 				</Menu.Target>
 				<Menu.Dropdown miw={200}>
+					<Menu.Label>{currGuild.name}</Menu.Label>
 					<Menu.Item
 						icon={<IconShare size={rem(20)} />}
 						onClick={() => {
@@ -78,14 +80,16 @@ export default function GuildMenu({}: Props) {
 						.filter((guild) => guild.id !== currGuild.id)
 						.map((guild) => {
 							return (
-								<Menu.Item key={guild.id} onClick={() => setCurrGuild(guild)}>
+								<Menu.Item key={guild.id} onClick={() => setCurrGuild(guild.id)}>
 									{guild.name}
 								</Menu.Item>
 							)
 						})}
-					<Menu.Item icon={<IconPlus size={rem(20)} />} mt='1rem' onClick={openNewGuildModal}>
-						Add Guild
-					</Menu.Item>
+					{guilds.length < 5 && (
+						<Menu.Item icon={<IconPlus size={rem(20)} />} mt='1rem' onClick={openNewGuildModal}>
+							Add Guild
+						</Menu.Item>
+					)}
 				</Menu.Dropdown>
 			</Menu>
 			<AddGuild opened={newGuildModalOpened} close={closeNewGuildModal} />

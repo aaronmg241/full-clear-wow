@@ -1,7 +1,8 @@
-import React, { createContext } from 'react'
+import React, { createContext, useContext } from 'react'
 import { useGuildStore } from '../../hooks/useGuildStore'
 
 import useWebSocket from 'react-use-websocket'
+import { CurrentGuildContext } from './CurrentGuildContext'
 
 type RosterUpdate = {
 	name?: string
@@ -23,7 +24,7 @@ export const RosterContext = createContext<RosterContextType>({
 })
 
 export default function RosterContextProvider({ children }: { children: React.ReactNode }) {
-	const currGuild = useGuildStore((state) => state.currGuild)
+	const { currGuild } = useContext(CurrentGuildContext)
 	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
 	const removeCharacterFromRoster = useGuildStore((state) => state.removeCharacterFromRoster)
 

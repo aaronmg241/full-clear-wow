@@ -13,11 +13,16 @@ import RegisterForm from './components/Account/RegisterForm'
 import ResetPasswordForm from './components/Account/ResetPasswordForm'
 import GuildInvite from './routes/GuildInvite'
 import RosterContextProvider from './components/Contexts/RosterContext'
+import CurrentGuildContextProvider from './components/Contexts/CurrentGuildContext'
 
 const authRouter = createBrowserRouter([
 	{
-		path: '/',
-		element: <Home />,
+		path: '/:guildId?',
+		element: (
+			<CurrentGuildContextProvider>
+				<Home />
+			</CurrentGuildContextProvider>
+		),
 		children: [
 			{
 				path: '',
@@ -40,6 +45,10 @@ const authRouter = createBrowserRouter([
 	{
 		path: '/guilds/invite/:code',
 		element: <GuildInvite />,
+	},
+	{
+		path: '*',
+		element: <div>404</div>,
 	},
 ])
 
