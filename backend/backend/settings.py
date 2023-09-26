@@ -43,12 +43,15 @@ else:
     CORS_ALLOWED_ORIGINS = [
         "http://127.0.0.1:5173",
         "http://localhost:5173",
+        "https://full-clear-backend-dev.up.railway.app",
     ]
 
 
 CSRF_TRUSTED_ORIGINS = [
     "https://full-clear-frontend-production.up.railway.app",
     "https://full-clear-backend-production.up.railway.app",
+    "https://full-clear-backend-dev.up.railway.app",
+    "https://full-clear-frontend-dev.up.railway.app",
     "http://localhost:5173"
 ]
 
