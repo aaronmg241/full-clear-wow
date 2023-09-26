@@ -67,6 +67,7 @@ export default function EditCharacter({ character, opened, close }: Props) {
 				})
 			})
 			.catch((error) => {
+				console.log(error)
 				// Revert optimistic update if there was an error. Character value will not be updated yet so we can just use what was passed in
 				addCharacterToRoster({ ...character })
 				notifications.show({

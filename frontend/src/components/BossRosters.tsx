@@ -1,4 +1,4 @@
-import { Flex, Text, Paper, SimpleGrid, Divider } from '@mantine/core'
+import { Flex, Text, Paper, SimpleGrid } from '@mantine/core'
 
 import { roles } from '../types/Roles'
 import BossMenu from './Menus/BossMenu'
