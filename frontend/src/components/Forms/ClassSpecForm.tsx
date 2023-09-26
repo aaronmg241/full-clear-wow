@@ -1,7 +1,7 @@
 import { forwardRef, useState } from 'react'
 import { Flex, Select, Text } from '@mantine/core'
 
-import { classes } from '../../types/Classes'
+import { classes } from '../../types/data/Classes'
 
 type Props = {
 	form: any

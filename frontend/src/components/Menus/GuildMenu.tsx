@@ -22,7 +22,7 @@ export default function GuildMenu({}: Props) {
 
 	return (
 		<>
-			<Menu shadow='md' position='bottom-end' transitionProps={{ transition: 'rotate-right', duration: 150 }}>
+			<Menu shadow='md' position='bottom-end' transitionProps={{ transition: 'rotate-right', duration: 75 }}>
 				<Menu.Target>
 					<Button
 						mr='1rem'

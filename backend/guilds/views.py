@@ -154,24 +154,18 @@ class CreateBossRosterCharacter(GuildAuthenticationMixin, APIView):
         
         boss_roster = BossRoster.objects.get_or_create(guild=guild_id, boss_id=boss_id)
         guild_character = get_object_or_404(GuildCharacter, id=request.data['character_id'])
-        if (BossRosterCharacter.objects.filter(boss_roster=boss_roster, character=guild_character).exists()):
-            return Response({'detail': 'Character already exists in this roster.'}, status=400)
-        BossRosterCharacter.objects.create(boss_roster=boss_roster, character=guild_character, status=request.data['status'])
+
+        boss_roster.characters.add(guild_character)
+
         return Response(status=200)
     
     def get(self, request, guild_id, boss_id):
         if self.get_user_role(user=request.user, guild=guild_id) is None:
             return Response({'detail': 'You are not in this guild.'}, status=403)
         
-        boss_roster = BossRoster.objects.get_or_create(guild=guild_id, boss_id=boss_id)
-        return Response([ { 
-            'id': boss_roster_character.id,
-            'characterId': boss_roster_character.character.id, 
-            'name': boss_roster_character.character.name, 
-            'characterClass': boss_roster_character.character.character_class, 
-            'spec': boss_roster_character.character.spec, 
-            'role': boss_roster_character.character.role, 
-            'status': boss_roster_character.status 
-            } for boss_roster_character in BossRosterCharacter.objects.filter(boss_roster=boss_roster) 
-        ])
+        boss_roster, _ = BossRoster.objects.get_or_create(guild_id=guild_id, boss_id=boss_id)
+        guild_characters = boss_roster.characters.all()
+
+        return Response([ { 'id': character.id, 'name': character.name, 'characterClass': character.character_class, 'spec': character.spec, 'role': character.role } for character in guild_characters ])
+
         

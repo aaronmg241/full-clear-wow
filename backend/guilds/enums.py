@@ -79,6 +79,13 @@ class CharacterSpec(models.TextChoices):
     HAVOC = 'havoc', _('Havoc')
     VENGEANCE = 'vengeance', _('Vengeance')
 
-class BossRosterCharacterStatus(models.TextChoices):
-    IN = 'in', _('In')
-    BENCH = 'bench', _('Bench')
+# class Boss(models.TextChoices):
+#     KAZZARA = '1', _('Kazzara')
+#     ASSAULT = '2', _('Assault')
+#     AMALGAMATION = '3', _('Amalgamation')
+#     EXPERIMENTS = '4', _('Experiments')
+#     RASHOK = '5', _('Rashok')
+#     ZSKARN = '6', _('Zskarn')
+#     MAGMORAX = '7', _('Magmorax')
+#     NELTHARION = '8', _('Neltharion')
+#     SARKARETH = '9', _('Sarkareth')

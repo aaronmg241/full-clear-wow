@@ -10,8 +10,8 @@ type Props = {
 export default function SideNav({ onLinkClicked }: Props) {
 	return (
 		<Flex h='100%' direction='column' gap={0} align='start'>
-			<SideNavButton icon={<IconUsers />} path='/' label='Rosters' onLinkClicked={onLinkClicked} />
-			<SideNavButton icon={<IconActivity />} path='/cooldowns' label='Cooldowns' onLinkClicked={onLinkClicked} />
+			<SideNavButton icon={<IconUsers />} path={''} label='Rosters' onLinkClicked={onLinkClicked} />
+			<SideNavButton icon={<IconActivity />} path={'cooldowns'} label='Cooldowns' onLinkClicked={onLinkClicked} />
 		</Flex>
 	)
 }

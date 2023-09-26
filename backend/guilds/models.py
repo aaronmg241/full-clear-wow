@@ -1,6 +1,7 @@
 from collections.abc import Iterable
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.core.validators import MaxValueValidator, MinValueValidator
 from unique_names_generator import get_random_name
 from unique_names_generator.data import ADJECTIVES, ANIMALS
 import uuid
@@ -95,7 +96,11 @@ class GuildCharacter(models.Model):
     
 class BossRoster(models.Model):
     guild = models.ForeignKey(Guild, on_delete=models.CASCADE)
-    boss_id = models.IntegerField(null=False, blank=False, db_index=True)
+    boss_id = models.IntegerField(null=False, blank=False, validators=[
+            MaxValueValidator(9),
+            MinValueValidator(1)
+        ])
+    characters = models.ManyToManyField(GuildCharacter, blank=False)
 
     def __str__(self):
         return f"{self.boss_id} - {self.guild.name}"
@@ -105,11 +110,4 @@ class BossRoster(models.Model):
             raise ValueError("Boss name must be set")
         super().save(*args, **kwargs)
 
-class BossRosterCharacter(models.Model):
-    boss_roster = models.ForeignKey(BossRoster, on_delete=models.CASCADE)
-    character = models.ForeignKey(GuildCharacter, on_delete=models.CASCADE)
-    status = models.CharField(choices=BossRosterCharacterStatus.choices, max_length=16)
-
-    def __str__(self):
-        return f"{self.character.name} - {self.boss_roster.boss_id}"
     

@@ -3,7 +3,7 @@ import { Modal, TextInput, Button } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
 
-import { classes } from '../../types/Classes'
+import { classes } from '../../types/data/Classes'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import ClassSpecForm from '../Forms/ClassSpecForm'
 import { RosterContext } from '../Contexts/RosterContext'

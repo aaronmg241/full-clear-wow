@@ -1,5 +1,5 @@
 import { Button, rem } from '@mantine/core'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 type Props = {
 	label: String
@@ -11,6 +11,14 @@ type Props = {
 export default function SideNavButton({ label, path, icon, onLinkClicked }: Props) {
 	const navigate = useNavigate()
 	const location = useLocation()
+
+	const { guildId } = useParams()
+
+	if (guildId) {
+		path = `/${guildId}${path.length > 0 ? `/${path}` : ''}`
+	}
+
+	console.log(path)
 
 	return (
 		<Button

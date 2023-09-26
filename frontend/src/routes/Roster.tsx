@@ -8,7 +8,7 @@ import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
 import GuildRosterCharacter from '../components/GuildRosterCharacter'
 import { CurrentGuildContext } from '../components/Contexts/CurrentGuildContext'
 
-import { roles } from '../types/Roles'
+import { roles } from '../types/data/Roles'
 import { groupCharacters } from '../utils/roster'
 import BossRosters from '../components/BossRosters'
 

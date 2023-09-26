@@ -21,6 +21,12 @@ type Class = {
 	}
 }
 
+type Boss = {
+	readonly id: number
+	readonly name: string
+	readonly iconPath?: string
+}
+
 type Spec = {
 	readonly readableName: string
 	readonly role: string

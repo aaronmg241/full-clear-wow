@@ -4,7 +4,7 @@ import CharacterDisplay from './CharacterDisplay'
 import { IconX, IconEdit } from '@tabler/icons-react'
 import { motion } from 'framer-motion'
 
-import { classes } from '../types/Classes'
+import { classes } from '../types/data/Classes'
 import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
 import { useGuildStore } from '../hooks/useGuildStore'
 import { notifications } from '@mantine/notifications'

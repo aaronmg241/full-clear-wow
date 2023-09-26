@@ -1,5 +1,5 @@
 import { Flex, Text } from '@mantine/core'
-import { classes } from '../types/Classes'
+import { classes } from '../types/data/Classes'
 
 type Props = {
 	character: Character

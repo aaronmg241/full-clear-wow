@@ -4,7 +4,7 @@ import { useForm } from '@mantine/form'
 import { useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 
-import { classes } from '../../types/Classes'
+import { classes } from '../../types/data/Classes'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import { IconPlus } from '@tabler/icons-react'
 import ClassSpecForm from '../Forms/ClassSpecForm'
