@@ -24,7 +24,6 @@ export default function CurrentGuildContextProvider({ children }: { children: Re
 
 	// The current guild is derived from the guildId in the URL
 	// If there is no guildId in the URL, then we default to the first guild in the list
-	//
 	const currGuild = guilds.find((guild) => guild.id == guildId) || guilds[0] || null
 
 	console.log('here')

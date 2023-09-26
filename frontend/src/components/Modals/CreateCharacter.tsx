@@ -19,6 +19,7 @@ export default function CreateCharacter({}: Props) {
 	const { sendRosterUpdate } = useContext(RosterContext)
 	const { currGuild } = useContext(CurrentGuildContext)
 	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
+	const guildRoster = useGuildStore((state) => state.guildRoster)
 	const jwtAxios = useAxiosWithInterceptor()
 
 	const form = useForm({
@@ -32,6 +33,7 @@ export default function CreateCharacter({}: Props) {
 				if (value.length === 0) return 'Name is required.'
 				if (value.length < 3) return 'Name must be at least 3 characters long.'
 				if (value.length > 12) return 'Name must be 12 characters or less.'
+				if (guildRoster.find((c) => c.name === value)) return 'A character in your roster already has this name.'
 			},
 			characterClass: (value) => {
 				if (value.length === 0) return 'Class is required.'

@@ -78,3 +78,7 @@ class CharacterSpec(models.TextChoices):
     # Demon Hunter Specializations
     HAVOC = 'havoc', _('Havoc')
     VENGEANCE = 'vengeance', _('Vengeance')
+
+class BossRosterCharacterStatus(models.TextChoices):
+    IN = 'in', _('In')
+    BENCH = 'bench', _('Bench')

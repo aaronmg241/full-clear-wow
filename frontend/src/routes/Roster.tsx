@@ -8,14 +8,11 @@ import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
 import GuildRosterCharacter from '../components/GuildRosterCharacter'
 import { CurrentGuildContext } from '../components/Contexts/CurrentGuildContext'
 
-type Props = {}
+import { roles } from '../types/Roles'
+import { groupCharacters } from '../utils/roster'
+import BossRosters from '../components/BossRosters'
 
-const roles = [
-	{ key: 'tank', label: 'Tanks' },
-	{ key: 'healer', label: 'Healers' },
-	{ key: 'melee', label: 'Melee DPS' },
-	{ key: 'ranged', label: 'Ranged DPS' },
-]
+type Props = {}
 
 function sortRoster(guildRoster: Character[]) {
 	// Define a custom sorting function
@@ -70,39 +67,33 @@ export default function Roster({}: Props) {
 	// 	addCharacterToRoster(JSON.parse(lastMessage?.data))
 	// }, [lastMessage])
 
-	const groupedCharacters: { [key: string]: Character[] } = {
-		tank: [],
-		healer: [],
-		melee: [],
-		ranged: [],
-	}
-
-	sortedGuildRoster.map((character) => {
-		groupedCharacters[character.role].push(character)
-	})
+	const groupedCharacters = groupCharacters(sortedGuildRoster)
 
 	return (
-		<Flex direction='column' w='100%'>
-			<Flex gap='1rem' justify='space-between' mb='1rem'>
-				<Text fz={22} fw='bold'>
-					Roster
-				</Text>
-				<CreateCharacterForm />
+		<>
+			<Flex direction='column' w='100%'>
+				<Flex gap='1rem' justify='space-between' mb='1rem'>
+					<Text fz={22} fw='bold'>
+						Roster
+					</Text>
+					<CreateCharacterForm />
+				</Flex>
+				<Paper bg='dark.8' h='fit-content' p='1rem'>
+					<SimpleGrid cols={4} breakpoints={[{ maxWidth: 'md', cols: 2 }]} w='100%'>
+						{roles.map((role) => {
+							return (
+								<div key={role.label}>
+									<Text>{role.label}</Text>
+									{groupedCharacters[role.key].map((character) => {
+										return <GuildRosterCharacter key={character.id} character={character} />
+									})}
+								</div>
+							)
+						})}
+					</SimpleGrid>
+				</Paper>
 			</Flex>
-			<Paper bg='dark.8' h='fit-content' p='1rem'>
-				<SimpleGrid cols={4} breakpoints={[{ maxWidth: 'md', cols: 2 }]} w='100%'>
-					{roles.map((role) => {
-						return (
-							<div key={role.label}>
-								<Text>{role.label}</Text>
-								{groupedCharacters[role.key].map((character) => {
-									return <GuildRosterCharacter key={character.id} character={character} />
-								})}
-							</div>
-						)
-					})}
-				</SimpleGrid>
-			</Paper>
-		</Flex>
+			<BossRosters />
+		</>
 	)
 }

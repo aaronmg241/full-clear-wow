@@ -15,7 +15,12 @@ export default function Home() {
 		return (
 			<Flex w='100%' align='center' h='100%' direction='column'>
 				<HeaderNav />
-				<Flex style={{ flexGrow: 1, alignItems: 'start', width: '100%', boxSizing: 'border-box' }} p='0.5rem 1rem 1rem 2rem'>
+				<Flex
+					style={{ flexGrow: 1, alignItems: 'start', width: '100%', boxSizing: 'border-box' }}
+					p='0.5rem 1rem 1rem 2rem'
+					direction='column'
+					gap='max(2rem, 8vh)'
+				>
 					{guilds.length === 0 ? <NewGuildForm /> : <Outlet />}
 				</Flex>
 			</Flex>
@@ -27,7 +32,7 @@ export default function Home() {
 			<HeaderNav />
 			<Flex w='min(88em, 100vw)' h='100%' p='1rem 2rem'>
 				<SideNav />
-				<Flex style={{ flexGrow: 1 }} p='1rem 1rem 1rem 2rem'>
+				<Flex style={{ flexGrow: 1 }} p='1rem 1rem 1rem 2rem' direction='column' gap='max(2rem, 8vh)'>
 					{guilds.length === 0 ? <NewGuildForm /> : <Outlet />}
 				</Flex>
 			</Flex>

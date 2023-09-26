@@ -18,6 +18,7 @@ type Props = {
 
 export default function EditCharacter({ character, opened, close }: Props) {
 	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
+	const guildRoster = useGuildStore((state) => state.guildRoster)
 	const { sendRosterUpdate } = useContext(RosterContext)
 	const { currGuild } = useContext(CurrentGuildContext)
 	const jwtAxios = useAxiosWithInterceptor()
@@ -33,6 +34,8 @@ export default function EditCharacter({ character, opened, close }: Props) {
 				if (value.length === 0) return 'Name is required.'
 				if (value.length < 3) return 'Name must be at least 3 characters long.'
 				if (value.length > 12) return 'Name must be 12 characters or less.'
+				if (guildRoster.find((c) => c.name === value && c.id !== character.id))
+					return 'A character in your roster already has this name.'
 			},
 			characterClass: (value) => {
 				if (value.length === 0) return 'Class is required.'
@@ -64,7 +67,6 @@ export default function EditCharacter({ character, opened, close }: Props) {
 				})
 			})
 			.catch((error) => {
-				console.log(error)
 				// Revert optimistic update if there was an error. Character value will not be updated yet so we can just use what was passed in
 				addCharacterToRoster({ ...character })
 				notifications.show({
