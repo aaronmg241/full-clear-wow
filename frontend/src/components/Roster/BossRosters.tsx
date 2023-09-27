@@ -26,7 +26,7 @@ export default function BossRosters({}: Props) {
 		if (!currGuild) return
 
 		jwtAxios
-			.get(`/guilds/${currGuild.id}/boss_roster/${currBoss.id}`)
+			.get(`/guilds/${currGuild.id}/boss_roster/${currBoss.id}/`)
 			.then((response) => {
 				setBossRoster(response.data)
 			})

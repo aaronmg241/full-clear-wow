@@ -3,10 +3,10 @@ import { useContext } from 'react'
 import { LoginContext } from './components/Account/LoginContext'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import Home from './routes/Home'
+import Home from './routes/Auth/Home'
 import Login from './routes/Login'
-import Roster from './routes/Roster'
-import Cooldowns from './routes/Cooldowns'
+import Roster from './routes/Auth/Roster'
+import Cooldowns from './routes/Auth/Cooldowns'
 import ResetPassword from './components/Account/ResetPasswordConfirmForm'
 import LoginForm from './components/Account/LoginForm'
 import RegisterForm from './components/Account/RegisterForm'
@@ -14,6 +14,7 @@ import ResetPasswordForm from './components/Account/ResetPasswordForm'
 import GuildInvite from './routes/GuildInvite'
 import WebsocketContextProvider from './components/Contexts/WebsocketContext'
 import CurrentGuildContextProvider from './components/Contexts/CurrentGuildContext'
+import LostPage from './routes/404'
 
 const authRouter = createBrowserRouter([
 	{
@@ -46,7 +47,7 @@ const authRouter = createBrowserRouter([
 	},
 	{
 		path: '*',
-		element: <div>404</div>,
+		element: <LostPage />,
 	},
 ])
 

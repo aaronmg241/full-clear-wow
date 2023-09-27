@@ -1,5 +1,5 @@
-import BossRosters from '../components/Roster/BossRosters'
-import GuildRoster from '../components/Roster/GuildRoster'
+import BossRosters from '../../components/Roster/BossRosters'
+import GuildRoster from '../../components/Roster/GuildRoster'
 
 type Props = {}
 

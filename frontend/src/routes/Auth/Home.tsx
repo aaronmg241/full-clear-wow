@@ -1,11 +1,11 @@
 import { Flex } from '@mantine/core'
 import { Outlet } from 'react-router-dom'
 
-import HeaderNav from '../components/Navigation/HeaderNav'
-import SideNav from '../components/Navigation/SideNav'
+import HeaderNav from '../../components/Navigation/HeaderNav'
+import SideNav from '../../components/Navigation/SideNav'
 import { useMediaQuery } from '@mantine/hooks'
-import NewGuildForm from '../components/Forms/NewGuildForm'
-import { useGuildStore } from '../hooks/useGuildStore'
+import NewGuildForm from '../../components/Forms/NewGuildForm'
+import { useGuildStore } from '../../hooks/useGuildStore'
 
 export default function Home() {
 	const isSmallScreen = useMediaQuery('(max-width: 768px)')

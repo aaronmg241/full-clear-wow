@@ -30,7 +30,9 @@ export default function SideNavButton({ label, path, icon, onLinkClicked }: Prop
 			leftIcon={icon}
 			styles={(theme) => ({
 				root: {
-					color: location.pathname === path ? theme.colors.indigo[4] : theme.colors.gray[3],
+					// Don't want to worry about leading slashes
+					color: location.pathname.replace('/', '') === path.replace('/', '') ? theme.colors.indigo[4] : theme.colors.gray[3],
+
 					backgroundColor: 'transparent',
 					border: 0,
 					height: rem(42),
