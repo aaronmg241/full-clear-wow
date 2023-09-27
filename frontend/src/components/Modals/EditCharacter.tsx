@@ -6,7 +6,7 @@ import { notifications } from '@mantine/notifications'
 import { classes } from '../../types/data/Classes'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import ClassSpecForm from '../Forms/ClassSpecForm'
-import { RosterContext } from '../Contexts/RosterContext'
+import { WebsocketContext } from '../Contexts/WebsocketContext'
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
 import { CurrentGuildContext } from '../Contexts/CurrentGuildContext'
 
@@ -19,7 +19,7 @@ type Props = {
 export default function EditCharacter({ character, opened, close }: Props) {
 	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
 	const guildRoster = useGuildStore((state) => state.guildRoster)
-	const { sendRosterUpdate } = useContext(RosterContext)
+	const { sendRosterUpdate } = useContext(WebsocketContext)
 	const { currGuild } = useContext(CurrentGuildContext)
 	const jwtAxios = useAxiosWithInterceptor()
 

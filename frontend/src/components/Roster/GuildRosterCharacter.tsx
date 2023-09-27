@@ -2,16 +2,15 @@ import { useContext } from 'react'
 import { Menu, Text, UnstyledButton, rem } from '@mantine/core'
 import CharacterDisplay from './CharacterDisplay'
 import { IconX, IconEdit } from '@tabler/icons-react'
-import { motion } from 'framer-motion'
 
-import { classes } from '../types/data/Classes'
-import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
-import { useGuildStore } from '../hooks/useGuildStore'
+import { classes } from '../../types/data/Classes'
+import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
+import { useGuildStore } from '../../hooks/useGuildStore'
 import { notifications } from '@mantine/notifications'
-import EditCharacter from './Modals/EditCharacter'
+import EditCharacter from '../Modals/EditCharacter'
 import { useDisclosure } from '@mantine/hooks'
-import { RosterContext } from './Contexts/RosterContext'
-import { CurrentGuildContext } from './Contexts/CurrentGuildContext'
+import { WebsocketContext } from '../Contexts/WebsocketContext'
+import { CurrentGuildContext } from '../Contexts/CurrentGuildContext'
 
 type Props = {
 	character: Character
@@ -21,7 +20,7 @@ export default function GuildRosterCharacter({ character }: Props) {
 	const jwtAxios = useAxiosWithInterceptor()
 	const removeCharacterFromRoster = useGuildStore((state) => state.removeCharacterFromRoster)
 	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
-	const { sendRosterUpdate } = useContext(RosterContext)
+	const { sendRosterUpdate } = useContext(WebsocketContext)
 	const { currGuild } = useContext(CurrentGuildContext)
 
 	const [editOpened, { open: openEdit, close: closeEdit }] = useDisclosure()
@@ -56,13 +55,11 @@ export default function GuildRosterCharacter({ character }: Props) {
 	return (
 		<>
 			<Menu transitionProps={{ transition: 'rotate-right', duration: 150 }}>
-				<motion.div initial={{ opacity: 0.8, y: 2 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-					<Menu.Target>
-						<UnstyledButton w='100%'>
-							<CharacterDisplay character={character} />
-						</UnstyledButton>
-					</Menu.Target>
-				</motion.div>
+				<Menu.Target>
+					<UnstyledButton w='100%'>
+						<CharacterDisplay character={character} />
+					</UnstyledButton>
+				</Menu.Target>
 				<Menu.Dropdown miw='200px'>
 					<Menu.Label>
 						Options<Text color={classes[character.characterClass]?.color}>{character.name}</Text>

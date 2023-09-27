@@ -35,7 +35,12 @@ export default function BossMenu({}: Props) {
 			<Menu.Dropdown miw={200}>
 				{bosses.map((boss) => {
 					return (
-						<Menu.Item key={boss.id} value={boss.id} onClick={() => setCurrBoss(boss)}>
+						<Menu.Item
+							key={boss.id}
+							value={boss.id}
+							onClick={() => setCurrBoss(boss)}
+							bg={currBoss === boss ? 'rgba(92, 95, 102, 0.35)' : ''}
+						>
 							<BossDisplay boss={boss} />
 						</Menu.Item>
 					)

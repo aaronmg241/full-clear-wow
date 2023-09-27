@@ -12,7 +12,7 @@ import LoginForm from './components/Account/LoginForm'
 import RegisterForm from './components/Account/RegisterForm'
 import ResetPasswordForm from './components/Account/ResetPasswordForm'
 import GuildInvite from './routes/GuildInvite'
-import RosterContextProvider from './components/Contexts/RosterContext'
+import WebsocketContextProvider from './components/Contexts/WebsocketContext'
 import CurrentGuildContextProvider from './components/Contexts/CurrentGuildContext'
 
 const authRouter = createBrowserRouter([
@@ -20,17 +20,15 @@ const authRouter = createBrowserRouter([
 		path: '/:guildId?',
 		element: (
 			<CurrentGuildContextProvider>
-				<Home />
+				<WebsocketContextProvider>
+					<Home />
+				</WebsocketContextProvider>
 			</CurrentGuildContextProvider>
 		),
 		children: [
 			{
 				path: '',
-				element: (
-					<RosterContextProvider>
-						<Roster />
-					</RosterContextProvider>
-				),
+				element: <Roster />,
 			},
 			{
 				path: 'cooldowns',

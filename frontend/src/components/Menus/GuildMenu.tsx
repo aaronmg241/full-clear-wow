@@ -80,7 +80,12 @@ export default function GuildMenu({}: Props) {
 						.filter((guild) => guild.id !== currGuild.id)
 						.map((guild) => {
 							return (
-								<Menu.Item key={guild.id} onClick={() => setCurrGuild(guild.id)}>
+								<Menu.Item
+									key={guild.id}
+									onClick={() => {
+										setCurrGuild(guild.id)
+									}}
+								>
 									{guild.name}
 								</Menu.Item>
 							)

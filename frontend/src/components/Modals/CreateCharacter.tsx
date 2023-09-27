@@ -8,7 +8,7 @@ import { classes } from '../../types/data/Classes'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import { IconPlus } from '@tabler/icons-react'
 import ClassSpecForm from '../Forms/ClassSpecForm'
-import { RosterContext } from '../Contexts/RosterContext'
+import { WebsocketContext } from '../Contexts/WebsocketContext'
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
 import { CurrentGuildContext } from '../Contexts/CurrentGuildContext'
 
@@ -16,7 +16,7 @@ type Props = {}
 
 export default function CreateCharacter({}: Props) {
 	const [opened, { open, close }] = useDisclosure(false)
-	const { sendRosterUpdate } = useContext(RosterContext)
+	const { sendRosterUpdate } = useContext(WebsocketContext)
 	const { currGuild } = useContext(CurrentGuildContext)
 	const addCharacterToRoster = useGuildStore((state) => state.addCharacterToRoster)
 	const guildRoster = useGuildStore((state) => state.guildRoster)
@@ -80,7 +80,7 @@ export default function CreateCharacter({}: Props) {
 	return (
 		<>
 			<Button
-				variant='outline'
+				variant='subtle'
 				onClick={() => {
 					form.setFieldValue('name', '')
 					open()

@@ -18,8 +18,6 @@ export default function SideNavButton({ label, path, icon, onLinkClicked }: Prop
 		path = `/${guildId}${path.length > 0 ? `/${path}` : ''}`
 	}
 
-	console.log(path)
-
 	return (
 		<Button
 			variant='subtle'

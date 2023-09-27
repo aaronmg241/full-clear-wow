@@ -16,6 +16,10 @@ export default function GlobalStyles() {
 					border: 'none',
 				},
 
+				'.mantine-Skeleton-root::after, .mantine-Skeleton-root::after': {
+					background: theme.colors.gray[9],
+				},
+
 				'.mantine-Select-item[data-selected]:hover, .mantine-Select-item[data-selected]': {
 					background: theme.colors.gray[8],
 				},

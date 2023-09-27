@@ -19,4 +19,5 @@ html {
 	/* background-color: #13111c; */
 	height: 100%;
 	font-family: 'Inter Variable';
+	overflow-x: hidden;
 }
