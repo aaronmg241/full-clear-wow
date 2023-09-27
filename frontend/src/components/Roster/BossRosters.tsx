@@ -1,6 +1,7 @@
 import { Flex, Text, Paper, SimpleGrid } from '@mantine/core'
-import { useEffect, useContext } from 'react'
+import { useEffect, useContext, useMemo } from 'react'
 
+import { sortRoster } from '../../utils/roster'
 import { roles } from '../../types/data/Roles'
 import BossMenu from '../Menus/BossMenu'
 import { useGuildStore } from '../../hooks/useGuildStore'
@@ -31,20 +32,24 @@ export default function BossRosters({}: Props) {
 				setBossRoster(response.data)
 			})
 			.catch((error) => {
-				console.log(error)
+				const message = error.response?.data?.detail || 'Failed to get boss roster.'
 				notifications.show({
 					title: 'Error',
-					message: 'Failed to get boss roster',
+					message,
 					color: 'red',
 					autoClose: 4000,
 				})
 			})
 	}, [currBoss, currGuild])
 
-	const inRoster = bossRoster ? groupCharacters(bossRoster) : groupCharacters([])
-	const outRoster = bossRoster
-		? groupCharacters(guildRoster.filter((char: Character) => !bossRoster.some((bossChar: Character) => bossChar.id === char.id)))
-		: groupCharacters([])
+	const sortedInRoster = useMemo<Character[]>(() => sortRoster(bossRoster), [bossRoster])
+	const sortedOutRoster = useMemo<Character[]>(
+		() => sortRoster(guildRoster.filter((char: Character) => !bossRoster.some((bossChar: Character) => bossChar.id === char.id))),
+		[guildRoster, bossRoster]
+	)
+
+	const inRoster = groupCharacters(sortedInRoster)
+	const outRoster = groupCharacters(sortedOutRoster)
 
 	return (
 		<Flex direction='column' w='100%'>

@@ -41,7 +41,7 @@ export default function GuildRoster({}: Props) {
 		<Flex direction='column' w='100%'>
 			<Flex gap='1rem' justify='space-between' mb='1rem'>
 				<Text fz={22} fw='bold'>
-					Roster
+					{currGuild && currGuild.name} Roster
 				</Text>
 				<Flex gap='0.5rem'>
 					<ClassCounts />
