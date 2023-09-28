@@ -12,9 +12,7 @@ import { WebsocketContext } from '../Contexts/WebsocketContext'
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
 import { CurrentGuildContext } from '../Contexts/CurrentGuildContext'
 
-type Props = {}
-
-export default function CreateCharacter({}: Props) {
+export default function CreateCharacter() {
 	const [opened, { open, close }] = useDisclosure(false)
 	const { sendRosterUpdate } = useContext(WebsocketContext)
 	const { currGuild } = useContext(CurrentGuildContext)
@@ -77,17 +75,14 @@ export default function CreateCharacter({}: Props) {
 			})
 	}
 
+	const handleClick = () => {
+		form.setFieldValue('name', '')
+		open()
+	}
+
 	return (
 		<>
-			<Button
-				variant='subtle'
-				onClick={() => {
-					form.setFieldValue('name', '')
-					open()
-				}}
-				color='indigo.4'
-				leftIcon={<IconPlus size={rem(20)} />}
-			>
+			<Button variant='subtle' onClick={handleClick} leftIcon={<IconPlus size={rem(20)} />} color='indigo.4'>
 				Add Character
 			</Button>
 			<Modal opened={opened} onClose={close} style={{ overflow: 'auto' }}>

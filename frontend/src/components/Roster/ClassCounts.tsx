@@ -2,8 +2,6 @@ import { Flex, HoverCard, Button, Text } from '@mantine/core'
 import { classes } from '../../types/data/Classes'
 import { useGuildStore } from '../../hooks/useGuildStore'
 
-type Props = {}
-
 function countClasses(roster: Character[]) {
 	const classCounts: { [key: string]: number } = {}
 
@@ -14,7 +12,7 @@ function countClasses(roster: Character[]) {
 	return classCounts
 }
 
-export default function ClassCounts({}: Props) {
+export default function ClassCounts() {
 	const guildRoster = useGuildStore((state) => state.guildRoster)
 	const classCounts = countClasses(guildRoster)
 

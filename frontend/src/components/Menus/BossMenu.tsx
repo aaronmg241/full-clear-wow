@@ -1,9 +1,9 @@
-import { Text, Menu, Button, rem } from '@mantine/core'
-import { IconChevronDown } from '@tabler/icons-react'
+import { Text, Menu } from '@mantine/core'
 
 import { bosses } from '../../types/data/Raid'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import BossDisplay from '../BossDisplay'
+import MenuButton from '../Button/MenuButton'
 
 type Props = {}
 
@@ -13,25 +13,11 @@ export default function BossMenu({}: Props) {
 
 	return (
 		<Menu shadow='md' position='bottom-end' transitionProps={{ transition: 'rotate-right', duration: 75 }}>
-			<Menu.Target>
-				<Button
-					mr='1rem'
-					variant='subtle'
-					color='indigo.5'
-					rightIcon={<IconChevronDown size={rem(20)} />}
-					styles={(theme) => ({
-						root: {
-							'&:not([data-disabled])': theme.fn.hover({
-								color: theme.colors.gray[0],
-							}),
-						},
-					})}
-				>
-					<Text maw='20vw' style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', whiteSpace: 'nowrap' }}>
-						{currBoss.name}
-					</Text>
-				</Button>
-			</Menu.Target>
+			<MenuButton>
+				<Text maw='20vw' style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', whiteSpace: 'nowrap' }}>
+					{currBoss.name}
+				</Text>
+			</MenuButton>
 			<Menu.Dropdown miw={200}>
 				{bosses.map((boss) => {
 					return (

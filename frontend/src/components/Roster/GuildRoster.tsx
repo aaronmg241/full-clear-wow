@@ -11,6 +11,7 @@ import GuildRosterCharacter from './GuildRosterCharacter'
 import { roles } from '../../types/data/Roles'
 import { groupCharacters, sortRoster } from '../../utils/roster'
 import ClassCounts from './ClassCounts'
+import { useMediaQuery } from '@mantine/hooks'
 
 type Props = {}
 
@@ -20,6 +21,7 @@ export default function GuildRoster({}: Props) {
 		shallow
 	)
 	const { currGuild } = useContext(CurrentGuildContext)
+	const isSmallScreen = useMediaQuery('(max-width: 900px)')
 	const sortedGuildRoster = useMemo<Character[]>(() => sortRoster(guildRoster), [guildRoster])
 	const jwtAxios = useAxiosWithInterceptor()
 
@@ -39,11 +41,11 @@ export default function GuildRoster({}: Props) {
 
 	return (
 		<Flex direction='column' w='100%'>
-			<Flex gap='1rem' justify='space-between' mb='1rem'>
+			<Flex gap='1rem' justify='space-between' mb='1rem' direction={isSmallScreen ? 'column' : 'row'}>
 				<Text fz={22} fw='bold'>
 					{currGuild && currGuild.name} Roster
 				</Text>
-				<Flex gap='0.5rem'>
+				<Flex gap='0.5rem' justify='end'>
 					<ClassCounts />
 					<CreateCharacter />
 				</Flex>

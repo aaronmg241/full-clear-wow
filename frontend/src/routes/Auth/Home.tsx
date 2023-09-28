@@ -17,7 +17,7 @@ export default function Home() {
 				<HeaderNav />
 				<Flex
 					style={{ flexGrow: 1, alignItems: 'start', width: '100%', boxSizing: 'border-box' }}
-					p='0.5rem 1rem 1rem 2rem'
+					p='1.5rem 1rem 1rem 2rem'
 					direction='column'
 					gap='max(2rem, 4vh)'
 				>
