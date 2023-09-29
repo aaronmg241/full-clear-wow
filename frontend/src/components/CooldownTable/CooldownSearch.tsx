@@ -4,12 +4,15 @@ import { Flex, ScrollArea } from '@mantine/core'
 import SpellCooldownDisplay from './SpellCooldownDisplay'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import { classes } from '../../types/data/Classes'
+import { findRemainingCooldown } from '../../utils/cooldowns'
 
 type Props = {
 	searchValue: string
+	rowIndex: number
+	columnIndex: number
 }
 
-function findAllCooldowns(bossRoster: any) {
+function findAllCooldowns(bossRoster: any, currBossPlan: BossPlan, rowIndex: number) {
 	const cooldowns: any[] = []
 
 	for (const character of bossRoster) {
@@ -17,22 +20,30 @@ function findAllCooldowns(bossRoster: any) {
 			...classes[character.characterClass].importantAbilities,
 			...classes[character.characterClass].specs[character.spec].importantAbilities,
 		]) {
+			const cooldownRemaining = findRemainingCooldown(currBossPlan, rowIndex, character, ability)
+
 			cooldowns.push({
 				ability,
 				character,
+				cooldownRemaining,
 			})
 		}
 	}
 
 	cooldowns.sort((a, b) => a.ability.spellName.localeCompare(b.ability.spellName))
+	cooldowns.sort((a, b) => a.cooldownRemaining - b.cooldownRemaining)
 
 	return cooldowns
 }
 
-export default function CooldownSearch({ searchValue }: Props) {
+export default function CooldownSearch({ searchValue, rowIndex, columnIndex }: Props) {
 	const bossRoster = useGuildStore((store) => store.bossRoster)
+	const addCooldownToBossPlan = useGuildStore((store) => store.addCooldownToBossPlan)
+	const currBossPlan = useGuildStore((store) => store.currBossPlan)
 
-	const allCooldowns = useMemo(() => findAllCooldowns(bossRoster), [bossRoster])
+	if (!currBossPlan) return
+
+	const allCooldowns = useMemo(() => findAllCooldowns(bossRoster, currBossPlan, rowIndex), [bossRoster, currBossPlan, rowIndex])
 
 	const filteredCooldowns = useMemo(
 		() =>
@@ -52,8 +63,11 @@ export default function CooldownSearch({ searchValue }: Props) {
 						key={cooldown.ability.spellName + cooldown.character.name}
 						spellName={cooldown.ability.spellName}
 						readableName={cooldown.ability.readableName}
-						cooldownRemaining={0}
+						cooldownRemaining={cooldown.cooldownRemaining}
 						character={cooldown.character}
+						onClick={() => {
+							addCooldownToBossPlan(rowIndex, columnIndex, cooldown.character, cooldown.ability)
+						}}
 					/>
 				))}
 			</Flex>

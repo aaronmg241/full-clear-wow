@@ -41,8 +41,25 @@ type Ability = {
 }
 
 type AbilityUse = {
-	readonly player: Player
+	readonly player: Character
 	readonly ability: Ability
+}
+
+type BossPlan = {
+	rows: BossPlanRow[]
+}
+
+type BossPlanRow = {
+	spellName: string
+	time: number
+	id: string
+	assignedCooldowns: AssignedCooldown[]
+}
+
+type AssignedCooldown = {
+	column: number
+	character: Character
+	ability: Ability
 }
 
 type EventType = 'SCC' | 'SCS' | 'SAR' | 'SAA'

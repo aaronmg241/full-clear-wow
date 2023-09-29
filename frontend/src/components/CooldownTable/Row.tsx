@@ -1,85 +1,129 @@
 import { useState } from 'react'
-import { Menu, Button, Text, TextInput } from '@mantine/core'
+import { Menu, Button, Text, TextInput, rem } from '@mantine/core'
 
 import { secondsToMMSS } from '../../utils/cooldowns'
 import HealerHoverCard from './HealerHoverCard'
 import CooldownSearch from './CooldownSearch'
+import AssignedAbilityDisplay from './AssignedAbilityDisplay'
+import { IconX } from '@tabler/icons-react'
+import { useGuildStore } from '../../hooks/useGuildStore'
 
 type Props = {
-	row: Row
+	row: BossPlanRow
 	healers: Character[]
+	rowIndex: number
 }
 
-type Row = {
-	customName?: string
-	time: number
-	spellName: string
-	spellId?: number
-	spellLink?: string | null
-	counter?: number
-	eventType?: EventType
+function findCooldown(row: BossPlanRow, column: number) {
+	for (const ability of row.assignedCooldowns) {
+		if (column === ability.column) {
+			return ability
+		}
+	}
+
+	return null
 }
 
-export default function Row({ row, healers }: Props) {
+export default function Row({ row, healers, rowIndex }: Props) {
 	const [isSearching, setIsSearching] = useState(false)
 	const [searchValue, setSearchValue] = useState('')
+
+	const removeCooldownFromBossPlan = useGuildStore((state) => state.removeCooldownFromBossPlan)
 
 	return (
 		<tr>
 			<td>{row.spellName}</td>
 			<td>{secondsToMMSS(row.time)}</td>
-			{Array.from({ length: 6 }).map((_, index) => (
-				<td key={index}>
-					<Menu shadow='md'>
-						<Menu.Target>
-							<Button
-								w='100%'
-								h='100%'
-								bg='transparent'
-								style={{ borderRadius: 0 }}
-								styles={(theme) => ({
-									root: {
-										'&:not([data-disabled])': theme.fn.hover({
-											background: 'var(--hover-indigo-bg)',
-										}),
-									},
-								})}
-							>
-								<Text color='transparent'>hi</Text>
-							</Button>
-						</Menu.Target>
+			{Array.from({ length: 6 }).map((_, columnIndex) => {
+				const assignedAbility = findCooldown(row, columnIndex)
 
-						<Menu.Dropdown>
-							<Menu.Label>Search</Menu.Label>
-							<TextInput
-								ml='0.75rem'
-								mb='1rem'
-								value={searchValue}
-								onChange={(e) => {
-									setSearchValue(e.target.value)
-								}}
-								onFocus={() => {
-									setIsSearching(true)
-								}}
-								onBlur={() => {
-									setIsSearching(false)
-								}}
-							/>
-
-							{isSearching && <CooldownSearch searchValue={searchValue} />}
-
-							{!isSearching && (
-								<>
-									<Menu.Label>Healers</Menu.Label>
-									{healers.map((healer) => {
-										return <HealerHoverCard character={healer} key={healer.id} />
+				return (
+					<td key={columnIndex} width='120px'>
+						<Menu
+							shadow='md'
+							onClose={() => {
+								setIsSearching(false)
+								setSearchValue('')
+							}}
+						>
+							<Menu.Target>
+								<Button
+									w='100%'
+									h='100%'
+									bg='transparent'
+									p={0}
+									style={{ borderRadius: 0 }}
+									styles={(theme) => ({
+										root: {
+											'&:not([data-disabled])': theme.fn.hover({
+												background: 'var(--hover-indigo-bg)',
+											}),
+										},
+										inner: {
+											height: 'auto',
+										},
 									})}
-								</>
-							)}
-						</Menu.Dropdown>
-					</Menu>
-				</td>
-			))}
+								>
+									{assignedAbility && (
+										<Text size='sm' weight={500}>
+											<AssignedAbilityDisplay
+												character={assignedAbility.character}
+												ability={assignedAbility.ability}
+											/>
+										</Text>
+									)}
+								</Button>
+							</Menu.Target>
+
+							<Menu.Dropdown>
+								{assignedAbility && (
+									<>
+										<Menu.Item
+											color='var(--danger-red)'
+											icon={<IconX size={rem(20)} />}
+											onClick={() => {
+												removeCooldownFromBossPlan(rowIndex, columnIndex)
+											}}
+										>
+											Remove Cooldown
+										</Menu.Item>
+									</>
+								)}
+								<Menu.Label>Search</Menu.Label>
+								<TextInput
+									ml='0.75rem'
+									mb='1rem'
+									value={searchValue}
+									onChange={(e) => {
+										setSearchValue(e.target.value)
+									}}
+									onFocus={() => {
+										setIsSearching(true)
+									}}
+								/>
+
+								{isSearching && <CooldownSearch searchValue={searchValue} rowIndex={rowIndex} columnIndex={columnIndex} />}
+
+								{!isSearching && (
+									<>
+										<Menu.Label>Healers</Menu.Label>
+										{healers.map((healer) => {
+											return (
+												<HealerHoverCard
+													character={healer}
+													key={healer.id}
+													rowIndex={rowIndex}
+													columnIndex={columnIndex}
+												/>
+											)
+										})}
+									</>
+								)}
+							</Menu.Dropdown>
+						</Menu>
+					</td>
+				)
+			})}
 		</tr>
 	)
 }

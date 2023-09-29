@@ -19,6 +19,12 @@ interface Store {
 	removeCharacterFromBossRoster: (id: string) => void
 	setBossRoster: (roster: Character[]) => void
 
+	currBossPlan: null | BossPlan
+	setCurrBossPlan: (plan: BossPlan) => void
+
+	addCooldownToBossPlan: (rowNumber: number, columnNumber: number, character: Character, ability: Ability) => void
+	removeCooldownFromBossPlan: (rowNumber: number, columnNumber: number) => void
+
 	clearStore: () => void
 }
 
@@ -28,6 +34,7 @@ const initialState = {
 	currBoss: bosses[0],
 	guildRoster: [],
 	bossRoster: [],
+	currBossPlan: null,
 }
 
 export const useGuildStore = createWithEqualityFn<Store>()(
@@ -47,6 +54,37 @@ export const useGuildStore = createWithEqualityFn<Store>()(
 			set((state) => ({ bossRoster: [...state.bossRoster.filter((c) => c.id !== character.id), character] })),
 		removeCharacterFromBossRoster: (id: string) => set((state) => ({ bossRoster: state.bossRoster.filter((c) => c.id !== id) })),
 		setBossRoster: (roster: Character[]) => set({ bossRoster: roster }),
+
+		setCurrBossPlan: (plan: BossPlan) => set({ currBossPlan: plan }),
+		addCooldownToBossPlan: (rowNumber: number, columnNumber: number, character: Character, ability: Ability) => {
+			const newBossPlan = { ...useGuildStore.getState().currBossPlan } as BossPlan
+
+			console.log({ rowNumber, columnNumber, character, ability })
+			if (!newBossPlan || !newBossPlan.rows) return
+
+			const row = newBossPlan.rows[rowNumber]
+
+			if (!row) return
+
+			console.log('here')
+
+			row.assignedCooldowns = row.assignedCooldowns.filter((cooldown) => cooldown.column !== columnNumber)
+			row.assignedCooldowns.push({ column: columnNumber, character, ability })
+
+			set({ currBossPlan: newBossPlan })
+		},
+		removeCooldownFromBossPlan: (rowNumber: number, columnNumber: number) => {
+			const newBossPlan = { ...useGuildStore.getState().currBossPlan } as BossPlan
+
+			if (!newBossPlan || !newBossPlan.rows) return
+
+			const row = newBossPlan.rows[rowNumber]
+
+			if (!row) return
+
+			row.assignedCooldowns = row.assignedCooldowns.filter((cooldown) => cooldown.column !== columnNumber)
+			set({ currBossPlan: newBossPlan })
+		},
 
 		clearStore: () => set(initialState),
 	}),

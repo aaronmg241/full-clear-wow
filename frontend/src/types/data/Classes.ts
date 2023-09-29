@@ -118,10 +118,10 @@ export const classes: { [key: string]: Class } = {
 				role: 'healer',
 				importantAbilities: [
 					{
-						spellName: 'blessing-of-the-bronze',
-						readableName: 'Blessing of the Bronze',
+						spellName: 'rewind',
+						readableName: 'Rewind',
 						cooldown: 180,
-						spellID: 381748,
+						spellID: 363534,
 					},
 					{
 						spellName: 'dream-flight',
@@ -134,12 +134,6 @@ export const classes: { [key: string]: Class } = {
 						readableName: 'Emerald Communion',
 						cooldown: 180,
 						spellID: 370984,
-					},
-					{
-						spellName: 'rewind',
-						readableName: 'Rewind',
-						cooldown: 180,
-						spellID: 363534,
 					},
 					{
 						spellName: 'stasis',

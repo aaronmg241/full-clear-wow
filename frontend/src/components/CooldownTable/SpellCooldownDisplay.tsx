@@ -9,11 +9,13 @@ export default function SpellCooldownDisplay({
 	readableName,
 	cooldownRemaining,
 	character,
+	onClick,
 }: {
 	spellName: string
 	readableName: string
 	cooldownRemaining: number
 	character?: Character
+	onClick?: () => void
 }) {
 	return (
 		<motion.div initial={{ opacity: 0.6, y: 2 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
@@ -24,6 +26,7 @@ export default function SpellCooldownDisplay({
 				h='fit-content'
 				p='0 0.5rem'
 				fullWidth
+				onClick={onClick}
 				styles={(theme) => ({
 					root: {
 						'&:not([data-disabled])': theme.fn.hover({
