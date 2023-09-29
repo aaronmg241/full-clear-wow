@@ -71,7 +71,7 @@ export default function LoginContextProvider({ children }: { children: React.Rea
 		axios
 			.get('/guilds/user/', { withCredentials: true })
 			.then((response) => {
-				setUserDisplayName(response.data.display_name)
+				setUserDisplayName(response.data.displayName)
 				if (response.data.guilds) {
 					setGuilds(response.data.guilds)
 				}

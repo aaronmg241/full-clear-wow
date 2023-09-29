@@ -2,6 +2,9 @@ import { createWithEqualityFn } from 'zustand/traditional'
 import { bosses } from '../types/data/Raid'
 
 interface Store {
+	selectedRow: number
+	setSelectedRow: (row: number) => void
+
 	guilds: Guild[]
 	setGuilds: (guilds: Guild[]) => void
 	guildRoster: Character[]
@@ -20,6 +23,7 @@ interface Store {
 }
 
 const initialState = {
+	selectedRow: 0,
 	guilds: [],
 	currBoss: bosses[0],
 	guildRoster: [],
@@ -29,6 +33,9 @@ const initialState = {
 export const useGuildStore = createWithEqualityFn<Store>()(
 	(set) => ({
 		...initialState,
+
+		setSelectedRow: (row: number) => set({ selectedRow: row }),
+
 		setGuilds: (guilds: Guild[]) => set({ guilds: guilds }),
 		setGuildRoster: (roster: Character[]) => set({ guildRoster: roster }),
 		addCharacterToRoster: (character: Character) =>

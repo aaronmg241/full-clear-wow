@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.throttling import UserRateThrottle
 from rest_framework.permissions import IsAuthenticated
 from .models import *
 from .mixins import GuildAuthenticationMixin
@@ -9,6 +10,7 @@ from datetime import datetime, timedelta
 
 class GuildView(APIView):
     permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
 
     def post(self, request):
         try:
@@ -33,6 +35,7 @@ class GuildView(APIView):
     
 class UserView(APIView):
     permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
 
     def get(self, request):
         try:
@@ -66,6 +69,7 @@ class UserView(APIView):
         
 class GuildCodeView(GuildAuthenticationMixin, APIView):
     permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
 
     def post(self, request):
         user = request.user
@@ -80,6 +84,7 @@ class GuildCodeView(GuildAuthenticationMixin, APIView):
         
 class GuildInviteView(APIView):
     permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
 
     def post(self, request):
         user = request.user 
@@ -105,6 +110,7 @@ class GuildInviteView(APIView):
 
 class GuildRosterView(APIView):
     permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
 
     def get(self, request):
         guild = get_object_or_404(Guild, id=request.GET['guild_id'])
@@ -113,6 +119,7 @@ class GuildRosterView(APIView):
     
 class CreateCharacterView(GuildAuthenticationMixin, APIView):
     permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
 
     def post(self, request, guild_id):
         if self.get_user_role(user=request.user, guild=guild_id) is not None:
@@ -124,6 +131,7 @@ class CreateCharacterView(GuildAuthenticationMixin, APIView):
         
 class UpdateCharacterView(GuildAuthenticationMixin, APIView):
     permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
 
     def delete(self, request, guild_id, character_id):
         if self.get_user_role(user=request.user, guild=guild_id) is None:
@@ -147,6 +155,7 @@ class UpdateCharacterView(GuildAuthenticationMixin, APIView):
         
 class CreateBossRosterCharacter(GuildAuthenticationMixin, APIView):
     permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
 
     def post(self, request, guild_id, boss_id):
         if self.get_user_role(user=request.user, guild=guild_id) is None:

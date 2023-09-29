@@ -34,7 +34,8 @@ type Spec = {
 }
 
 type Ability = {
-	readonly name: string
+	readonly spellName: string
+	readonly readableName: string
 	readonly cooldown: number
 	readonly spellID: number
 }
@@ -43,3 +44,5 @@ type AbilityUse = {
 	readonly player: Player
 	readonly ability: Ability
 }
+
+type EventType = 'SCC' | 'SCS' | 'SAR' | 'SAA'

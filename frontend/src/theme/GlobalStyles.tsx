@@ -10,6 +10,7 @@ export default function GlobalStyles() {
 					'--danger-red': theme.colors.red[6],
 					'--success-green': theme.colors.green[6],
 					'--hover-bg': '#BAC8FF22',
+					'--hover-indigo-bg': '#364FC733',
 				},
 				'.mantine-Menu-dropdown': {
 					padding: '0.5rem',

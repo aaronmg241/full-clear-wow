@@ -110,4 +110,46 @@ class BossRoster(models.Model):
             raise ValueError("Boss name must be set")
         super().save(*args, **kwargs)
 
+class BossPlan(models.Model):
+    name = models.CharField(max_length=24, null=True, blank=True)
+    guild = models.ForeignKey(Guild, on_delete=models.CASCADE)
+    boss_id = models.IntegerField(null=False, blank=False, default=1, validators=[
+            MaxValueValidator(9),
+            MinValueValidator(1)
+        ])
+    difficulty = models.CharField(choices=Difficulty.choices, max_length=20, default=Difficulty.MYTHIC)
+    version = models.IntegerField(null=False, blank=False, default=1)
+
+    def __str__(self):
+        return f"{self.boss_id} - {self.boss_roster.guild.name}"
     
+    def save(self, *args, **kwargs):
+        if not self.boss_id:
+            raise ValueError("Boss name must be set")
+        super().save(*args, **kwargs)
+
+# https://wago.io/n7l5uN3YM - Kaze Weakaura describing formatting spells for ert
+class BossPlanRow(models.Model):
+    BossPlan = models.ForeignKey(BossPlan, on_delete=models.CASCADE)
+
+    custom_name = models.CharField(max_length=50, null=True, blank=True)
+    time = models.IntegerField(null=False, blank=False, validators=[
+            MaxValueValidator(900),
+            MinValueValidator(0)
+        ])
+    spell_name = models.CharField(max_length=50, null=False, blank=False)
+    spell_id = models.IntegerField(null=False, blank=False)
+    spell_link = models.CharField(max_length=200, null=True, blank=True) # Link to wowhead with spell information
+    counter = models.IntegerField(null=False, blank=False, default=0)
+    event_type = models.CharField(choices=EventType.choices, max_length=20)
+
+    order = models.IntegerField(null=False, blank=False, default=999)
+
+class AssignedCooldown(models.Model):
+    BossPlanRow = models.ForeignKey(BossPlanRow, on_delete=models.CASCADE)
+    GuildCharacter = models.ForeignKey(GuildCharacter, on_delete=models.CASCADE, null=True)
+
+    custom_instruction = models.CharField(max_length=60, null=True, blank=True)
+    spell_id = models.IntegerField(null=True, blank=True)
+    column = models.IntegerField(null=False, blank=False, default=999)
+    for_everyone = models.BooleanField(default=False)

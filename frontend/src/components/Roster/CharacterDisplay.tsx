@@ -5,9 +5,10 @@ import { motion } from 'framer-motion'
 type Props = {
 	character: Character
 	hideIcon?: boolean
+	isColumnHeader?: boolean
 }
 
-export default function CharacterDisplay({ character, hideIcon }: Props) {
+export default function CharacterDisplay({ character, hideIcon, isColumnHeader }: Props) {
 	const { name, characterClass, spec } = character
 
 	// const icon = getSpecIcon(characterClass, spec)
@@ -15,7 +16,7 @@ export default function CharacterDisplay({ character, hideIcon }: Props) {
 
 	return (
 		<motion.div initial={{ opacity: 0.8, y: 2 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-			<Flex gap='0.5rem' p='5px 2px' align='center' w='100%'>
+			<Flex gap='0.5rem' p='5px 2px' align='center' w='100%' justify={isColumnHeader ? 'center' : 'start'}>
 				{!hideIcon && <img src={`../assets/classes/${characterClass}/${spec}.jpg`} style={{ height: 20, width: 20 }} />}
 				<Text
 					color={color}

@@ -59,7 +59,7 @@ export default function EditCharacter({ character, opened, close }: Props) {
 		addCharacterToRoster({ id: character.id, name, characterClass, spec, role })
 
 		jwtAxios
-			.put(`/guilds/${currGuild.id}/characters/${character.id}/`, { name, character_class: characterClass, spec, role })
+			.put(`/guilds/${currGuild.id}/characters/${character.id}/`, { name, characterClass, spec, role })
 			.then((response) => {
 				sendRosterUpdate({
 					...response.data,

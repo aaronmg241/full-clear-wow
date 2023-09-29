@@ -79,13 +79,12 @@ class CharacterSpec(models.TextChoices):
     HAVOC = 'havoc', _('Havoc')
     VENGEANCE = 'vengeance', _('Vengeance')
 
-# class Boss(models.TextChoices):
-#     KAZZARA = '1', _('Kazzara')
-#     ASSAULT = '2', _('Assault')
-#     AMALGAMATION = '3', _('Amalgamation')
-#     EXPERIMENTS = '4', _('Experiments')
-#     RASHOK = '5', _('Rashok')
-#     ZSKARN = '6', _('Zskarn')
-#     MAGMORAX = '7', _('Magmorax')
-#     NELTHARION = '8', _('Neltharion')
-#     SARKARETH = '9', _('Sarkareth')
+class EventType(models.TextChoices):
+    SCC = 'SPELL_CAST_SUCCESS'
+    SCS	= 'SPELL_CAST_START'
+    SAA	= 'SPELL_AURA_APPLIED'
+    SAR	= 'SPELL_AURA_REMOVED'
+
+class Difficulty(models.TextChoices):
+    HEROIC = 'heroic', _('Heroic')
+    MYTHIC = 'mythic', _('Mythic')

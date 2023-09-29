@@ -2,8 +2,7 @@ import { Flex, Paper, Table } from '@mantine/core'
 import BossMenu from '../../components/Menus/BossMenu'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import { plans } from '../../types/data/Plans'
-import { secondsToMMSS } from '../../utils/cooldowns'
-import CharacterDisplay from '../../components/Roster/CharacterDisplay'
+import Row from '../../components/CooldownTable/Row'
 
 export default function Cooldowns() {
 	const currBoss = useGuildStore((state) => state.currBoss)
@@ -12,37 +11,27 @@ export default function Cooldowns() {
 
 	const healers = bossRoster.filter((character) => character.role === 'healer')
 
+	console.log(healers)
+
 	return (
 		<Flex direction='column' w='100%'>
 			<Flex gap='1rem' justify='end' mb='1rem'>
 				<BossMenu />
 			</Flex>
 			<Paper bg='dark.8' h='fit-content' p='1rem'>
-				<Table highlightOnHover>
+				<Table>
 					<thead>
 						<tr>
-							<th>Ability</th>
-							<th>Time</th>
-							{healers.map((healer) => (
-								<th>
-									<CharacterDisplay character={healer} />
-								</th>
+							<th style={{ width: 200 }}>Ability</th>
+							<th style={{ width: 50 }}>Time</th>
+							{Array.from({ length: 6 }).map((_, index) => (
+								<th style={{ maxWidth: '60px' }} key={index}></th>
 							))}
-							<th>Others</th>
 						</tr>
 					</thead>
 					<tbody>
 						{rows.map((row) => {
-							return (
-								<tr>
-									<td>{row.bossAbility}</td>
-									<td>{secondsToMMSS(row.time)}</td>
-									{healers.map(() => (
-										<td></td>
-									))}
-									<td></td>
-								</tr>
-							)
+							return <Row row={row} healers={healers} key={row.id} />
 						})}
 					</tbody>
 				</Table>

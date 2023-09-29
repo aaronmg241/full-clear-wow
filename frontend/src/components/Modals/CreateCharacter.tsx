@@ -57,7 +57,7 @@ export default function CreateCharacter() {
 		// I think we can not optimistically update it for now.
 
 		jwtAxios
-			.post(`/guilds/${currGuild.id}/characters/`, { name, character_class: characterClass, spec, role })
+			.post(`/guilds/${currGuild.id}/characters/`, { name, characterClass, spec, role })
 			.then((response) => {
 				addCharacterToRoster({ ...response.data })
 				sendRosterUpdate({

@@ -5,7 +5,8 @@ export const classes: { [key: string]: Class } = {
 		readableName: 'Death Knight',
 		importantAbilities: [
 			{
-				name: 'anti-magic-zone',
+				spellName: 'anti-magic-zone',
+				readableName: 'Anti Magic Zone',
 				cooldown: 120,
 				spellID: 51052,
 			},
@@ -34,7 +35,8 @@ export const classes: { [key: string]: Class } = {
 		defaultSpec: 'havoc',
 		importantAbilities: [
 			{
-				name: 'darkness',
+				spellName: 'darkness',
+				readableName: 'Darkness',
 				cooldown: 300,
 				spellID: 196718,
 			},
@@ -78,22 +80,26 @@ export const classes: { [key: string]: Class } = {
 				role: 'healer',
 				importantAbilities: [
 					{
-						name: 'flourish',
+						spellName: 'flourish',
+						readableName: 'Flourish',
 						cooldown: 180,
 						spellID: 197721,
 					},
 					{
-						name: 'convoke-the-spirits',
+						spellName: 'convoke-the-spirits',
+						readableName: 'Convoke',
 						cooldown: 180,
 						spellID: 323764,
 					},
 					{
-						name: 'stampeding-roar',
+						spellName: 'stampeding-roar',
+						readableName: 'Stampeding Roar',
 						cooldown: 180,
 						spellID: 77761,
 					},
 					{
-						name: 'tranquility',
+						spellName: 'tranquility',
+						readableName: 'Tranquility',
 						cooldown: 180,
 						spellID: 740,
 					},
@@ -112,32 +118,38 @@ export const classes: { [key: string]: Class } = {
 				role: 'healer',
 				importantAbilities: [
 					{
-						name: 'blessing-of-the-bronze',
+						spellName: 'blessing-of-the-bronze',
+						readableName: 'Blessing of the Bronze',
 						cooldown: 180,
 						spellID: 381748,
 					},
 					{
-						name: 'dream-flight',
+						spellName: 'dream-flight',
+						readableName: 'Dream Flight',
 						cooldown: 180,
 						spellID: 362361,
 					},
 					{
-						name: 'emerald-communion',
+						spellName: 'emerald-communion',
+						readableName: 'Emerald Communion',
 						cooldown: 180,
 						spellID: 370984,
 					},
 					{
-						name: 'rewind',
+						spellName: 'rewind',
+						readableName: 'Rewind',
 						cooldown: 180,
 						spellID: 363534,
 					},
 					{
-						name: 'stasis',
+						spellName: 'stasis',
+						readableName: 'Stasis',
 						cooldown: 180,
 						spellID: 370537,
 					},
 					{
-						name: 'time-spiral',
+						spellName: 'time-spiral',
+						readableName: 'Time Spiral',
 						cooldown: 180,
 						spellID: 374968,
 					},
@@ -212,17 +224,20 @@ export const classes: { [key: string]: Class } = {
 				role: 'healer',
 				importantAbilities: [
 					{
-						name: 'cocoon',
+						spellName: 'cocoon',
+						readableName: 'Life Cocoon',
 						cooldown: 180,
 						spellID: 116849,
 					},
 					{
-						name: "invoke-y'ulon-the-jade-serpent",
+						spellName: "invoke-y'ulon-the-jade-serpent",
+						readableName: "Y'ulon",
 						cooldown: 180,
 						spellID: 323664,
 					},
 					{
-						name: 'revival',
+						spellName: 'revival',
+						readableName: 'Revival',
 						cooldown: 180,
 						spellID: 115310,
 					},
@@ -246,27 +261,32 @@ export const classes: { [key: string]: Class } = {
 				role: 'healer',
 				importantAbilities: [
 					{
-						name: 'aura-mastery',
+						spellName: 'aura-mastery',
+						readableName: 'Aura Mastery',
 						cooldown: 180,
 						spellID: 135872,
 					},
 					{
-						name: 'avenging-wrath',
+						spellName: 'avenging-wrath',
+						readableName: 'Avenging Wrath',
 						cooldown: 120,
 						spellID: 135875,
 					},
 					{
-						name: 'blessing-of-sacrifice',
+						spellName: 'blessing-of-sacrifice',
+						readableName: 'Blessing of Sacrifice',
 						cooldown: 120,
 						spellID: 135966,
 					},
 					{
-						name: 'blessing-of-protection',
+						spellName: 'blessing-of-protection',
+						readableName: 'Blessing of Protection',
 						cooldown: 300,
 						spellID: 135964,
 					},
 					{
-						name: 'blessing-of-spellwarding',
+						spellName: 'blessing-of-spellwarding',
+						readableName: 'Blessing of Spellwarding',
 						cooldown: 300,
 						spellID: 135880,
 					},
@@ -295,22 +315,26 @@ export const classes: { [key: string]: Class } = {
 				role: 'healer',
 				importantAbilities: [
 					{
-						name: 'evangelism',
+						spellName: 'evangelism',
+						readableName: 'Evangelism',
 						cooldown: 90,
 						spellID: 135895,
 					},
 					{
-						name: 'power-word-barrier',
+						spellName: 'power-word-barrier',
+						readableName: 'Power Word: Barrier',
 						cooldown: 180,
 						spellID: 253400,
 					},
 					{
-						name: 'rapture',
+						spellName: 'rapture',
+						readableName: 'Rapture',
 						cooldown: 90,
 						spellID: 237548,
 					},
 					{
-						name: 'pain-suppression',
+						spellName: 'pain-suppression',
+						readableName: 'Pain Suppression',
 						cooldown: 180,
 						spellID: 135936,
 					},
@@ -321,17 +345,20 @@ export const classes: { [key: string]: Class } = {
 				readableName: 'Holy',
 				importantAbilities: [
 					{
-						name: 'holy-word-salvation',
+						spellName: 'holy-word-salvation',
+						readableName: 'Holy Word: Salvation',
 						cooldown: 240,
 						spellID: 265202,
 					},
 					{
-						name: 'divine-hymn',
+						spellName: 'divine-hymn',
+						readableName: 'Divine Hymn',
 						cooldown: 180,
 						spellID: 237540,
 					},
 					{
-						name: 'guardian-spirit',
+						spellName: 'guardian-spirit',
+						readableName: 'Guardian Spirit',
 						cooldown: 180,
 						spellID: 237542,
 					},
@@ -378,17 +405,20 @@ export const classes: { [key: string]: Class } = {
 				role: 'healer',
 				importantAbilities: [
 					{
-						name: 'spirit-link',
+						spellName: 'spirit-link',
+						readableName: 'Spirit Link Totem',
 						cooldown: 180,
 						spellID: 98008,
 					},
 					{
-						name: 'healing-tide-totem',
+						spellName: 'healing-tide-totem',
+						readableName: 'Healing Tide Totem',
 						cooldown: 180,
 						spellID: 108280,
 					},
 					{
-						name: 'ascendance',
+						spellName: 'ascendance',
+						readableName: 'Ascendance',
 						cooldown: 180,
 						spellID: 114052,
 					},
@@ -435,7 +465,8 @@ export const classes: { [key: string]: Class } = {
 		defaultSpec: 'arms',
 		importantAbilities: [
 			{
-				name: 'rallying-cry',
+				spellName: 'rallying-cry',
+				readableName: 'Rallying Cry',
 				cooldown: 180,
 				spellID: 97462,
 			},
@@ -459,3 +490,21 @@ export const classes: { [key: string]: Class } = {
 		},
 	},
 }
+
+function getAllImportantAbilities(): Ability[] {
+	const abilities: Ability[] = []
+
+	for (const className in classes) {
+		const classData = classes[className]
+		abilities.push(...classData.importantAbilities)
+
+		for (const specName in classData.specs) {
+			const specData = classData.specs[specName]
+			abilities.push(...specData.importantAbilities)
+		}
+	}
+
+	return abilities
+}
+
+export const allImportantAbilities = getAllImportantAbilities()
