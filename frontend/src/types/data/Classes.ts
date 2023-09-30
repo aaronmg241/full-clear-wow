@@ -251,7 +251,7 @@ export const classes: { [key: string]: Class } = {
 		defaultSpec: 'retribution',
 		specs: {
 			holy: {
-				readableName: 'holy',
+				readableName: 'Holy',
 				role: 'healer',
 				importantAbilities: [
 					{
@@ -287,12 +287,12 @@ export const classes: { [key: string]: Class } = {
 				],
 			},
 			protection: {
-				readableName: 'protection',
+				readableName: 'Protection',
 				role: 'tank',
 				importantAbilities: [],
 			},
 			retribution: {
-				readableName: 'retribution',
+				readableName: 'Retribution',
 				role: 'melee',
 				importantAbilities: [],
 			},
@@ -395,7 +395,7 @@ export const classes: { [key: string]: Class } = {
 		defaultSpec: 'enhancement',
 		specs: {
 			restoration: {
-				readableName: 'restoration',
+				readableName: 'Restoration',
 				role: 'healer',
 				importantAbilities: [
 					{
@@ -419,12 +419,12 @@ export const classes: { [key: string]: Class } = {
 				],
 			},
 			enhancement: {
-				readableName: 'enhancement',
+				readableName: 'Enhancement',
 				role: 'melee',
 				importantAbilities: [],
 			},
 			elemental: {
-				readableName: 'elemental',
+				readableName: 'Elemental',
 				role: 'ranged',
 				importantAbilities: [],
 			},
