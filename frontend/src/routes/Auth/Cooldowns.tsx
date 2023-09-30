@@ -6,7 +6,6 @@ import { plans } from '../../types/data/Plans'
 import Row from '../../components/CooldownTable/Row'
 
 export default function Cooldowns() {
-	const bossRoster = useGuildStore((state) => state.bossRoster)
 	const currBossPlan = useGuildStore((state) => state.currBossPlan)
 	const setCurrBossPlan = useGuildStore((state) => state.setCurrBossPlan)
 	// const currBossPlan = plans.find((plan) => plan.boss === currBoss)?.rows || []
@@ -16,8 +15,6 @@ export default function Cooldowns() {
 			setCurrBossPlan({ rows: plans[0].rows })
 		}
 	}, [])
-
-	const healers = bossRoster.filter((character) => character.role === 'healer')
 
 	return (
 		<Flex direction='column' w='100%'>
@@ -38,7 +35,7 @@ export default function Cooldowns() {
 						</thead>
 						<tbody>
 							{currBossPlan.rows.map((row, index) => {
-								return <Row row={row} healers={healers} key={row.id} rowIndex={index} />
+								return <Row row={row} key={row.id} rowIndex={index} />
 							})}
 						</tbody>
 					</Table>

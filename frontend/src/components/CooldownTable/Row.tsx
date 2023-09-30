@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Menu, Button, Text, TextInput, rem } from '@mantine/core'
 
 import { secondsToMMSS } from '../../utils/cooldowns'
-import HealerHoverCard from './HealerPopover'
 import CooldownSearch from './CooldownSearch'
 import AssignedAbilityDisplay from './AssignedAbilityDisplay'
 import { IconX } from '@tabler/icons-react'
@@ -11,7 +10,6 @@ import HealerMenuList from './HealerMenuList'
 
 type Props = {
 	row: BossPlanRow
-	healers: Character[]
 	rowIndex: number
 }
 
@@ -25,7 +23,7 @@ function findCooldown(row: BossPlanRow, column: number) {
 	return null
 }
 
-export default function Row({ row, healers, rowIndex }: Props) {
+export default function Row({ row, rowIndex }: Props) {
 	return (
 		<tr>
 			<td>{row.spellName}</td>
@@ -33,7 +31,7 @@ export default function Row({ row, healers, rowIndex }: Props) {
 			{Array.from({ length: 6 }).map((_, columnIndex) => {
 				return (
 					<td key={columnIndex} width='120px'>
-						<CooldownMenu row={row} rowIndex={rowIndex} healers={healers} columnIndex={columnIndex} />
+						<CooldownMenu row={row} rowIndex={rowIndex} columnIndex={columnIndex} />
 					</td>
 				)
 			})}
@@ -41,7 +39,7 @@ export default function Row({ row, healers, rowIndex }: Props) {
 	)
 }
 
-function CooldownMenu({ row, healers, rowIndex, columnIndex }: Props & { columnIndex: number }) {
+function CooldownMenu({ row, rowIndex, columnIndex }: Props & { columnIndex: number }) {
 	const [isSearching, setIsSearching] = useState(false)
 	const [searchValue, setSearchValue] = useState('')
 	const [menuOpened, setMenuOpened] = useState(false)
