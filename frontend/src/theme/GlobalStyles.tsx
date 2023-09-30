@@ -9,7 +9,7 @@ export default function GlobalStyles() {
 				body: {
 					'--danger-red': theme.colors.red[6],
 					'--success-green': theme.colors.green[6],
-					'--hover-bg': '#BAC8FF22',
+					'--hover-bg': 'rgba(92, 95, 102, 0.35)',
 					'--hover-indigo-bg': '#364FC733',
 				},
 				'.mantine-Menu-dropdown': {

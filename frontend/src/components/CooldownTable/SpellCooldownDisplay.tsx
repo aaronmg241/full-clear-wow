@@ -30,7 +30,7 @@ export default function SpellCooldownDisplay({
 				styles={(theme) => ({
 					root: {
 						'&:not([data-disabled])': theme.fn.hover({
-							background: 'var(--hover-indigo-bg)',
+							background: 'var(--hover-bg)',
 						}),
 					},
 					label: {
