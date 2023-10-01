@@ -1,5 +1,5 @@
 import { useEffect, useContext } from 'react'
-import { Flex, Paper } from '@mantine/core'
+import { Flex } from '@mantine/core'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import CreateBossPlan from '../../components/Modals/CreateBossPlan'
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'

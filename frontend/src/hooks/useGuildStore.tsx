@@ -25,9 +25,6 @@ interface Store {
 	currBossPlan: null | BossPlan
 	setCurrBossPlan: (plan: BossPlan) => void
 
-	addCooldownToBossPlan: (rowNumber: number, columnNumber: number, character: Character, ability: Ability) => void
-	removeCooldownFromBossPlan: (rowNumber: number, columnNumber: number) => void
-
 	clearStore: () => void
 }
 
@@ -62,35 +59,6 @@ export const useGuildStore = createWithEqualityFn<Store>()(
 		setBossPlans: (plans: BossPlan[]) => set({ bossPlans: plans }),
 
 		setCurrBossPlan: (plan: BossPlan) => set({ currBossPlan: plan }),
-		addCooldownToBossPlan: (rowNumber: number, columnNumber: number, character: Character, ability: Ability) => {
-			const newBossPlan = { ...useGuildStore.getState().currBossPlan } as BossPlan
-
-			console.log({ rowNumber, columnNumber, character, ability })
-			if (!newBossPlan || !newBossPlan.rows) return
-
-			const row = newBossPlan.rows[rowNumber]
-
-			if (!row) return
-
-			console.log('here')
-
-			row.assignedCooldowns = row.assignedCooldowns.filter((cooldown) => cooldown.column !== columnNumber)
-			row.assignedCooldowns.push({ column: columnNumber, character, ability })
-
-			set({ currBossPlan: newBossPlan })
-		},
-		removeCooldownFromBossPlan: (rowNumber: number, columnNumber: number) => {
-			const newBossPlan = { ...useGuildStore.getState().currBossPlan } as BossPlan
-
-			if (!newBossPlan || !newBossPlan.rows) return
-
-			const row = newBossPlan.rows[rowNumber]
-
-			if (!row) return
-
-			row.assignedCooldowns = row.assignedCooldowns.filter((cooldown) => cooldown.column !== columnNumber)
-			set({ currBossPlan: newBossPlan })
-		},
 
 		clearStore: () => set(initialState),
 	}),
