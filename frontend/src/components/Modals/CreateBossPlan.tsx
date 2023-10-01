@@ -4,19 +4,25 @@ import { useForm } from '@mantine/form'
 import { IconPlus } from '@tabler/icons-react'
 
 import BossDisplay from '../BossDisplay'
-import { bosses } from '../../types/data/Raid'
 import { plans } from '../../types/data/Plans'
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { CurrentGuildContext } from '../Contexts/CurrentGuildContext'
 import { notifications } from '@mantine/notifications'
+import { useGuildStore } from '../../hooks/useGuildStore'
 
-const bossData = bosses.map((boss: Boss) => {
-	return { value: boss.id.toString(), label: boss.name, boss }
-})
+const bossData = plans
+	.map((plan) => plan.boss)
+	.map((boss: Boss) => {
+		return { value: boss.id.toString(), label: boss.name, boss }
+	})
 
 export default function CreateBossPlan() {
 	const [opened, { open, close }] = useDisclosure(false)
+	const [loading, setLoading] = useState(false)
+	const bossPlans = useGuildStore((state) => state.bossPlans)
+	const setBossPlans = useGuildStore((state) => state.setBossPlans)
+	const setCurrBossPlan = useGuildStore((state) => state.setCurrBossPlan)
 	const { currGuild } = useContext(CurrentGuildContext)
 	const jwtAxios = useAxiosWithInterceptor()
 	const form = useForm({
@@ -58,6 +64,7 @@ export default function CreateBossPlan() {
 				<form
 					onSubmit={form.onSubmit(async () => {
 						if (!currGuild) return
+						setLoading(true)
 						jwtAxios
 							.post(`/guilds/${currGuild.id}/plans/`, {
 								name: form.values.planName,
@@ -65,13 +72,16 @@ export default function CreateBossPlan() {
 								difficulty: form.values.difficulty.toLowerCase(),
 								rows: plans.find((plan) => plan.boss.id === parseInt(form.values.boss))?.rows,
 							})
-							.then(() => {
+							.then((response) => {
 								notifications.show({
 									title: 'Success',
 									message: 'Plan successfully created.',
 									color: 'green',
 									autoClose: 3000,
 								})
+								setBossPlans([...bossPlans, response.data])
+								setCurrBossPlan(response.data)
+								close()
 							})
 							.catch(() => {
 								notifications.show({
@@ -81,6 +91,7 @@ export default function CreateBossPlan() {
 									autoClose: 4000,
 								})
 							})
+							.finally(() => setLoading(false))
 					})}
 				>
 					<TextInput label='Plan Name' size='sm' {...form.getInputProps('planName')} data-autofocus maxLength={24} />
@@ -103,7 +114,7 @@ export default function CreateBossPlan() {
 							{...form.getInputProps('difficulty')}
 						/>
 					</Flex>
-					<Button mt='1rem' ml='auto' display='block' type='submit'>
+					<Button mt='1rem' ml='auto' display='block' type='submit' loading={loading}>
 						Create Plan
 					</Button>
 				</form>
