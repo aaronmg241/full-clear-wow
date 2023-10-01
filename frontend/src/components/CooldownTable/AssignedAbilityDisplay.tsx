@@ -1,9 +1,20 @@
 import { Flex, Text } from '@mantine/core'
 import { motion } from 'framer-motion'
 
-import { classes } from '../../types/data/Classes'
+import { allImportantAbilities, classes } from '../../types/data/Classes'
+import { useGuildStore } from '../../hooks/useGuildStore'
 
-export default function AssignedAbilityDisplay({ ability, character }: { ability: Ability; character: Character }) {
+export default function AssignedAbilityDisplay({ assignedCooldown }: { assignedCooldown: AssignedCooldown }) {
+	const bossRoster = useGuildStore((state) => state.bossRoster)
+
+	const character = bossRoster.find((character) => character.id === assignedCooldown.character)
+
+	if (!character) return null
+
+	const ability = allImportantAbilities.find((ability) => ability.spellID === assignedCooldown.spellId)
+
+	if (!ability) return null
+
 	return (
 		<motion.div initial={{ opacity: 0.6, y: 2 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
 			<Flex align='center' w='100%'>

@@ -35,6 +35,11 @@ class BossPlanRowSerializer(serializers.ModelSerializer):
         model = BossPlanRow
         fields = '__all__'
 
+class AssignedCooldownSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AssignedCooldown
+        fields = '__all__'
+
 # TODO: See if we actually need this serializer
 class CustomPasswordResetSerializer(PasswordResetSerializer):
         

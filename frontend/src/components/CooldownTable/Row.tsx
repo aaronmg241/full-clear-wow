@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Menu, Button, Text, TextInput, rem } from '@mantine/core'
 
 import { secondsToMMSS } from '../../utils/cooldowns'
 import CooldownSearch from './CooldownSearch'
 import AssignedAbilityDisplay from './AssignedAbilityDisplay'
 import { IconX } from '@tabler/icons-react'
-import { useGuildStore } from '../../hooks/useGuildStore'
 import HealerMenuList from './HealerMenuList'
+import { RowsContext } from '../Contexts/RowsContext'
 
 type Props = {
 	row: BossPlanRow
@@ -44,7 +44,7 @@ function CooldownMenu({ row, rowIndex, columnIndex }: Props & { columnIndex: num
 	const [searchValue, setSearchValue] = useState('')
 	const [menuOpened, setMenuOpened] = useState(false)
 
-	const removeCooldownFromBossPlan = useGuildStore((state) => state.removeCooldownFromBossPlan)
+	const { removeCooldownFromRow } = useContext(RowsContext)
 
 	const assignedAbility = findCooldown(row, columnIndex)
 
@@ -63,8 +63,9 @@ function CooldownMenu({ row, rowIndex, columnIndex }: Props & { columnIndex: num
 				<Button
 					w='100%'
 					h='100%'
-					bg='transparent'
+					bg={menuOpened ? 'var(--hover-indigo-bg)' : 'transparent'}
 					p={0}
+					onClick={() => {}}
 					style={{ borderRadius: 0 }}
 					styles={(theme) => ({
 						root: {
@@ -79,7 +80,7 @@ function CooldownMenu({ row, rowIndex, columnIndex }: Props & { columnIndex: num
 				>
 					{assignedAbility && (
 						<Text size='sm' weight={500}>
-							<AssignedAbilityDisplay character={assignedAbility.character} ability={assignedAbility.ability} />
+							<AssignedAbilityDisplay assignedCooldown={assignedAbility} />
 						</Text>
 					)}
 				</Button>
@@ -92,7 +93,7 @@ function CooldownMenu({ row, rowIndex, columnIndex }: Props & { columnIndex: num
 							color='var(--danger-red)'
 							icon={<IconX size={rem(20)} />}
 							onClick={() => {
-								removeCooldownFromBossPlan(rowIndex, columnIndex)
+								removeCooldownFromRow(rowIndex, columnIndex)
 							}}
 						>
 							Remove Cooldown

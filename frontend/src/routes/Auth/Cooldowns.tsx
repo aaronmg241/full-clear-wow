@@ -36,16 +36,14 @@ export default function Cooldowns() {
 	}, [])
 
 	return (
-		<Flex direction='column' w='100%'>
+		<Flex direction='column' w='100%' h='100%'>
 			<Flex gap='1rem' justify='end' mb='1rem'>
 				<CreateBossPlan />
 				<PlanMenu />
 			</Flex>
-			<Paper bg='dark.8' h='fit-content' p='1rem'>
-				<RowsContextProvider>
-					<CooldownTable />
-				</RowsContextProvider>
-			</Paper>
+			<RowsContextProvider>
+				<CooldownTable />
+			</RowsContextProvider>
 		</Flex>
 	)
 }

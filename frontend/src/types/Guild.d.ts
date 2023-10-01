@@ -69,8 +69,10 @@ type BossPlanRow = {
 
 type AssignedCooldown = {
 	column: number
-	character: Character
-	ability: Ability
+	character?: string
+	customInstruction?: string
+	spellId?: number
+	forEveryone?: boolean
 }
 
 type EventType = 'SCC' | 'SCS' | 'SAR' | 'SAA'

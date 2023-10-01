@@ -187,7 +187,7 @@ class CreateBossRosterCharacter(GuildAuthenticationMixin, APIView):
         return Response(status=200)
     
 
-class BossPlanView(GuildAuthenticationMixin, APIView):
+class BossPlansView(GuildAuthenticationMixin, APIView):
     permission_classes = [IsAuthenticated]
     throttle_classes = [UserRateThrottle]
 
@@ -233,22 +233,70 @@ class BossPlanView(GuildAuthenticationMixin, APIView):
 
         return Response(plan_serializer.data, status=201)
     
-class BossPlanRowView(GuildAuthenticationMixin, APIView):
+class BossPlanView(GuildAuthenticationMixin, APIView):
     permission_classes = [IsAuthenticated]
     throttle_classes = [UserRateThrottle]
 
     def get(self, request, guild_id, plan_id):
         if self.get_user_role(user=request.user, guild=guild_id) is None:
             return Response({'detail': 'You are not in this guild.'}, status=403)
+        boss_plan = get_object_or_404(BossPlan, id=plan_id)
+
+        roster = BossRoster.objects.filter(guild_id=guild_id, boss_id=boss_plan.boss_id).first()
+
+        if roster is None:
+            return Response({'detail': 'No roster found for this boss.'}, status=404)
+        
+        characters = GuildCharacterSerializer(roster.characters.all(), many=True).data
+
         boss_plan_rows = BossPlanRow.objects.filter(boss_plan_id=plan_id)
 
         data = BossPlanRowSerializer(boss_plan_rows, many=True).data
 
+        
+
         row_ids = [ row['id'] for row in data ]
 
-        assigned_cooldowns = AssignedCooldown.objects.filter(boss_plan_row_id__in=row_ids)
-
+        # Attach cooldowns to each row
+        assigned_cooldowns = AssignedCooldown.objects.filter(boss_plan_row__in=row_ids)
+        assigned_cooldowns_serializer = AssignedCooldownSerializer(assigned_cooldowns, many=True).data
         for row in data:
-            row['assigned_cooldowns'] = [ cooldown for cooldown in assigned_cooldowns if cooldown.boss_plan_row_id == row['id'] ]
+            row['assigned_cooldowns'] = []
+            for cooldown in assigned_cooldowns_serializer:
+                if str(cooldown['boss_plan_row']) == row['id']:
+                    row['assigned_cooldowns'].append(cooldown)
 
-        return Response(data, status=200)
+
+        return Response({ 'roster': characters, 'rows': data }, status=200)
+    
+class AssignedCooldownView(GuildAuthenticationMixin, APIView):
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
+
+    def post(self, request, guild_id, row_id):
+        if self.get_user_role(user=request.user, guild=guild_id) is None:
+            return Response({'detail': 'You are not in this guild.'}, status=403)
+
+        print('here')
+        boss_plan_row = get_object_or_404(BossPlanRow, id=row_id)
+        data = request.data
+        data['boss_plan_row'] = boss_plan_row.id
+
+        serializer = AssignedCooldownSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        else:
+            return Response(serializer.errors, status=400)
+        
+    def delete(self, request, guild_id, row_id):
+        if self.get_user_role(user=request.user, guild=guild_id) is None:
+            return Response({'detail': 'You are not in this guild.'}, status=403)
+
+        assigned_cooldown = get_object_or_404(AssignedCooldown, boss_plan_row_id=row_id, column=request.data['column'])
+
+        assigned_cooldown.delete()
+
+        return Response(status=200)
+

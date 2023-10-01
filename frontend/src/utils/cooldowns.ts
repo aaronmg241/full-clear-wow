@@ -1,3 +1,5 @@
+import { allImportantAbilities } from '../types/data/Classes'
+
 export function secondsToMMSS(seconds: number) {
 	const minutes = Math.floor(seconds / 60)
 	const remainingSeconds = seconds % 60
@@ -11,8 +13,12 @@ export function secondsToMMSS(seconds: number) {
 export function findRemainingCooldown(rows: BossPlanRow[], rowIndex: number, character: Character, ability: Ability): number {
 	for (let index = 0; index <= rowIndex; index++) {
 		for (const cooldown of rows[index].assignedCooldowns) {
-			if (cooldown.ability.spellID === ability.spellID && cooldown.character.id === character.id) {
-				return Math.max(0, cooldown.ability.cooldown - (rows[rowIndex].time - rows[index].time))
+			if (cooldown.spellId === ability.spellID && cooldown.character === character.id) {
+				const ability = allImportantAbilities.find((ability) => ability.spellID === cooldown.spellId)
+
+				if (!ability) return 0
+
+				return Math.max(0, ability.cooldown - (rows[rowIndex].time - rows[index].time))
 			}
 		}
 	}

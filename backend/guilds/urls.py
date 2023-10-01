@@ -10,6 +10,7 @@ urlpatterns = [
 	path('<string:guild_id>/characters/', view=views.CreateCharacterView.as_view()),
 	path('<string:guild_id>/characters/<int:character_id>/', view=views.UpdateCharacterView.as_view()),
 	path('<string:guild_id>/boss_roster/<int:boss_id>/', view=views.CreateBossRosterCharacter.as_view()),
-	path('<string:guild_id>/plans/', view=views.BossPlanView.as_view()),
-	path('<string:guild_id>/plans/<int:plan_id>/rows/', view=views.BossPlanRowView.as_view()),
+	path('<string:guild_id>/plans/', view=views.BossPlansView.as_view()),
+	path('<string:guild_id>/plans/<int:plan_id>/', view=views.BossPlanView.as_view()),
+	path('<string:guild_id>/rows/<string:row_id>/cooldowns/', view=views.AssignedCooldownView.as_view()),
 ]

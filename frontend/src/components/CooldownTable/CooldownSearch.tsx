@@ -39,8 +39,7 @@ function findAllCooldowns(bossRoster: any, rows: BossPlanRow[], rowIndex: number
 
 export default function CooldownSearch({ searchValue, rowIndex, columnIndex }: Props) {
 	const bossRoster = useGuildStore((store) => store.bossRoster)
-	const addCooldownToBossPlan = useGuildStore((store) => store.addCooldownToBossPlan)
-	const { rows } = useContext(RowsContext)
+	const { rows, addCooldownToRow } = useContext(RowsContext)
 
 	const allCooldowns = useMemo(() => findAllCooldowns(bossRoster, rows, rowIndex), [bossRoster, rows, rowIndex])
 
@@ -65,7 +64,7 @@ export default function CooldownSearch({ searchValue, rowIndex, columnIndex }: P
 						cooldownRemaining={cooldown.cooldownRemaining}
 						character={cooldown.character}
 						onClick={() => {
-							addCooldownToBossPlan(rowIndex, columnIndex, cooldown.character, cooldown.ability)
+							addCooldownToRow(rowIndex, columnIndex, cooldown.character, cooldown.ability)
 						}}
 					/>
 				))}
