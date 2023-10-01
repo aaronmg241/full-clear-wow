@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import { Flex, Menu, Popover } from '@mantine/core'
 
 import SpellCooldownDisplay from './SpellCooldownDisplay'
@@ -5,6 +6,7 @@ import CharacterDisplay from '../Roster/CharacterDisplay'
 import { classes } from '../../types/data/Classes'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import { findRemainingCooldown } from '../../utils/cooldowns'
+import { RowsContext } from '../Contexts/RowsContext'
 
 type Props = {
 	character: Character
@@ -18,6 +20,7 @@ type Props = {
 export default function HealerPopover({ character, rowIndex, columnIndex, closeMenu, currHealer, onClick }: Props) {
 	const addCooldownToBossPlan = useGuildStore((state) => state.addCooldownToBossPlan)
 	const currBossPlan = useGuildStore((state) => state.currBossPlan)
+	const { rows } = useContext(RowsContext)
 	const opened = currHealer === character.id
 
 	if (!currBossPlan) return null
@@ -27,7 +30,7 @@ export default function HealerPopover({ character, rowIndex, columnIndex, closeM
 	const abilitiesWithRemainingCooldown = abilities.map((ability) => {
 		return {
 			...ability,
-			cooldownRemaining: findRemainingCooldown(currBossPlan, rowIndex, character, ability),
+			cooldownRemaining: findRemainingCooldown(rows, rowIndex, character, ability),
 		}
 	})
 

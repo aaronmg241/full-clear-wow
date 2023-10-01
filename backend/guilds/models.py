@@ -1,4 +1,3 @@
-from collections.abc import Iterable
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -121,7 +120,7 @@ class BossPlan(models.Model):
     version = models.IntegerField(null=False, blank=False, default=1)
 
     def __str__(self):
-        return f"{self.boss_id} - {self.boss_roster.guild.name}"
+        return f"{self.name} - {self.guild.name}"
     
     def save(self, *args, **kwargs):
         if not self.boss_id:
@@ -130,26 +129,27 @@ class BossPlan(models.Model):
 
 # https://wago.io/n7l5uN3YM - Kaze Weakaura describing formatting spells for ert
 class BossPlanRow(models.Model):
-    BossPlan = models.ForeignKey(BossPlan, on_delete=models.CASCADE)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    boss_plan = models.ForeignKey(BossPlan, on_delete=models.CASCADE)
 
     custom_name = models.CharField(max_length=50, null=True, blank=True)
     time = models.IntegerField(null=False, blank=False, validators=[
             MaxValueValidator(900),
             MinValueValidator(0)
         ])
-    spell_name = models.CharField(max_length=50, null=False, blank=False)
-    spell_id = models.IntegerField(null=False, blank=False)
+    spell_name = models.CharField(max_length=50, null=True, blank=True)
+    spell_id = models.IntegerField(null=True, blank=True)
     spell_link = models.CharField(max_length=200, null=True, blank=True) # Link to wowhead with spell information
     counter = models.IntegerField(null=False, blank=False, default=0)
-    event_type = models.CharField(choices=EventType.choices, max_length=20)
+    event_type = models.CharField(choices=EventType.choices, max_length=20, null=True, blank=True)
 
     order = models.IntegerField(null=False, blank=False, default=999)
 
 class AssignedCooldown(models.Model):
-    BossPlanRow = models.ForeignKey(BossPlanRow, on_delete=models.CASCADE)
-    GuildCharacter = models.ForeignKey(GuildCharacter, on_delete=models.CASCADE, null=True)
+    boss_plan_row = models.ForeignKey(BossPlanRow, on_delete=models.CASCADE)
+    character = models.ForeignKey(GuildCharacter, on_delete=models.CASCADE, null=True)
 
     custom_instruction = models.CharField(max_length=60, null=True, blank=True)
     spell_id = models.IntegerField(null=True, blank=True)
-    column = models.IntegerField(null=False, blank=False, default=999)
+    column = models.IntegerField(null=False, blank=False, default=0)
     for_everyone = models.BooleanField(default=False)

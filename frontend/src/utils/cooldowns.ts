@@ -8,11 +8,11 @@ export function secondsToMMSS(seconds: number) {
 	return `${mm}:${ss}`
 }
 
-export function findRemainingCooldown(bossPlan: BossPlan, rowIndex: number, character: Character, ability: Ability): number {
+export function findRemainingCooldown(rows: BossPlanRow[], rowIndex: number, character: Character, ability: Ability): number {
 	for (let index = 0; index <= rowIndex; index++) {
-		for (const cooldown of bossPlan.rows[index].assignedCooldowns) {
+		for (const cooldown of rows[index].assignedCooldowns) {
 			if (cooldown.ability.spellID === ability.spellID && cooldown.character.id === character.id) {
-				return Math.max(0, cooldown.ability.cooldown - (bossPlan.rows[rowIndex].time - bossPlan.rows[index].time))
+				return Math.max(0, cooldown.ability.cooldown - (rows[rowIndex].time - rows[index].time))
 			}
 		}
 	}

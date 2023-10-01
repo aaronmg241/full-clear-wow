@@ -1,10 +1,11 @@
-import { useMemo } from 'react'
+import { useMemo, useContext } from 'react'
 import { Flex, ScrollArea } from '@mantine/core'
 
 import SpellCooldownDisplay from './SpellCooldownDisplay'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import { classes } from '../../types/data/Classes'
 import { findRemainingCooldown } from '../../utils/cooldowns'
+import { RowsContext } from '../Contexts/RowsContext'
 
 type Props = {
 	searchValue: string
@@ -12,7 +13,7 @@ type Props = {
 	columnIndex: number
 }
 
-function findAllCooldowns(bossRoster: any, currBossPlan: BossPlan, rowIndex: number) {
+function findAllCooldowns(bossRoster: any, rows: BossPlanRow[], rowIndex: number) {
 	const cooldowns: any[] = []
 
 	for (const character of bossRoster) {
@@ -20,7 +21,7 @@ function findAllCooldowns(bossRoster: any, currBossPlan: BossPlan, rowIndex: num
 			...classes[character.characterClass].importantAbilities,
 			...classes[character.characterClass].specs[character.spec].importantAbilities,
 		]) {
-			const cooldownRemaining = findRemainingCooldown(currBossPlan, rowIndex, character, ability)
+			const cooldownRemaining = findRemainingCooldown(rows, rowIndex, character, ability)
 
 			cooldowns.push({
 				ability,
@@ -39,11 +40,9 @@ function findAllCooldowns(bossRoster: any, currBossPlan: BossPlan, rowIndex: num
 export default function CooldownSearch({ searchValue, rowIndex, columnIndex }: Props) {
 	const bossRoster = useGuildStore((store) => store.bossRoster)
 	const addCooldownToBossPlan = useGuildStore((store) => store.addCooldownToBossPlan)
-	const currBossPlan = useGuildStore((store) => store.currBossPlan)
+	const { rows } = useContext(RowsContext)
 
-	if (!currBossPlan) return
-
-	const allCooldowns = useMemo(() => findAllCooldowns(bossRoster, currBossPlan, rowIndex), [bossRoster, currBossPlan, rowIndex])
+	const allCooldowns = useMemo(() => findAllCooldowns(bossRoster, rows, rowIndex), [bossRoster, rows, rowIndex])
 
 	const filteredCooldowns = useMemo(
 		() =>

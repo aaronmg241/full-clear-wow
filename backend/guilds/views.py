@@ -5,7 +5,7 @@ from rest_framework.throttling import UserRateThrottle
 from rest_framework.permissions import IsAuthenticated
 from .models import *
 from .mixins import GuildAuthenticationMixin
-from .serializers import GuildSerializer, GuildCharacterSerializer
+from .serializers import *
 from datetime import datetime, timedelta
 
 class GuildView(APIView):
@@ -185,3 +185,70 @@ class CreateBossRosterCharacter(GuildAuthenticationMixin, APIView):
         boss_roster.characters.remove(guild_character)
 
         return Response(status=200)
+    
+
+class BossPlanView(GuildAuthenticationMixin, APIView):
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
+
+    def get(self, request, guild_id):
+        if self.get_user_role(user=request.user, guild=guild_id) is None:
+            return Response({'detail': 'You are not in this guild.'}, status=403)
+        boss_plans = BossPlan.objects.filter(guild_id=guild_id)
+
+        data = BossPlanSerializer(boss_plans, many=True).data
+
+        return Response(data, status=200)
+    
+    def post(self, request, guild_id):
+
+        if self.get_user_role(user=request.user, guild=guild_id) is None:
+            return Response({'detail': 'You are not in this guild.'}, status=403)
+
+        data = request.data
+
+        data['guild'] = get_object_or_404(Guild, id=guild_id).id
+        data['version'] = 1
+        rows = data['rows']
+
+        # Add a fake id so we can check to make sure the data is valid
+        for row in rows:
+            row['boss_plan'] = 1
+        plan_serializer = BossPlanSerializer(data=data)
+        rows_serializer = BossPlanRowSerializer(data=data['rows'], many=True)
+
+
+        if not plan_serializer.is_valid() or not rows_serializer.is_valid():
+            print(plan_serializer.errors, rows_serializer.errors)
+            return Response(plan_serializer.errors, status=400)
+        
+        plan = plan_serializer.save()
+
+        
+        for row in rows:
+            row['boss_plan'] = plan.id
+            row_serializer = BossPlanRowSerializer(data=row)
+            if row_serializer.is_valid():
+                row_serializer.save()            
+
+        return Response(plan_serializer.data, status=201)
+    
+class BossPlanRowView(GuildAuthenticationMixin, APIView):
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
+
+    def get(self, request, guild_id, plan_id):
+        if self.get_user_role(user=request.user, guild=guild_id) is None:
+            return Response({'detail': 'You are not in this guild.'}, status=403)
+        boss_plan_rows = BossPlanRow.objects.filter(boss_plan_id=plan_id)
+
+        data = BossPlanRowSerializer(boss_plan_rows, many=True).data
+
+        row_ids = [ row['id'] for row in data ]
+
+        assigned_cooldowns = AssignedCooldown.objects.filter(boss_plan_row_id__in=row_ids)
+
+        for row in data:
+            row['assigned_cooldowns'] = [ cooldown for cooldown in assigned_cooldowns if cooldown.boss_plan_row_id == row['id'] ]
+
+        return Response(data, status=200)

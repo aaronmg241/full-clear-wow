@@ -25,6 +25,16 @@ class GuildCharacterSerializer(serializers.ModelSerializer):
         model = GuildCharacter
         fields = ['id', 'character_class', 'spec', 'role', 'name']
 
+class BossPlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BossPlan
+        fields = '__all__'
+
+class BossPlanRowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BossPlanRow
+        fields = '__all__'
+
 # TODO: See if we actually need this serializer
 class CustomPasswordResetSerializer(PasswordResetSerializer):
         

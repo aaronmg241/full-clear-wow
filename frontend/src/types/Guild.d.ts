@@ -46,11 +46,22 @@ type AbilityUse = {
 }
 
 type BossPlan = {
+	id: string
+	guild: id
+	name: string
+	difficulty: string
+	version: float
 	rows: BossPlanRow[]
 }
 
 type BossPlanRow = {
+	bossPlan: id
+	custom_name?: string
 	spellName: string
+	spellLink?: string
+	counter?: number
+	event_type?: string
+	order: number
 	time: number
 	id: string
 	assignedCooldowns: AssignedCooldown[]

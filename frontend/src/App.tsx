@@ -35,6 +35,10 @@ const authRouter = createBrowserRouter([
 				path: 'cooldowns',
 				element: <Cooldowns />,
 			},
+			{
+				path: 'cooldowns/:planId',
+				element: <Cooldowns />,
+			},
 		],
 	},
 	{

@@ -19,6 +19,9 @@ interface Store {
 	removeCharacterFromBossRoster: (id: string) => void
 	setBossRoster: (roster: Character[]) => void
 
+	bossPlans: BossPlan[]
+	setBossPlans: (plans: BossPlan[]) => void
+
 	currBossPlan: null | BossPlan
 	setCurrBossPlan: (plan: BossPlan) => void
 
@@ -35,6 +38,7 @@ const initialState = {
 	guildRoster: [],
 	bossRoster: [],
 	currBossPlan: null,
+	bossPlans: [],
 }
 
 export const useGuildStore = createWithEqualityFn<Store>()(
@@ -54,6 +58,8 @@ export const useGuildStore = createWithEqualityFn<Store>()(
 			set((state) => ({ bossRoster: [...state.bossRoster.filter((c) => c.id !== character.id), character] })),
 		removeCharacterFromBossRoster: (id: string) => set((state) => ({ bossRoster: state.bossRoster.filter((c) => c.id !== id) })),
 		setBossRoster: (roster: Character[]) => set({ bossRoster: roster }),
+
+		setBossPlans: (plans: BossPlan[]) => set({ bossPlans: plans }),
 
 		setCurrBossPlan: (plan: BossPlan) => set({ currBossPlan: plan }),
 		addCooldownToBossPlan: (rowNumber: number, columnNumber: number, character: Character, ability: Ability) => {
