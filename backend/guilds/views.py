@@ -211,26 +211,22 @@ class BossPlansView(GuildAuthenticationMixin, APIView):
         data['version'] = 1
         rows = data['rows']
 
-        # Add a fake id so we can check to make sure the data is valid
-        for row in rows:
-            row['boss_plan'] = 1
         plan_serializer = BossPlanSerializer(data=data)
-        rows_serializer = BossPlanRowSerializer(data=data['rows'], many=True)
 
-
-        if not plan_serializer.is_valid() or not rows_serializer.is_valid():
-            print(plan_serializer.errors, rows_serializer.errors)
+        if not plan_serializer.is_valid():
             return Response(plan_serializer.errors, status=400)
         
         plan = plan_serializer.save()
-
-        
         for row in rows:
             row['boss_plan'] = plan.id
-            row_serializer = BossPlanRowSerializer(data=row)
-            if row_serializer.is_valid():
-                row_serializer.save()            
+        
+        rows_serializer = BossPlanRowSerializer(data=data['rows'], many=True)
 
+        if not rows_serializer.is_valid():
+            BossPlan.delete(plan)
+            return Response(rows_serializer.errors, status=400)       
+
+        rows_serializer.save()
         return Response(plan_serializer.data, status=201)
     
 class BossPlanView(GuildAuthenticationMixin, APIView):
