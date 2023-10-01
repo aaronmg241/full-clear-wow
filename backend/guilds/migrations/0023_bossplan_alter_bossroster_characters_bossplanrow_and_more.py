@@ -14,22 +14,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='BossPlan',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(blank=True, max_length=24, null=True)),
-                ('boss_id', models.IntegerField(default=1, validators=[django.core.validators.MaxValueValidator(9), django.core.validators.MinValueValidator(1)])),
-                ('difficulty', models.CharField(choices=[('heroic', 'Heroic'), ('mythic', 'Mythic')], default='mythic', max_length=20)),
-                ('version', models.IntegerField(default=1)),
-                ('guild', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='guilds.guild')),
-            ],
-        ),
-        migrations.AlterField(
-            model_name='bossroster',
-            name='characters',
-            field=models.ManyToManyField(to='guilds.guildcharacter'),
-        ),
-        migrations.CreateModel(
             name='BossPlanRow',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
