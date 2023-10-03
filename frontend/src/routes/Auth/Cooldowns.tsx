@@ -33,7 +33,7 @@ export default function Cooldowns() {
 					autoClose: 5000,
 				})
 			})
-	}, [])
+	}, [currGuild])
 
 	return (
 		<Flex direction='column' w='100%' h='100%'>

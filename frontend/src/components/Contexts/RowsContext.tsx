@@ -18,6 +18,7 @@ interface RowsContextType {
 	) => void
 	removeCooldownFromRow: (rowNumber: number, columnNumber: number) => void
 	addNewLine: (rowNumber: number) => void
+	addRow: () => void
 }
 
 // Create a RowsContext
@@ -27,6 +28,7 @@ export const RowsContext = createContext<RowsContextType>({
 	addCooldownToRow: () => {},
 	removeCooldownFromRow: () => {},
 	addNewLine: () => {},
+	addRow: () => {},
 })
 
 export default function RowsContextProvider({ children }: { children: React.ReactNode }) {
@@ -131,6 +133,8 @@ export default function RowsContextProvider({ children }: { children: React.Reac
 		setRows(newRows)
 	}
 
+	function addRow() {}
+
 	function addNewLine(rowNumber: number) {
 		const newRows = [...rows]
 		const row = newRows[rowNumber]
@@ -159,6 +163,7 @@ export default function RowsContextProvider({ children }: { children: React.Reac
 		addCooldownToRow,
 		removeCooldownFromRow,
 		addNewLine,
+		addRow,
 	}
 
 	return <RowsContext.Provider value={contextValue}>{children}</RowsContext.Provider>
