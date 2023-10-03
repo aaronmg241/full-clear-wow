@@ -4,7 +4,8 @@ import { useGuildStore } from '../../hooks/useGuildStore'
 import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
 import { notifications } from '@mantine/notifications'
 
-// Define the types for the context
+// This context handles all database/state operations for editing the cooldown table.
+
 interface RowsContextType {
 	rows: BossPlanRow[]
 	setRows: (newRows: BossPlanRow[]) => void
@@ -16,6 +17,7 @@ interface RowsContextType {
 		customInstruction?: string
 	) => void
 	removeCooldownFromRow: (rowNumber: number, columnNumber: number) => void
+	addNewLine: (rowNumber: number) => void
 }
 
 // Create a RowsContext
@@ -24,6 +26,7 @@ export const RowsContext = createContext<RowsContextType>({
 	setRows: () => {},
 	addCooldownToRow: () => {},
 	removeCooldownFromRow: () => {},
+	addNewLine: () => {},
 })
 
 export default function RowsContextProvider({ children }: { children: React.ReactNode }) {
@@ -100,6 +103,9 @@ export default function RowsContextProvider({ children }: { children: React.Reac
 
 	function removeCooldownFromRow(rowNumber: number, columnNumber: number) {
 		const newRows = [...rows]
+		const data: { column: number; removeExtraRow?: boolean } = {
+			column: columnNumber,
+		}
 
 		const row = newRows[rowNumber]
 
@@ -107,11 +113,37 @@ export default function RowsContextProvider({ children }: { children: React.Reac
 
 		row.assignedCooldowns = row.assignedCooldowns.filter((cooldown) => cooldown.column !== columnNumber)
 
-		jwtAxios.delete(`/guilds/${currBossPlan?.guild}/rows/${row.id}/cooldowns/`, { data: { column: columnNumber } }).catch((error) => {
+		if (row.assignedCooldowns.findIndex((cooldown) => cooldown.column > 5) === -1) {
+			data.removeExtraRow = true
+			row.rowsRequired = 1
+		}
+
+		jwtAxios.delete(`/guilds/${currBossPlan?.guild}/rows/${row.id}/cooldowns/`, { data }).catch((error) => {
 			console.log(error)
 			notifications.show({
 				title: 'Error',
 				message: 'There was an error removing the cooldown.',
+				color: 'red',
+				autoClose: 5000,
+			})
+		})
+
+		setRows(newRows)
+	}
+
+	function addNewLine(rowNumber: number) {
+		const newRows = [...rows]
+		const row = newRows[rowNumber]
+
+		if (!row) return
+
+		row.rowsRequired = 2
+
+		jwtAxios.put(`/guilds/${currBossPlan?.guild}/rows/${row.id}/`, { rowsRequired: 2 }).catch((error) => {
+			console.log(error)
+			notifications.show({
+				title: 'Error',
+				message: 'There was an error adding a new line',
 				color: 'red',
 				autoClose: 5000,
 			})
@@ -126,6 +158,7 @@ export default function RowsContextProvider({ children }: { children: React.Reac
 		setRows,
 		addCooldownToRow,
 		removeCooldownFromRow,
+		addNewLine,
 	}
 
 	return <RowsContext.Provider value={contextValue}>{children}</RowsContext.Provider>

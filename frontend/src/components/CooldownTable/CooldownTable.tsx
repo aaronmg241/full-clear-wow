@@ -20,7 +20,7 @@ export default function CooldownTable({}: Props) {
 							<th style={{ width: 200 }} align='left'>
 								Ability
 							</th>
-							<th style={{ width: 50 }} align='left'>
+							<th style={{ width: 50, paddingLeft: 0 }} align='left'>
 								Time
 							</th>
 							{Array.from({ length: 6 }).map((_, index) => (

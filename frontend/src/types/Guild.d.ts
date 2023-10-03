@@ -65,6 +65,7 @@ type BossPlanRow = {
 	time: number
 	id: string
 	assignedCooldowns: AssignedCooldown[]
+	rowsRequired: number
 }
 
 type AssignedCooldown = {

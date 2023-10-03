@@ -9,6 +9,7 @@ import HealerMenuList from './HealerMenuList'
 import { RowsContext } from '../../Contexts/RowsContext'
 import CustomTextPopover from './CustomTextPopover'
 import CustomInstructionDisplay from '../../CooldownTable/CustomInstructionDisplay'
+import TableActionButton from '../../Buttons/TableActionButton'
 
 type Props = {
 	row: BossPlanRow
@@ -39,31 +40,14 @@ export default function CooldownMenu({ row, rowIndex, columnIndex }: Props) {
 			transitionProps={{ duration: 0 }}
 		>
 			<Menu.Target>
-				<Button
-					w='100%'
-					h='100%'
-					bg={menuOpened ? 'var(--hover-indigo-bg)' : 'transparent'}
-					p={0}
-					fw={500}
-					style={{ borderRadius: 0 }}
-					styles={(theme) => ({
-						root: {
-							'&:not([data-disabled])': theme.fn.hover({
-								background: 'var(--hover-indigo-bg)',
-							}),
-						},
-						inner: {
-							height: 'auto',
-						},
-					})}
-				>
+				<TableActionButton selected={menuOpened}>
 					{assignedAbility &&
 						(assignedAbility.spellId ? (
 							<AssignedAbilityDisplay assignedCooldown={assignedAbility} />
 						) : (
 							<CustomInstructionDisplay assignedCooldown={assignedAbility} />
 						))}
-				</Button>
+				</TableActionButton>
 			</Menu.Target>
 
 			<Menu.Dropdown>
