@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react'
-import { Menu, Button, TextInput, rem } from '@mantine/core'
+import { Menu, TextInput, rem } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
 
 import { findCooldown } from '../../../utils/cooldowns'
