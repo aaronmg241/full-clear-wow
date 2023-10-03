@@ -1,10 +1,6 @@
 import { Modal, Button, TextInput, Flex, NumberInput, Collapse, Select } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import { useForm } from '@mantine/form'
 
-import useAxiosWithInterceptor from '../../hooks/useAxiosWithInterceptor'
-import { useContext } from 'react'
-import { RowsContext } from '../Contexts/RowsContext'
 import { ButtonLink } from '../Buttons/ButtonLink'
 import { useToggle } from '@mantine/hooks'
 
@@ -34,8 +30,6 @@ const eventTypes: { value: string; label: string }[] = [
 
 export default function AddRow({ opened, close }: Props) {
 	const [useAdvancedOptions, toggleAdvancedOptions] = useToggle([false, true])
-	const jwtAxios = useAxiosWithInterceptor()
-	const { addRow } = useContext(RowsContext)
 	const form = useForm({
 		initialValues: {
 			customName: '',
