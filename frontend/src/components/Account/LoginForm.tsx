@@ -5,7 +5,7 @@ import { GoogleLogin } from '@react-oauth/google'
 
 import axios from 'axios'
 import { LoginContext } from './LoginContext'
-import { ButtonLink } from '../Button/ButtonLink'
+import { ButtonLink } from '../Buttons/ButtonLink'
 import { notifications } from '@mantine/notifications'
 import { useNavigate } from 'react-router-dom'
 

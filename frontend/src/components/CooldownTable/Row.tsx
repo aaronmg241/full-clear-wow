@@ -6,6 +6,17 @@ type Props = {
 	rowIndex: number
 }
 
+function findNumRows(row: BossPlanRow) {
+	let numRows = 1
+
+	for (const cooldown of row.assignedCooldowns) {
+		const rowsRequired = Math.ceil(cooldown.column / 6)
+		if (rowsRequired > numRows) numRows = rowsRequired
+	}
+
+	return numRows
+}
+
 export default function Row({ row, rowIndex }: Props) {
 	return (
 		<tr>

@@ -3,7 +3,7 @@ import { Text, Menu } from '@mantine/core'
 import { bosses } from '../../types/data/Raid'
 import { useGuildStore } from '../../hooks/useGuildStore'
 import BossDisplay from '../BossDisplay'
-import MenuButton from '../Button/MenuButton'
+import MenuButton from '../Buttons/MenuButton'
 
 type Props = {}
 

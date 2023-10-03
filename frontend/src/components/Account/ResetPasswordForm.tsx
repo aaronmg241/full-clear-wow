@@ -1,7 +1,7 @@
 import { useForm } from '@mantine/form'
 import { TextInput, Button } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import { ButtonLink } from '../Button/ButtonLink'
+import { ButtonLink } from '../Buttons/ButtonLink'
 
 import { IconCheck, IconExclamationCircle } from '@tabler/icons-react'
 

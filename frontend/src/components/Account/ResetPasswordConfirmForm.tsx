@@ -1,6 +1,6 @@
 import { Button, PasswordInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { ButtonLink } from '../Button/ButtonLink'
+import { ButtonLink } from '../Buttons/ButtonLink'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import axios from 'axios'

@@ -1,7 +1,7 @@
 import { Flex } from '@mantine/core'
 import { IconUsers, IconActivity } from '@tabler/icons-react'
 
-import SideNavButton from '../Button/SideNavButton'
+import SideNavButton from '../Buttons/SideNavButton'
 
 type Props = {
 	onLinkClicked?: Function

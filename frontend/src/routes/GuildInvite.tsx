@@ -5,7 +5,7 @@ import { IconExclamationCircle, IconCircleCheck } from '@tabler/icons-react'
 
 import PageFormContainer from '../components/Containers/PageFormContainer'
 import useAxiosWithInterceptor from '../hooks/useAxiosWithInterceptor'
-import { ButtonLink } from '../components/Button/ButtonLink'
+import { ButtonLink } from '../components/Buttons/ButtonLink'
 import { useGuildStore } from '../hooks/useGuildStore'
 
 type Props = {}

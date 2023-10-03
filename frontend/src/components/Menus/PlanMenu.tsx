@@ -1,7 +1,7 @@
 import { Text, Menu } from '@mantine/core'
 
 import { useGuildStore } from '../../hooks/useGuildStore'
-import MenuButton from '../Button/MenuButton'
+import MenuButton from '../Buttons/MenuButton'
 
 type Props = {}
 

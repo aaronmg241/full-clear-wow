@@ -1,6 +1,6 @@
 import { Flex, Text } from '@mantine/core'
 import PageFormContainer from '../components/Containers/PageFormContainer'
-import { ButtonLink } from '../components/Button/ButtonLink'
+import { ButtonLink } from '../components/Buttons/ButtonLink'
 import { useNavigate } from 'react-router-dom'
 
 type Props = {}

@@ -1,7 +1,7 @@
 import { TextInput, PasswordInput, Button } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { useForm } from '@mantine/form'
-import { ButtonLink } from '../Button/ButtonLink'
+import { ButtonLink } from '../Buttons/ButtonLink'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 interface RegisterErrorData {
