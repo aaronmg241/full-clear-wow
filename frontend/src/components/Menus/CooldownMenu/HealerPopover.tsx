@@ -1,11 +1,11 @@
 import { useContext } from 'react'
 import { Flex, Menu, Popover } from '@mantine/core'
 
-import SpellCooldownDisplay from './SpellCooldownDisplay'
-import CharacterDisplay from '../Roster/CharacterDisplay'
-import { classes } from '../../types/data/Classes'
-import { findRemainingCooldown } from '../../utils/cooldowns'
-import { RowsContext } from '../Contexts/RowsContext'
+import SpellCooldownDisplay from '../../CooldownTable/SpellCooldownDisplay'
+import CharacterDisplay from '../../Roster/CharacterDisplay'
+import { classes } from '../../../types/data/Classes'
+import { findRemainingCooldown } from '../../../utils/cooldowns'
+import { RowsContext } from '../../Contexts/RowsContext'
 
 type Props = {
 	character: Character
@@ -55,7 +55,7 @@ export default function HealerPopover({ character, rowIndex, columnIndex, closeM
 								readableName={ability.readableName}
 								cooldownRemaining={ability.cooldownRemaining}
 								onClick={() => {
-									addCooldownToRow(rowIndex, columnIndex, character, ability)
+									addCooldownToRow(rowIndex, columnIndex, character.id, ability.spellID)
 									closeMenu()
 								}}
 							/>

@@ -8,7 +8,13 @@ import { notifications } from '@mantine/notifications'
 interface RowsContextType {
 	rows: BossPlanRow[]
 	setRows: (newRows: BossPlanRow[]) => void
-	addCooldownToRow: (rowNumber: number, columnNumber: number, character: Character, ability: Ability) => void
+	addCooldownToRow: (
+		rowNumber: number,
+		columnNumber: number,
+		characterId: string,
+		spellId: number | null,
+		customInstruction?: string
+	) => void
 	removeCooldownFromRow: (rowNumber: number, columnNumber: number) => void
 }
 
@@ -39,7 +45,13 @@ export default function RowsContextProvider({ children }: { children: React.Reac
 			})
 	}, [currBossPlan])
 
-	function addCooldownToRow(rowNumber: number, columnNumber: number, character: Character, ability: Ability) {
+	function addCooldownToRow(
+		rowNumber: number,
+		columnNumber: number,
+		characterId: string,
+		spellId: number | null,
+		customInstruction?: string
+	) {
 		const newRows = [...rows]
 
 		const row = newRows[rowNumber]
@@ -47,23 +59,41 @@ export default function RowsContextProvider({ children }: { children: React.Reac
 		if (!row) return
 
 		row.assignedCooldowns = row.assignedCooldowns.filter((cooldown) => cooldown.column !== columnNumber)
-		row.assignedCooldowns.push({ column: columnNumber, character: character.id, spellId: ability.spellID })
 
-		jwtAxios
-			.post(`/guilds/${currBossPlan?.guild}/rows/${row.id}/cooldowns/`, {
-				character: character.id,
-				spellId: ability.spellID,
+		let data
+
+		if (spellId) {
+			data = {
+				character: characterId,
+				spellId,
 				column: columnNumber,
+			}
+			row.assignedCooldowns.push({ column: columnNumber, character: characterId, spellId })
+		} else if (characterId === 'everyone') {
+			data = {
+				customInstruction,
+				column: columnNumber,
+				forEveryone: true,
+			}
+			row.assignedCooldowns.push({ column: columnNumber, forEveryone: true, customInstruction })
+		} else {
+			data = {
+				character: characterId,
+				customInstruction,
+				column: columnNumber,
+			}
+			row.assignedCooldowns.push({ column: columnNumber, character: characterId, customInstruction })
+		}
+
+		jwtAxios.post(`/guilds/${currBossPlan?.guild}/rows/${row.id}/cooldowns/`, data).catch((error) => {
+			console.log(error)
+			notifications.show({
+				title: 'Error',
+				message: 'There was an error assigning the cooldown',
+				color: 'red',
+				autoClose: 5000,
 			})
-			.catch((error) => {
-				console.log(error)
-				notifications.show({
-					title: 'Error',
-					message: 'There was an error assigning the cooldown',
-					color: 'red',
-					autoClose: 5000,
-				})
-			})
+		})
 
 		setRows(newRows)
 	}

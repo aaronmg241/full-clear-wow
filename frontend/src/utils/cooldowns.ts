@@ -25,3 +25,13 @@ export function findRemainingCooldown(rows: BossPlanRow[], rowIndex: number, cha
 
 	return 0
 }
+
+export function findCooldown(row: BossPlanRow, column: number) {
+	for (const ability of row.assignedCooldowns) {
+		if (column === ability.column) {
+			return ability
+		}
+	}
+
+	return null
+}

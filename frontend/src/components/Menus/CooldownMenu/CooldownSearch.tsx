@@ -1,11 +1,11 @@
 import { useMemo, useContext } from 'react'
 import { Flex, ScrollArea } from '@mantine/core'
 
-import SpellCooldownDisplay from './SpellCooldownDisplay'
-import { useGuildStore } from '../../hooks/useGuildStore'
-import { classes } from '../../types/data/Classes'
-import { findRemainingCooldown } from '../../utils/cooldowns'
-import { RowsContext } from '../Contexts/RowsContext'
+import SpellCooldownDisplay from '../../CooldownTable/SpellCooldownDisplay'
+import { useGuildStore } from '../../../hooks/useGuildStore'
+import { classes } from '../../../types/data/Classes'
+import { findRemainingCooldown } from '../../../utils/cooldowns'
+import { RowsContext } from '../../Contexts/RowsContext'
 
 type Props = {
 	searchValue: string
@@ -64,7 +64,7 @@ export default function CooldownSearch({ searchValue, rowIndex, columnIndex }: P
 						cooldownRemaining={cooldown.cooldownRemaining}
 						character={cooldown.character}
 						onClick={() => {
-							addCooldownToRow(rowIndex, columnIndex, cooldown.character, cooldown.ability)
+							addCooldownToRow(rowIndex, columnIndex, cooldown.character.id, cooldown.ability.spellID)
 						}}
 					/>
 				))}
